@@ -2,6 +2,13 @@
   "name": "hi-story",
   "version": "0.0.1",
   "dependencies": {
-    "express": "latest"
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.4.0",
+    "lodash": "^4.17.4",
+    "mysql": "latest",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "pbkdf2-password": "latest"
   }
 }
