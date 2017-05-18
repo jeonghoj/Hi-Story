@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/intro.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
+    <script src="js/intro.js"></script>
+    <script src="js/typed.js"></script>
+</head>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    
+<!--    HiStory
+        Discover YOU!
+        Discover your Meaning
+        Discover your Vision
+        Discover your Ability
+        Discover your Possibility-->
+   
+    <div class="intro-page">
+        <div class="header">
+            <span id="typed1"></span> <br>
+            <span id="typed2"></span>
+            <span id="typed3"></span>
+        </div>
+        <div class="sign-in-up">
+            <form>
+            <input id="ID" type="email" placeholder="ID">
+            <input id="PW" type="password" placeholder="PW">
+            </form>
+            <button id="login" type="button" class="f-empha" >로그인</button>
+            <a href="sign-up.html" class="f-empha">sign up</a>
+        </div>
+    </div>
+    <script>
+        $('#login').click(function () {
+            const data = {
+                userid : $('#ID').val(),
+                password : $('#PW').val()
+            };
+            $.ajax({
+                url:'http://127.0.0.1:3000/auth/login',
+                type:'post',
+                data:data, //form 태그의 정보를 값의이름=값의내용&값 의 형식으로 바꿔준다
+                success:function (data) {
+                    localStorage.setItem('token', data.token);
+                    console.log('success');
+                    console.log(data);
+                    top.location.href="http://127.0.0.1:3000/auth/login";
+                }
+            })
+        })
+
+    </script>
+    
+</body>
+</html>

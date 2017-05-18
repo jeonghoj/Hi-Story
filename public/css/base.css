@@ -1,0 +1,483 @@
+/* General ================================================== :) */
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* {
+    box-sizing: border-box;   
+    font-family: 'Noto Sans KR';
+    font-weight: 400;
+    color: rgba(50, 50, 50, 1);
+}
+body {
+    overflow: scroll;
+}
+
+/* font ================================================== :) */
+.f-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: rgba(50, 50, 50, 1);
+    text-decoration: none;
+}
+.f-menu {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: rgba(50, 50, 50, 1);   
+    text-decoration: none;
+}
+.f-basic {
+    font-size: .9rem;
+    font-weight: 600;
+    color: rgba(80, 80, 80, 1);   
+    text-decoration: none;
+}
+.f-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgba(50, 50, 50, 1);   
+    text-decoration: none;
+}
+.f-empha {
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+.f-sub {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(100, 100, 100, 1);   
+    text-decoration: none;    
+}
+.f-subSmall {
+    font-size: .8rem;
+    font-weight: 500;
+    color: rgba(100, 100, 100, 1);   
+    text-decoration: none;    
+}
+
+
+/* nav ================================================== :) */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 2px 2px -2px rgba(0, 0, 0, .45);
+    width: 970px;
+    margin: auto;    
+}
+.nav .logo {
+    padding-left: 82px;
+}
+.nav ul.menu {
+    list-style: none;
+    display: flex;    
+}
+.nav ul li {
+    width: 82px;
+}
+.nav ul li a {
+    opacity: .3;
+}
+.nav a.active {
+    opacity: .8;
+}
+.nav ul li a:hover {
+    transition: all .35s ease;
+    opacity: .9;
+}
+
+/* container ================================================== :) */
+.container
+{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px;
+    width: 970px;
+    min-height: 1000px;
+    margin: auto;
+}
+
+/* right ================================================== :) */
+.right .aside {
+    width: 232px;
+    padding-top: 14px;
+}
+.right .footer {
+    padding-top: 28px;
+    font-weight: 200;
+}
+.right .aside div {
+    padding: 2px;
+}
+.right .aside .infor {
+    border: 1px solid rgba(0, 0, 0, .3);    
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+}
+.right .aside .infor .date {
+    text-align: right;
+}
+.right .aside .infor .score {
+    display: flex;
+    justify-content: center;
+}
+.right .aside .infor .score div {
+    width: 78px;
+    text-align: center;
+}
+.right .aside .aside-btn {
+    margin-top: 14px;
+    border: 1px solid rgba(0, 0, 0, .3);
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+    text-align: center;
+}
+.right .aside .aside-btn  #new {
+    text-decoration: none;
+    opacity: .3;
+}
+.right .aside .aside-btn  #new:hover{
+    transition: all .35s ease;
+    opacity: .9;
+}
+.hr-infor {
+    border: 1px dotted rgba(50, 50, 50, .2);
+    margin-bottom: 0px;
+}
+
+/* left ================================================== :) */
+.left {
+    width: 724px;
+}
+
+/* left-top ================================================== :) */
+.left .left-top {
+    display: flex;
+    justify-content: flex-end;
+}
+.left .left-top .view-mode {
+    width: 180px;
+    display: flex;
+    justify-content: center;
+}
+.left .left-top .view-mode div {
+    text-align: center;
+    width: 90px;
+}
+.timeline::before {
+    background: rgba(0, 0, 0, .4);
+    content: '';
+    display: inline-block;
+    height: 15px;
+    width: 2px;
+    position: relative;
+    left: -14px;    
+    top: 2px;
+}
+.left .left-top .arg {
+    width: 68px;
+    text-align: center;
+    margin-left: 14px;
+    font-size: .9em;
+    position: relative;
+    top: 3px;
+}
+.webui-popover-content .arg-popover {
+    text-align: center;
+    background-color: white;
+}
+.webui-popover-content .arg-popover button {
+    text-align: center;
+    border: none;
+    background: none;
+    margin: 1px;
+}
+.webui-popover-content .arg-popover button:hover {
+    border: 1px dotted red;
+}
+.left .left-top .view-mode a{
+    text-decoration: none;    
+    opacity: .3;
+}
+.left .left-top .view-mode .active {
+    opacity: .9;
+}
+.left .left-top a:hover {
+    transition: all .35s ease;
+    opacity: .8;
+}
+
+/* story-list ================================================== :) */
+.left .story-list {
+    padding-top: 14px;
+    margin-top: -14px;
+}
+
+/* stories ================================================== :) */
+.left .story-list .story {
+    padding-left: 28px;
+    padding-right: 14px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border: 1px solid rgba(0, 0, 0, .3);
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+    margin: 14px;
+}
+.left .story-list .story .story-header {
+    display: flex;
+    justify-content: space-between;
+}
+.left .story-list .story .story-title a {
+    text-decoration: none;    
+}
+.left .story-list .story .story-header a img {
+    opacity: .3;
+}
+.left .story-list .story .story-header a img:hover {
+    transition: all .35s ease;
+    opacity: .9;
+}
+.webui-popover-content .story-set-popover {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+.webui-popover-content .story-set-popover button {
+    border: none;
+    background: none;
+}
+.webui-popover-content .story-set-popover button:hover {
+    border: 1px dotted red;
+}
+.left .story-list .story .memo{
+    text-align: justify;    
+}
+.left .story-list .story .memo .edit {
+    opacity: .3;
+}
+.left .story-list .story .memo .edit:hover {
+    transition: all .35s ease;
+    opacity: .9;
+}
+.left .story-list .story .memo .edit,
+.left .story-list .story .memo .story-memo {
+    display: inline;
+}
+
+/* page-list ================================================== :) */
+.left .page-list {
+    margin: 14px;
+    border: 1px solid rgba(50, 50, 50, .3);
+    padding: 14px;
+    padding-left: 28px;
+    padding-right: 14px;
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+}
+mark {
+    color: rgba(0, 0, 0, 1);
+    background: rgba(127, 255, 0, .1);   
+/*
+    background: linear-gradient(
+        to right, 
+        rgba(127, 255, 0, .1), 
+        rgba(127, 255, 0, .1)
+    );
+*/
+}
+
+/* pages ================================================== :) */
+.left .page-list .page {
+    text-align: justify;
+}
+.left .page-list .page .story-title {
+    display: inline;
+}
+.hr-page {
+    border: 1px dotted rgba(51, 51, 51, .1);
+}
+/* Page popover ================================================== :) */
+#page-set {
+    position: absolute;
+    visibility: hidden;
+    background: white;
+    border: 2px solid rgba(100, 100, 100, 1);
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    width: 100px;
+    z-index: 200;
+    text-align: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#page-set div:hover {
+    color: rgba(0, 0, 0, 1);
+}
+
+/* Writeing ================================================== :) */
+.left .page-write {
+    margin-bottom: 400px;
+    padding-bottom: 5px;
+}
+.left .page-write .textarea {
+    width: 668px;
+    margin-left: -14px;
+    border: none;
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .45);
+    overflow-y: scroll;
+}
+.left .page-write .footer {
+    display: flex;
+    justify-content: flex-end;
+}
+.left .page-write .footer * {
+    margin-left: 15px;
+    margin-top: 5px;
+    text-decoration: none;
+}
+
+
+/* Books ================================================== :) */
+.book-list {
+    width: 998px;
+    min-height: 700px ;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 14px;
+}
+.book-list .a-book {
+    overflow: hidden;
+    width: 232px;
+    height: 370px;
+    margin-top: 14px;
+    margin-right: 14px;
+    border: 1px solid rgba(51, 51, 51, .3);
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45); 
+    position: relative;
+}
+.book-list .a-book .book-slide .book-item {
+    text-align: center;
+}
+.book-list .a-book .book-slide .book-item .book-header{
+    height: 50px;
+    display: flex;
+    padding: 14px;
+    align-items: center;
+    justify-content: space-between;
+}
+.book-list .a-book .book-slide .book-inside .book-header .go-setting {
+    visibility: hidden;
+    opacity: .3;
+}
+.book-list .a-book .book-slide .book-inside .book-header .go-setting:hover{
+    opacity: .9;
+}
+.book-list .a-book .book-slide .book-inside:hover .book-header .go-setting {
+    visibility: visible;
+}
+
+.book-list .a-book .book-slide .book-inside .story-title {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.book-list .a-book .book-slide .book-inside .btn {
+    height: 20px;
+}
+/* book card ================================================== :) */
+.book-list .a-book .book-item {
+    width: 232px;
+    height: 370px;
+    position: relative;
+}
+.book-list .a-book .book-slide.now-setting {
+    transform: translate3d(0, 0, 0);
+    transition: transform .35s ease;
+}
+.book-list .a-book .book-slide.now-inside {
+    transform: translate3d(0, -370px, 0);
+    transition: transform .35s ease;
+}
+/* inner card ================================================== :) */
+.book-list .a-book .book-inside .book-stories {
+    overflow: hidden;
+    height: 280px;
+}
+.book-list .a-book .book-inside .book-stories .book-story-slide {
+    position: relative;
+}
+
+
+/* Explore ================================================== :) */
+.left .page-list .page .explore-header .card-name div {
+    display: inline-flex;
+}
+
+/* Closeup ================================================== :) */
+.closeup {
+    content: ' ';
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(50, 50, 50, .8);
+    z-index: 100;
+    visibility: hidden;
+}
+
+/* Closeup of Action ================================================== :) */
+.closeup .new-story {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 560px;
+    height: 345px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 1);
+    border: none;
+    border-radius: 5px;
+    z-index: 200;
+    visibility: hidden;    
+}
+.closeup .new-story #new-story-title {
+    width: 520px;
+    border: none;
+    padding: 5px;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+}
+.closeup .new-story #new-story-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    opacity: .7;
+    padding: 3px;
+}
+.closeup .new-story .new-story-book {
+    width: 520px;
+    height: 240px;
+    overflow-y: scroll;
+}
+.closeup .new-story .new-story-footer {
+    width: 520px;
+    height: 25px;
+    border-top: 1px solid black;
+    margin-top: 5px;
+    padding: 3px;
+    text-align: right;
+}
+.closeup .new-story .new-story-footer button {
+    border: none;
+    background: none;
+}
+.closeup .new-story .new-story-footer #public {
+    display: none;
+}
+.closeup .new-story .new-story-footer #public:checked + label{
+    text-decoration: line-through;
+}
+
+.page:hover {
+    background: rgba(240, 240, 240, 1);
+}
