@@ -14,26 +14,36 @@ router.get('/',(req,res)=>{
     });
 });
 router.get('/overview',(req,res)=>{
-    passport.authenticate('jwt',{session:false});
-
-    db.query('select Member_No from member where authID=?',req.user.authID,function (error,results) {
-        if(error){
-            console.log(error);
-            return res.redirect('/');
-        }
+    // passport.authenticate('jwt',{session:false});
+    // db.query('select Member_No from member where authID=?',req.user.authID,function (error,results) {
+    //     if(error){
+    //         console.log(error);
+    //         return res.redirect('/');
+    //     }
+    // });
+    // fs.readFile('public/list_book.html','utf8',function (err,data) {
+    //     db.query('select * from book where Member_No=?',req.user.Member_No,function (err,results) {
+    //         // console.log(results);
+    //         res.send(ejs.render(data,{
+    //             data: results}));
+    //     });
+    // });
+    fs.readFile('public/list_book.html','utf8',(error,data)=>{
+        "use strict";
+        res.send(data);
     });
-    fs.readFile('public/list_book.html','utf8',function (err,data) {
-        db.query('select * from book where Member_No=?',req.user.Member_No,function (err,results) {
-            // console.log(results);
-            res.send(ejs.render(data,{
-                data: results}));
-        });
-    });
-
     }
 );
-router.post('/list_book',(req,res)=>{
-    passport.authenticate('jwt',{session:false});
+router.post('/list_book',
+    passport.authenticate('jwt',{
+        session:false}),
+    (req,res)=>{
+    console.log(req.user);
+    db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
+        // console.log(results);
+        if(error) console.log(error);
+        res.json(results);
+    });
 
 });
 router.get('/upload',(req,res)=>{

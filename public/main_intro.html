@@ -45,11 +45,13 @@
                 type:'post',
                 data:data, //form 태그의 정보를 값의이름=값의내용&값 의 형식으로 바꿔준다
                 success:function (data) {
+                    console.log(data.token);
                     localStorage.setItem('token', data.token);
                     console.log('success');
                     console.log(data);
-                    top.location.href="http://127.0.0.1:3000/main/overview";
-                }
+                    console.log(localStorage.getItem('token'));
+                },
+                complete:top.location.href="http://127.0.0.1:3000/main/overview"
             })
         })
 
