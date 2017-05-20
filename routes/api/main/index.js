@@ -14,13 +14,15 @@ router.get('/',(req,res)=>{
     });
 });
 router.get('/overview',(req,res)=>{
+    passport.authenticate('jwt',{session:false});
+
     db.query('select Member_No from member where authID=?',req.user.authID,function (error,results) {
         if(error){
             console.log(error);
             return res.redirect('/');
         }
     });
-    fs.readFile('public/booklist.html','utf8',function (err,data) {
+    fs.readFile('public/list_book.html','utf8',function (err,data) {
         db.query('select * from book where Member_No=?',req.user.Member_No,function (err,results) {
             // console.log(results);
             res.send(ejs.render(data,{
@@ -30,6 +32,10 @@ router.get('/overview',(req,res)=>{
 
     }
 );
+router.post('/list_book',(req,res)=>{
+    passport.authenticate('jwt',{session:false});
+
+});
 router.get('/upload',(req,res)=>{
     fs.readFile('public/uploadBookThumbnail.html','utf8',(error,data) => {
         res.send(data);

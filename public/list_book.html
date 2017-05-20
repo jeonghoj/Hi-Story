@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>List Page</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/typed.js"></script>
+</head>
+<body>
+  <h1>List Page</h1>
+  <a href="/insertbook">INSERT DATA</a>
+  <a href="register">register</a>
+  <a href="login">login</a>
+  <a href="logout">logout</a>
+  <hr />
+  <table width="80%" border="1">
+    <tr>
+      <th>DELETE</th>
+      <th>EDIT</th>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+    <% data.forEach(function (item, index) { %>
+    <tr>
+      <td><a href="/uploadBookThumbnail/<%= item.Book_No %>"><img src="/uploads/<%= item.Book_Thumbnail %>" alt="업서용"></a></td>
+      <td><a href="/delete/<%= item.Book_No %>">DELETE</a></td>
+      <td><a href="/edit/<%= item.Book_No %>">EDIT</a></td>
+      <td><%= item.Book_No %></td>
+      <td><a href="/<%=item.Book_No %>"><%= item.Book_Name %></a></td>
+      <td><%= item.Book_Author %></td>
+      <td><%= item.Book_Date %></td>
+      <td><%= item.Book_Public %></td>
+      <td><%= item.Member_No %></td>
+    </tr>
+    <% }); %>
+  </table>
+</body>
+</html>
+
+<script>
+  $(document).ready(function () {
+      $.ajax({
+          url:'http://127.0.0.1:3000/main/overview',
+          type:'post',
+          headers: {"Authorization": localStorage.getItem('token')}
+          success: function (data) {
+              //여기에 인증후 받은 파일들을 불러오기
+
+          }
+      })
+  })
+</script>

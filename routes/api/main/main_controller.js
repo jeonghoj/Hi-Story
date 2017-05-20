@@ -39,6 +39,10 @@ exports.upload = (req, res)=>{
     }
 
 };
+exports.uploadtest = (req, res)=>{
+
+
+};
 
 function isSaved(upFile) {
     //파일 저장 여부 확인
