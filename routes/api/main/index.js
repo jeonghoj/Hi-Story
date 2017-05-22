@@ -51,7 +51,11 @@ router.get('/upload',(req,res)=>{
         res.send(data);
     });
 });
-router.post('/upload',passport.authenticate('jwt',{session:false}),upload.single('bookimg'),controller.upload);
+router.post('/upload',passport.authenticate('jwt',{session:false}),
+    upload.single('bookimg'),controller.upload);
+
+router.get('/uploadtest',passport.authenticate('jwt',{session:false}),
+    upload.single('bookimg'),controller.uploadtest);
 
 router.post('/uploaddebug',upload.single('bookimg'),(req,res)=>{
     console.log(req.body.bookname);

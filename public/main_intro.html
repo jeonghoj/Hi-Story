@@ -46,12 +46,15 @@
                 data:data, //form 태그의 정보를 값의이름=값의내용&값 의 형식으로 바꿔준다
                 success:function (data) {
                     console.log(data.token);
+                    alert("로그인되었습니다!");
                     localStorage.setItem('token', data.token);
                     console.log('success');
                     console.log(data);
                     console.log(localStorage.getItem('token'));
                 },
-                complete:top.location.href="http://127.0.0.1:3000/main/overview"
+                complete:setTimeout(function () {
+                    window.location.href="http://127.0.0.1:3000/main/overview"
+                },2000)
             })
         })
 

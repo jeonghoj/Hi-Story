@@ -5,53 +5,69 @@
   <title>List Page</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
+  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 </head>
 <body>
-  <h1>List Page</h1>
-  <a href="/insertbook">INSERT DATA</a>
-  <a href="register">register</a>
-  <a href="login">login</a>
-  <a href="logout">logout</a>
-  <hr />
-  <table width="80%" border="1">
-    <tr>
-      <th>DELETE</th>
-      <th>EDIT</th>
-      <th>ID</th>
-      <th>Name</th>
-    </tr>
-    <!--<% data.forEach(function (item, index) { %>-->
-    <tr id="book_list">
-      <!--<td><a href="/uploadBookThumbnail/<%= item.Book_No %>"><img src="/uploads/<%= item.Book_Thumbnail %>" alt="업서용"></a></td>-->
-      <!--<td><a href="/delete/<%= item.Book_No %>">DELETE</a></td>-->
-      <!--<td><a href="/edit/<%= item.Book_No %>">EDIT</a></td>-->
-      <!--<td><%= item.Book_No %></td>-->
-      <!--<td><a href="/<%=item.Book_No %>"><%= item.Book_Name %></a></td>-->
-      <!--<td><%= item.Book_Author %></td>-->
-      <!--<td><%= item.Book_Date %></td>-->
-      <!--<td><%= item.Book_Public %></td>-->
-      <!--<td><%= item.Member_No %></td>-->
-    </tr>
-    <!--<% }); %>-->
-  </table>
+<h1>List Page</h1>
+<a href="/insertbook">INSERT DATA</a>
+<a href="register">register</a>
+<a href="login">login</a>
+<a href="logout">logout</a>
+<hr />
+<table id="book_list" width="80%" border="1">
+  <tr>
+    <!--<th>DELETE</th>-->
+    <!--<th>EDIT</th>-->
+    <th>No</th>
+    <th>Name</th>
+    <th>Author</th>
+    <th>Date</th>
+    <th>public</th>
+    <th>Member_No</th>
+    <th>thumbnail</th>
+  </tr>
+  <!--<% data.forEach(function (item, index) { %>-->
+  <!--<tr id=>-->
+  <!--&lt;!&ndash;<td><a href="/uploadBookThumbnail/<%= item.Book_No %>"><img src="/uploads/<%= item.Book_Thumbnail %>" alt="업서용"></a></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><a href="/delete/<%= item.Book_No %>">DELETE</a></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><a href="/edit/<%= item.Book_No %>">EDIT</a></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><%= item.Book_No %></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><a href="/<%=item.Book_No %>"><%= item.Book_Name %></a></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><%= item.Book_Author %></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><%= item.Book_Date %></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><%= item.Book_Public %></td>&ndash;&gt;-->
+  <!--&lt;!&ndash;<td><%= item.Member_No %></td>&ndash;&gt;-->
+  <!--</tr>-->
+  <!--<% }); %>-->
+</table>
 </body>
 </html>
 
 <script>
-  $(document).ready(function () {
-      $.ajax({
-          url:'http://127.0.0.1:3000/main/list_book',
-          type:'post',
-          headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
-          success:function(data){
-              console.log(data);
-
-          },
-          statusCode: {
-              401: function() {
-                  alert( "로그인해주세요!" );
-              }
-          }
-      })
-  })
+    var book_list ="<tr>" +
+        "<td>${Book_No}</td>" +
+        "<td>${Book_Name}</td>" +
+        "<td>${Book_Author}</td>" +
+        "<td>${Book_Date}</td>" +
+        "<td>${Book_Public}</td>" +
+        "<td>${Member_No}</td>" +
+        "<td>${Book_Thumbnail}</td>" +
+        "</tr>";
+//    템플릿 선언
+    $.template("book_list_template",book_list);
+    $(document).ready(function () {
+        $.ajax({
+            url:'http://127.0.0.1:3000/main/list_book',
+            type:'post',
+            headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
+            success:function(data){
+                $.tmpl("book_list_template", data).appendTo("#book_list");
+            },
+            statusCode: {
+                401: function() {
+                    alert( "로그인해주세요!" );
+                }
+            }
+        })
+    })
 </script>

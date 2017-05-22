@@ -8,8 +8,8 @@ exports.upload = (req, res)=>{
     console.log(req.body);
     const Book_Name = req.body.bookname;
     const Book_Author = req.user.Member_Name;
-    // const Book_Date = Date.now();  //어떤형식으로 들어갈지 찍어보자
-    const Book_Public = req.body.bookpublic;
+    const Book_Date = Date.now();  //어떤형식으로 들어갈지 찍어보자
+    // const Book_Public = req.body.bookpublic;
     const Member_No = req.user.Member_No;
     const upFile = req.files ? req.files : null; //Book_Thumbnail로 리사이즈된 파일로 대체할듯 원본 db도 필요해보임
     //클라이언트에서 최대 첨부파일 갯수 넘을시 첨부못하게 미연에 방지해야됨
