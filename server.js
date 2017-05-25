@@ -6,8 +6,9 @@ const express =require('express');
 const bodyParser=require('body-parser');
 const app= express();
 // parse JSON and url-encoded query
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: "50mb", extended: false}));
+app.use(bodyParser.json({limit: "50mb"}));
+
 const routes_auth = require('./routes/api/auth/index');
 const routes_main = require('./routes/api/main/index');
 

@@ -13,6 +13,7 @@
 <a href="register">register</a>
 <a href="login">login</a>
 <a href="logout">logout</a>
+<a href="upload?action=add">upload</a>
 <hr />
 <table id="book_list" width="80%" border="1">
   <tr>
@@ -45,8 +46,8 @@
 
 <script>
     var book_list ="<tr>" +
-        "<td>${Book_No}</td>" +
-        "<td>${Book_Name}</td>" +
+        "<form><td class='book_no'>${Book_No}</td>" +
+        "<td class='select_book'><input type='submit'>${Book_Name}</td></form>" +
         "<td>${Book_Author}</td>" +
         "<td>${Book_Date}</td>" +
         "<td>${Book_Public}</td>" +
@@ -62,13 +63,28 @@
             headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
             success:function(data){
                 $.tmpl("book_list_template", data).appendTo("#book_list");
-            },
+                },
             statusCode: {
                 401: function() {
                     alert( "로그인해주세요!" );
                     window.location.href="http://127.0.0.1:3000/main"
                 }
             }
-        })
-    })
+        });
+        $(document).on('click','.select_book',function () {
+            $ajax({
+                url:'http://127.0.0.1:3000/main/book/:id',
+                type:'get',
+                headers:{"Authorization": 'JWT '+localStorage.getItem('token')},
+                success:function (data) {
+
+
+                }}
+
+
+            })
+//            $(this).prev().text();
+        });
+    });
+
 </script>
