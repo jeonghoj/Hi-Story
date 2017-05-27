@@ -43,13 +43,32 @@ router.get('/overview',(req,res)=>{
     });
     }
 );
-router.post('list_story',
+router.post('/list_story',
     passport.authenticate('jwt',{session:false}),
     (req,res)=>{
-        db.query('select * from story where Member_No=?',req.user.Member_No,function (error,results) {
+        let story = null;
+        let story_list = [];
+        //이중 db는 비동기작업때문에 하나만 실행되고 나머지는 나중에 실행된다 이 문제를 promise로 해결할 방법을 공부하자
+        db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
             if(error) console.log(error);
-            res.json(results);
+             story =results;
+            for(let i = 0 ; i<story.length; i++){
+                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                    if(error) console.log(error);
+                    story[i].Story_Memo=results;
+                    console.log('테스트',story[i]);
+                    console.log(story[i].Story_Memo.length);
+                    story_list.push(story[i]);
+                    console.log('스토리 길이',story_list.length);
+                    if(story_list.length === story.length){
+                        console.log('스토리 리스트',story_list);
+                        res.json(story_list);
+                    }
+                });
+            }
+
         });
+
 
     });
 router.post('/list_book',
@@ -62,7 +81,11 @@ router.post('/list_book',
         res.json(results);
     });
 });
-router.get('/action/')
+router.get('/action',(req,res)=>{
+    fs.readFile('public/action.html','utf8',(error,data)=>{
+        res.send(data);
+    })
+});
 router.get('/upload',(req,res)=>{
     fs.readFile('public/upload.html','utf8',(error,data)=>{
         res.send(data);

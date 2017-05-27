@@ -71,20 +71,16 @@
                 }
             }
         });
-        $(document).on('click','.select_book',function () {
-            $ajax({
-                url:'http://127.0.0.1:3000/main/book/:id',
-                type:'get',
-                headers:{"Authorization": 'JWT '+localStorage.getItem('token')},
-                success:function (data) {
+//        $(document).on('click','.select_book',function () {
+//            $ajax({
+//                url:'http://127.0.0.1:3000/main/book/:id',
+//                type:'get',
+//                headers:{"Authorization": 'JWT '+localStorage.getItem('token')},
+//                success:function (data) {
+//
+//
+//                }}
 
-
-                }}
-
-
-            })
 //            $(this).prev().text();
         });
-    });
-
 </script>

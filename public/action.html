@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Action Overview</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+    <link rel='stylesheet' href='/css/base.css'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css'>
+</head>
+
+<body oncontextmenu='return false' ondragstart='return false' onselectstart='return false'>
+
+    <div class='nav'>
+        <div class='logo'><a href='action.html' class='f-logo'>HiStory</a></div>
+        <ul class='menu'>
+            <li><a href='action.html' class='f-menu active'>Action</a></li>
+            <li><a href='../../dongho9601-history-front-07b8178de209/history.html' class='f-menu'>History</a></li>
+            <li><a href='../../dongho9601-history-front-07b8178de209/explore.html' class='f-menu'>Explore</a></li>
+            <li><a href='setting.html' class='f-menu'>Setting</a></li>
+        </ul>
+    </div>
+
+    <div class='container'>
+        <div class='left'>
+
+            <div class='left-top'>
+                <div class='view-mode'>
+                    <div class='overview'><a href='action.html' class='f-basic active'>Overview</a></div>
+                    <div class='timeline'><a href='/action-tl.html' class='f-basic '>Timeline</a></div>
+                </div>
+                <a href='#' class='f-basic arg'>ARG</a>
+                <div class='webui-popover-content'>
+                    <div class='arg-popover'>
+                        <button>이름 내림</button>
+                        <button>이름 오름</button>
+                        <button>날짜 오름</button>
+                        <button>날짜 내림</button>
+                        <button>사용자 지정</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="story_list" class='story-list'>
+                <div class='story'>
+                    <div class='story-header'>
+                        <div class='story-title'><a href='/story.html' class='f-title'>Story Title</a></div>
+                        <a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>
+                        <div class='webui-popover-content'>
+                            <div class='story-set-popover'>
+                                <button>NewMemo</button>
+                                <button>Done</button>
+                                <button>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='memo'>
+                        <a href='#' class='edit f-sub'>Edit</a>
+                        <div class='story-memo'>Lorem ipsum dolor sit amet, inventore?</div>
+                    </div>
+                    <div class='memo'>
+                        <a href='#' class='edit f-sub'>Edit</a>
+                        <div class='story-memo'>MEMO Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque libero ipsam hic quidem alias iure voluptate molestias. Distinctio aliquid, est. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. </div>
+                    </div>
+                </div>
+
+                <div class='story'>
+                    <div class='story-header'>
+                        <div class='story-title'><a href='/story.html' class='f-title'>Story Title</a></div>
+                        <a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>
+                        <div class='webui-popover-content'>
+                            <div class='story-set-popover'>
+                                <button class='new-memo'>NewMemo</button>
+                                <button class='story-done-btn'>Done</button>
+                                <button class='story-delete-btn'>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='memo'>
+                        <a href='#' class='edit f-sub'>Edit</a>
+                        <div class='story-memo'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic nobis animi laudantium voluptatem iste adipisci quos tempore officia culpa nemo.</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class='right'>
+            <div class='aside'>
+                <div class='infor'>
+                    <div class='book-name f-subSmall'>Bookname</div>
+                    <div class='story-name f-empha'>Storyname</div>
+                    <div class='date f-subSmall'>2017.00.00</div>
+                    <hr class='hr-infor'>
+                    <div class='score'>
+                        <div class='score-num citation f-subSmall'>Citation
+                            <div class='citation-num f-empha'>6</div>
+                        </div>
+                        <div class='score-num follow f-subSmall'>Follow
+                            <div class='follow-num f-empha'>8</div>
+                        </div>
+                        <div class='score-num view f-subSmall'>View
+                            <div class='view-num f-empha'>670</div>
+                        </div>
+                    </div>
+                    <hr class='hr-infor'>
+                    <div class='enter'><a href='/story.html' class='f-basic'>ENTER</a></div>
+                </div>
+                <div class='aside-btn'>
+                    <a href='#' id='new' class='f-basic'>NEW STORY</a>
+                </div>
+            </div>
+            <div class='footer f-subSmall'>Company Infor</div>
+        </div>
+    </div>
+
+    <div class='closeup'>
+        <div class='new-story'>
+            <input type='text' id='new-story-title' placeholder='insert TITLE'>
+            <a href='#' id='new-story-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <div class='new-story-book'>
+            </div>
+            <div class='new-story-footer'>
+                <input type='checkbox' id='public'>
+                <label for='public' class='f-subSmall'>PUBLIC</label>
+                <button class='f-empha'>SUBMIT</button>
+            </div>
+        </div>
+        <div class='story-done'></div>
+        <div class='story-delete'></div>
+    </div>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js'></script>
+    <script src='/js/popover.js'></script>
+    <script src='/js/closeup.js'></script>
+    <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
+    <script>
+        var story ="<div class='story'>"+
+            "<div class='story-header'>" +
+            "<div class='story-no' style='display:none'>${Story_No}</div>"+
+            "<div class='story-title'><a href='/story.html' class='f-title'>${Story_Title}</a></div>"+
+            "<a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>"+
+            "<div class='webui-popover-content'>"+
+            "<div class='story-set-popover'>"+
+            "<button>NewMemo</button>"+
+            "<button>Done</button>"+
+            "<button>Delete</button>"+
+            "</div>"+
+            "</div>"+
+            "</div>"+
+            "{{each(Story_Memo_No,Story_Memo_Text) Story_Memo}}"+
+            "<div class='memo'>"+
+            "<a href='#' class='edit f-sub'>Edit</a>"+
+            "<div class='story-memo-no' style='display: none'>${Story_Memo_No}</div>"+
+            "<div class='story-memo'>${Story_Memo_Text}</div>"+
+            "</div>"+
+            "{{/each}}" +
+            "</div>";
+//        var story_memo="<div class='memo'>"+
+//            "<a href='#' class='edit f-sub'>Edit</a>"+
+//                "<div class='story-memo-no' style='display: none'>${Story_Memo_No}</div>"+
+//            "<div class='story-memo'>${Story_Memo_Text}</div>"+
+//            "</div>";
+
+        $.template("story_list_template",story);
+//        $.template("story_memo_template",story_memo);
+
+        $(document).ready(function () {
+            $.ajax({
+                url:'http://127.0.0.1:3000/main/list_story',
+                type:'post',
+                headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
+                success:function(data){
+                    $.tmpl("story_list_template", data).appendTo("#story_list");
+                },
+                statusCode: {
+                    401: function() {
+                        alert( "로그인해주세요!" );
+                        window.location.href="http://127.0.0.1:3000/main"
+                    }}
+            })
+        });
+
+    </script>
+
+</body>
+
+</html>
