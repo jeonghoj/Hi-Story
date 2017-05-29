@@ -48,7 +48,7 @@ router.post('/list_story',
     (req,res)=>{
         let story = null;
         let story_list = [];
-        //이중 db는 비동기작업때문에 하나만 실행되고 나머지는 나중에 실행된다 이 문제를 promise로 해결할 방법을 공부하자
+        //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
         db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
             if(error) console.log(error);
              story =results;
@@ -56,10 +56,7 @@ router.post('/list_story',
                 db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
                     if(error) console.log(error);
                     story[i].Story_Memo=results;
-                    console.log('테스트',story[i]);
-                    console.log(story[i].Story_Memo.length);
                     story_list.push(story[i]);
-                    console.log('스토리 길이',story_list.length);
                     if(story_list.length === story.length){
                         console.log('스토리 리스트',story_list);
                         res.json(story_list);

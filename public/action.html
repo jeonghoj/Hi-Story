@@ -61,7 +61,7 @@
                     </div>
                     <div class='memo'>
                         <a href='#' class='edit f-sub'>Edit</a>
-                        <div class='story-memo'>MEMO Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque libero ipsam hic quidem alias iure voluptate molestias. Distinctio aliquid, est. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. </div>
+                        <div class='story-memo'>MEMO 타파하. </div>
                     </div>
                 </div>
 
@@ -108,14 +108,17 @@
                     <hr class='hr-infor'>
                     <div class='enter'><a href='/story.html' class='f-basic'>ENTER</a></div>
                 </div>
+                <!--뉴스토리 만드는 버튼-->
                 <div class='aside-btn'>
-                    <a href='#' id='new' class='f-basic'>NEW STORY</a>
+                    <button id='new' class='f-basic'>NEW STORY</button>
                 </div>
             </div>
             <div class='footer f-subSmall'>Company Infor</div>
         </div>
     </div>
 
+    <!--스토리 추가하는 팝업부분-->
+    <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class='closeup'>
         <div class='new-story'>
             <input type='text' id='new-story-title' placeholder='insert TITLE'>
@@ -137,53 +140,29 @@
     <script src='/js/popover.js'></script>
     <script src='/js/closeup.js'></script>
     <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
+    <script src='/js/story_list.js'></script>
     <script>
-        var story ="<div class='story'>"+
-            "<div class='story-header'>" +
-            "<div class='story-no' style='display:none'>${Story_No}</div>"+
-            "<div class='story-title'><a href='/story.html' class='f-title'>${Story_Title}</a></div>"+
-            "<a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>"+
-            "<div class='webui-popover-content'>"+
-            "<div class='story-set-popover'>"+
-            "<button>NewMemo</button>"+
-            "<button>Done</button>"+
-            "<button>Delete</button>"+
-            "</div>"+
-            "</div>"+
-            "</div>"+
-            "{{each(Story_Memo_No,Story_Memo_Text) Story_Memo}}"+
-            "<div class='memo'>"+
-            "<a href='#' class='edit f-sub'>Edit</a>"+
-            "<div class='story-memo-no' style='display: none'>${Story_Memo_No}</div>"+
-            "<div class='story-memo'>${Story_Memo_Text}</div>"+
-            "</div>"+
-            "{{/each}}" +
-            "</div>";
-//        var story_memo="<div class='memo'>"+
-//            "<a href='#' class='edit f-sub'>Edit</a>"+
-//                "<div class='story-memo-no' style='display: none'>${Story_Memo_No}</div>"+
-//            "<div class='story-memo'>${Story_Memo_Text}</div>"+
-//            "</div>";
+        var book ="<span>"+
+            "${Book_No}"+
+            " " +
+            "${Book_Name}"+
+            " "+
+            "${Book_Date}"+
+            "</span>"+
+            "<br>";
+        $.template("book_list_template",book);
 
-        $.template("story_list_template",story);
-//        $.template("story_memo_template",story_memo);
-
-        $(document).ready(function () {
+        $('.aside-btn').click(function () {
             $.ajax({
-                url:'http://127.0.0.1:3000/main/list_story',
+                url:'/main/list_book',
                 type:'post',
                 headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
-                success:function(data){
-                    $.tmpl("story_list_template", data).appendTo("#story_list");
-                },
-                statusCode: {
-                    401: function() {
-                        alert( "로그인해주세요!" );
-                        window.location.href="http://127.0.0.1:3000/main"
-                    }}
+                success:function (data) {
+                    $.tmpl("book_list_template",data).appendTo(".new-story-book");
+                }
             })
-        });
 
+        })
     </script>
 
 </body>

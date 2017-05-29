@@ -5,6 +5,8 @@ const passport = require('passport');
 const express =require('express');
 const bodyParser=require('body-parser');
 const app= express();
+const morgan = require('morgan');
+app.use(morgan('dev'));
 app.use(express.static('public'));
 // parse JSON and url-encoded query
 app.use(bodyParser.urlencoded({limit: "50mb", extended: false}));
