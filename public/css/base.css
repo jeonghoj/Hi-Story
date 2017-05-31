@@ -122,6 +122,14 @@ body {
     width: 78px;
     text-align: center;
 }
+.right .aside .infor .story-enter {
+    text-align: center;
+    opacity: .3;
+}
+.right .aside .infor .story-enter:hover {
+    transition: all .35s ease;
+    opacity: .9;
+}
 .right .aside .aside-btn {
     margin-top: 14px;
     border: 1px solid rgba(0, 0, 0, .3);
@@ -130,6 +138,8 @@ body {
 }
 .right .aside .aside-btn  #new {
     text-decoration: none;
+    background: none;
+    border: none;
     opacity: .3;
 }
 .right .aside .aside-btn  #new:hover{
