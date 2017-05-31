@@ -415,7 +415,32 @@ mark {
 .book-list .a-book .book-inside .book-stories .book-story-slide {
     position: relative;
 }
-
+.book-list .last-book .search .search-box {
+    border: none;
+    margin: 5px;
+    margin-top: 10px;
+    padding: 5px;
+    width: 220px;
+    border-bottom: 1px solid rgba(200, 200, 200, 1);
+}
+.book-list .last-book .search .search-box:focus {
+    transition: all .35s ease;
+    background-color: rgba(240, 240, 240, 1);
+}
+.book-list .last-book .add {
+    height: 325px;
+}
+.book-list .last-book .add .add-btn {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    opacity: .3;
+}
 
 /* Explore ================================================== :) */
 .left .page-list .page .explore-header .card-name div {
