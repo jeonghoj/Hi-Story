@@ -494,6 +494,19 @@ mark {
     height: 240px;
     overflow-y: scroll;
 }
+.closeup .new-story .new-story-book .book-name {
+    display: inline-block;
+    width: 145px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid rgba(140, 140, 140, 1);
+    opacity: .3;
+}
+.closeup .new-story .new-story-book .book-name:hover {
+    transition: all .35s ease;
+    opacity: .9;
+/*  IF IT IS CLICKED, opacity: 1;*/
+}
 .closeup .new-story .new-story-footer {
     width: 520px;
     height: 25px;
@@ -511,6 +524,7 @@ mark {
 }
 .closeup .new-story .new-story-footer #public:checked + label{
     text-decoration: line-through;
+    opacity: .7;
 }
 
 .page:hover {
