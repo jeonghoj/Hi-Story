@@ -78,6 +78,28 @@ router.post('/list_book',
         res.json(results);
     });
 });
+
+router.post('/insert_book',passport.authenticate('jwt',{session:false}),
+    (req,res)=>{
+    const new_story={
+        Book_No : req.body.Book_No,
+        Member_No : req.user.Member_No,
+        Story_Title : req.body.Story_Title,
+        Story_Owner : req.user.Member_Name,
+        Story_Public : req.body.Story_Public ? 1 : 0,
+    };
+    console.log('뉴스토리',new_story);
+    db.query('insert into story set ? ',new_story, (error)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail!'});
+        }
+        else{
+            console.log('스토리 삽입 성공!');
+            res.json({message:'ok!'});
+        }
+    });
+    });
 router.get('/action',(req,res)=>{
     fs.readFile('public/action.html','utf8',(error,data)=>{
         res.send(data);
