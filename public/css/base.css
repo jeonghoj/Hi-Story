@@ -302,6 +302,10 @@ mark {
 .hr-page {
     border: 1px dotted rgba(51, 51, 51, .1);
 }
+.page:hover {
+    background: rgba(240, 240, 240, 1);
+}
+
 /* Page popover ================================================== :) */
 #page-set {
     position: absolute;
@@ -460,7 +464,7 @@ mark {
     visibility: hidden;
 }
 
-/* Closeup of Action ================================================== :) */
+/* New story @ action ================================================== :) */
 .closeup .new-story {
     position: fixed;
     top: 50%;
@@ -527,6 +531,42 @@ mark {
     opacity: .7;
 }
 
-.page:hover {
-    background: rgba(240, 240, 240, 1);
+/* Story Del @ action ================================================== :) */
+.closeup .story-delete {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    width: 360px;
+    height: 160px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 1);
+    border: none;
+    border-radius: 5px;
+    z-index: 200;
+    text-align: center;
+    visibility: hidden;
+}
+.closeup .story-delete #story-delete-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    opacity: .7;
+    padding: 3px;
+}
+.closeup .story-delete p span {
+    color: red;
+}
+.closeup .story-delete #confirm {
+    width: 330px;
+}
+.closeup .story-delete input[type="submit"] {
+    margin-top: 15px;
+    width: 100px;
+    border: 1px solid rgba(255, 0, 0, 1);
+    background: none;
+}
+.closeup .story-delete input[type="submit"]:hover {
+    transition: all .15s ease;
+    background-color: rgba(255, 0, 0, .25);
 }

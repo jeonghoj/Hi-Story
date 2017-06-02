@@ -49,9 +49,9 @@
                         <a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>
                         <div class='webui-popover-content'>
                             <div class='story-set-popover'>
-                                <button>NewMemo</button>
-                                <button>Done</button>
-                                <button>Delete</button>
+                                <button class='new-memo'>NewMemo</button>
+                                <button class='story-done-btn'>Done</button>
+                                <button class='story-delete-btn'>Delete</button>
                             </div>
                         </div>
                     </div>
@@ -117,9 +117,9 @@
         </div>
     </div>
 
-    <!--스토리 추가하는 팝업부분-->
-    <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class='closeup'>
+        <!--스토리 추가하는 팝업부분-->
+        <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
         <div class='new-story'>
             <input type='text' id='new-story-title' placeholder='insert TITLE'>
             <a href='#' id='new-story-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
@@ -137,8 +137,17 @@
                 <button class='f-empha'>SUBMIT</button>
             </div>
         </div>
-        <div class='story-done'></div>
-        <div class='story-delete'></div>
+        <!--스토리를 끝내는 부분-->
+        <div class='story-done'>
+            
+        </div>
+        <!--스토리를 지우는 부분-->
+        <div class='story-delete'>
+            <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <p class="del-nav">type "<span class="f-empha">story name을 삭제합니다.</span>"</p>
+            <input type="text" id="confirm" placeholder="confirm massage">
+            <input type="submit">
+        </div>
     </div>
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
@@ -149,23 +158,25 @@
     <script src='/js/story_list.js'></script>
     <script>
         //TODO 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 select option 구현하기
-        var book ="<span>"+
-            "${Book_No}"+
+        var book = "<span>" +
+            "${Book_No}" +
             " " +
-            "${Book_Name}"+
-            " "+
-            "${Book_Date}"+
-            "</span>"+
+            "${Book_Name}" +
+            " " +
+            "${Book_Date}" +
+            "</span>" +
             "<br>";
-        $.template("book_list_template",book);
+        $.template("book_list_template", book);
 
-        $('.aside-btn').click(function () {
+        $('.aside-btn').click(function() {
             $.ajax({
-                url:'/main/list_book',
-                type:'post',
-                headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
-                success:function (data) {
-                    $.tmpl("book_list_template",data).appendTo(".new-story-book");
+                url: '/main/list_book',
+                type: 'post',
+                headers: {
+                    "Authorization": 'JWT ' + localStorage.getItem('token')
+                },
+                success: function(data) {
+                    $.tmpl("book_list_template", data).appendTo(".new-story-book");
                 }
             })
 

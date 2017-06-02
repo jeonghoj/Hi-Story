@@ -1,13 +1,4 @@
-// Close up 되어 화면에 나타나는 동작
-$('.closeup .new-story #new-story-close').click(function () {
-    $('.closeup').css({
-        "visibility": "hidden"
-    });
-    $('.closeup .new-story').css({
-        "visibility": "hidden"
-    });
-});
-
+// New story 창 열기
 $('.right .aside .aside-btn #new').click(function () {
     $('.closeup').css({
         "visibility": "visible"
@@ -15,7 +6,49 @@ $('.right .aside .aside-btn #new').click(function () {
     $('.closeup .new-story').css({
         "visibility": "visible"
     });
-    $('body').css({
-        "overflow": "hidden" 
-    });
+//    $('body').css({
+//        "overflow": "hidden" 
+//    });
 });
+
+// New story 창 닫기
+$('.closeup .new-story #new-story-close').click(function () {
+    $('.closeup').css({
+        "visibility": "hidden"
+    });
+    $('.closeup .new-story').css({
+        "visibility": "hidden"
+    });
+//    $('body').css({
+//        "overflow": "scroll" 
+//    });
+});
+
+// Story del 열기
+$('.webui-popover-content .story-set-popover .story-delete-btn').click(function () {
+    $('.closeup').css({
+        "visibility": "visible"
+    });
+    $('.closeup .story-delete').css({
+        "visibility": "visible"
+    });
+//    $('body').css({
+//        "overflow": "hidden" 
+//    });
+    WebuiPopovers.hide('.left .story-list .story .story-header .onoff');
+});
+
+// Story del 닫기
+$('.closeup .story-delete #story-delete-close').click(function () {
+    $('.closeup').css({
+        "visibility": "hidden"
+    });
+    $('.closeup .story-delete').css({
+        "visibility": "hidden"
+    });
+//    $('body').css({
+//        "overflow": "scroll" 
+//    });
+});
+
+

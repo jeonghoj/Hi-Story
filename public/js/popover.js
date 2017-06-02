@@ -4,7 +4,8 @@ $(function () {
         html: true,
         placement: 'bottom',
         width: 120,
-        arrow: false
+        arrow: false,
+        selector: true
     });
 });
 
@@ -12,7 +13,8 @@ $(function () {
     $('.left .story-list .story .story-header .onoff').webuiPopover({
         html: true,
         placement: 'bottom',
-        width: 120
+        width: 120,
+        selector: true
     });
 });
 
