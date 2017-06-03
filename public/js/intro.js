@@ -1,5 +1,7 @@
+// Typed라는 플러그인을 사용하여 타자로 글을 치는 듯한 느낌을 준다.
 $(function () {
     $("#typed1").typed({
+        // ^300은 300ms 대기를 의미
         strings: ["HiStory^300"],
         typeSpeed: 80,
         callback: function () {
