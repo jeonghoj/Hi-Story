@@ -10,10 +10,22 @@ const passport = require("passport");
 const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
+
+var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies) token = req.cookies['jwt'];
+    return token;
+};
+
+// const jwtOptions = {
+//     jwtFromRequest : ExtractJwt.fromAuthHeader(),
+//     secretOrKey : config.secret
+// };
 const jwtOptions = {
-    jwtFromRequest : ExtractJwt.fromAuthHeader(),
+    jwtFromRequest : cookieExtractor,
     secretOrKey : config.secret
 };
+
 // jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
 // jwtOptions.secretOrKey = config.SECRET;
 

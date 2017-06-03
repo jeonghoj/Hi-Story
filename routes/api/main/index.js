@@ -5,16 +5,21 @@ const fs=require('fs');
 const db=require('../../../config/db');
 const router =require('express').Router();
 const multer  = require('multer');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+const storage = multer.diskStorage({
+    destination:function(req, file, cb) {
         cb(null, './tmp')
     },
     filename: function (req, file, cb) {
-        cb(null,file.filename + '_'  + file.originalname + '_' + Date.now())
+        const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        cb(null,time + '_' + file.fieldname + '_' +file.originalname)
     }
 });
-const upload = multer({storage: storage,limits:{fileSize:100*1024*1024},
-    });
+const upload = multer({
+    storage:storage,
+    limits:{fileSize:100*1024*1024}
+});
+// const upload = multer({storage: storage,limits:{fileSize:100*1024*1024},
+//     });
 
 const controller = require('./main_controller');
 const passport = require('../../../config/passport');
@@ -100,24 +105,66 @@ router.post('/insert_book',passport.authenticate('jwt',{session:false}),
         }
     });
     });
-router.get('/action',(req,res)=>{
-    fs.readFile('public/action.html','utf8',(error,data)=>{
-        res.send(data);
-    })
-});
-router.get('/upload',(req,res)=>{
-    fs.readFile('public/upload.html','utf8',(error,data)=>{
-        res.send(data);
-    })
-});
-// router.post('/upload',passport.authenticate('jwt',{session:false}),
-//     upload.single('bookimg'),controller.upload);
-router.post('/upload',passport.authenticate('jwt',{session:false}),
-    upload.array('bookimg',3),controller.upload);
+// router.get('/action',(req,res)=>{
+//     // console.log(datetest);
+//     // fs.readFile('public/action.html','utf8',(error,data)=>{
+//     //     res.send(data);
+//     // })
+// });
+router.get('/action',passport.authenticate('jwt',{session:false}),
+    (req,res)=>{
+        let story = null;
+        let story_list = [];
+        //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
+        db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
+            if(error) console.log(error);
+            story =results;
+            for(let i = 0 ; i<story.length; i++){
+                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                    if(error) console.log(error);
+                    story[i].Story_Memo=results;
+                    story_list.push(story[i]);
+                    if(story_list.length === story.length){
+                        console.log('스토리 리스트',story_list);
+                        JSON.stringify(story_list);
+                        res.render('action',{data:story_list});
+                    }
+                });
+            }
+        });
 
-router.post('/uploaddebug',upload.single('bookimg'),(req,res)=>{
-    console.log(req.body.bookname);
-    console.log(req.file);
 });
+
+router.get('/action/story',(req,res)=>{
+    fs.readFile('public/story.html','utf8',(error,data)=>{
+        res.send(data);
+    })
+});
+router.post('/list_page',passport.authenticate('jwt',{session:false}),
+    (req,res)=> {
+        console.log(req.user);
+        db.query('select * from book where Member_No=?', req.user.Member_No, function (error, results) {
+            // console.log(results);
+            if (error) console.log(error);
+            res.json(results);
+        });
+});
+// upload.array('image',5)
+// passport.authenticate('jwt',{session:false}),
+router.post('/insert_page',
+    upload.fields([
+        {name:'page_image_1'},{name:'page_image_2'},{name:'page_image_3'},{name:'page_image_4'},{name:'page_image_5'},
+    ]),(req,res)=>{
+    console.log('파일들',req.files);
+    res.end('업로드 완료');
+});
+
+// router.post('/upload',passport.authenticate('jwt',{session:false}),
+//     upload.array('bookimg',3),controller.upload);
+
+// router.post('/uploaddebug',upload.single('bookimg'),(req,res)=>{
+//     console.log(req.body.bookname);
+//     console.log(req.file);
+// });
 
 module.exports = router;

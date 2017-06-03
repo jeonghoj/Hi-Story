@@ -120,9 +120,7 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class='closeup'>
-        <form>
         <div class='new-story'>
-
             <input type='text' id='new-story-title' placeholder='insert TITLE'>
             <a id='new-story-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--여기에 북리스트 추가됨-->
@@ -136,7 +134,6 @@
         </div>
         <div class='story-done'></div>
         <div class='story-delete'></div>
-        </form>
     </div>
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
@@ -164,6 +161,7 @@
             })
 
         });
+//        TODO submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
         $('#insert-new-story').click(function () {
             var data = {
                 Story_Title : $('#new-story-title').val(),

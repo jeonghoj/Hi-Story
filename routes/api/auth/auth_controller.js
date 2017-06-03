@@ -47,7 +47,7 @@ exports.register = (req,res) => {
 };
 
 exports.login = (req,res) => {
-    console.log(req.body);
+    console.log('로그인',req.body);
     const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
     const sql='select * from member where Member_ID=?';
     db.query(sql,[userid],(error,results) => {
@@ -64,7 +64,10 @@ exports.login = (req,res) => {
                 const payload = {authID: 'jwt:'+user.Member_ID};
                 const token = jwt.sign(payload, config.secret,{expiresIn: '30m'});
                 console.log('login',token);
-                res.json({message: "ok", token: token});
+                res.cookie('jwt',token);
+                res.redirect('/main/action');
+
+                // res.json({message: "ok", token: token});
             } else {
                 res.status(401).json({message:"passwords did not match"});
             }

@@ -28,41 +28,30 @@
         <div class="left">
             <div class="page-list">
                 <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <div class="page"><mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam possimus natus rem similique unde! <br>Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
                 <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia reiciendis obcaecati corporis minima iure? Ullam quos aliquam minima, aperiam voluptatum nostrum facere dolorem necessitatibus rerum labore, culpa praesentium sit illum.</div>
                 <hr class="hr-page">
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"><mark>Lorem ipsum dolor.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, adipisicing elit.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, similique.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates nulla sit deleniti. Sit fuga fugit maiores est, eius sapiente error.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <div class="page"><mark>Lorem ipsum dolor sit.</mark> Facere temporibus eos, id ratione autem, quisquam culpa praesentium iusto dolorem fugiat nesciunt sit dolore possimus. Tempore quo, optio pariatur repellat cum.</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet.</mark> Quam, delectus officiis nesciunt asperiores quod necessitatibus assumenda at cum. Ratione velit fugit aliquid quae consequatur illo, id inventore quibusdam aspernatur asperiores.</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</mark></div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt ea sequi, laudantium.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"><mark>Lorem ipsum dolor.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, voluptate quos voluptas eos rem itaque similique omnis doloremque nulla magnam!</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt perspiciatis beatae vel nemo harum.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi!</mark> Dicta officia consectetur at molestias quos nulla, consequatur odit placeat iusto commodi, numquam est. Magni amet odit, ipsa necessitatibus quo, iure repellendus?</div>
             </div>
+            <!--TODO 그냥 여기에 input 5개 쳐넣고 필드네임불러오는게 내 건강에 좋을듯-->
             <div class="page-list page-write">
-                <div class="textarea">ck editor</div>
+                <form action="/main/insert_page" enctype="multipart/form-data" method="post">
+                <!--<textarea placeholder="ckeditor"></textarea>-->
+                    <input type="file" name="page_image_1">
+                    <input type="file" name="page_image_2">
+                    <input type="file" name="page_image_3">
+                    <input type="file" name="page_image_4">
+                    <input type="file" name="page_image_5">
+                <!--<div class="textarea">ck editor</div>-->
                 <div class="footer">
-                    <div class="attachment">첨부</div>
-                    <a href="#"> 제출</a>
+                    <!--<div class="attachment">첨부</div>-->
+                    <!--<a href="#"> 제출</a>-->
+                    <input type="submit">
                 </div>
+                </form>
             </div>
         </div>
 
@@ -103,6 +92,30 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="js/base.js"></script>
     <script src="/js/popover.js"></script>
+
+    <script id="pagetemplate" type="text/x-tmpl">
+        <div class="date f-subSmall">${Page_Date}</div>
+        <div class="page">${Page_Content}</div>
+        <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur elit.</mark>illum.</div>
+        <hr class="hr-page">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url:'http://127.0.0.1:3000/main/list_page',
+                type:'post',
+                headers: {"Authorization": 'JWT '+localStorage.getItem('token')},
+                success:function(data){
+                    $('#pagetemplate').tmpl(data).appendTo(".page-list");
+                },
+                statusCode: {
+                    401: function() {
+                        alert( "로그인해주세요!" );
+                        window.location.href="http://127.0.0.1:3000/main"
+                    }}
+            })
+        });
+    </script>
 
 </body>
 
