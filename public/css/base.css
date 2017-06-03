@@ -270,6 +270,12 @@ body {
 .left .story-list .story .memo .story-memo {
     display: inline;
 }
+.left .story-list .story .memo .story-memo {
+/*    display: inline-block;*/
+    border: none;
+    font-size: 1rem;
+    overflow: hidden;
+}
 
 /* page-list ================================================== :) */
 .left .page-list {
