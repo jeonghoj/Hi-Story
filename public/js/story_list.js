@@ -4,7 +4,7 @@
 var story ="<div class='story'>"+
     "<div class='story-header'>" +
     "<div class='story-no' style='display:none'>${Story_No}</div>"+
-    "<div class='story-title'><a href='/story.html' class='f-title'>${Story_Title}</a></div>"+
+    "<div class='story-title'><a href='/story/${Story_No}' class='f-title'>${Story_Title}</a></div>"+
     "<a href='#' class='onoff'><img src='/img/icon/ic_settings_black_24px.svg' border='0'></a>"+
     "<div class='webui-popover-content'>"+
     "<div class='story-set-popover'>"+

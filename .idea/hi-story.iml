@@ -11,5 +11,6 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="jquery.webui-popover" level="application" />
     <orderEntry type="library" name="jquery.tmpl" level="application" />
+    <orderEntry type="library" name="ckeditor" level="application" />
   </component>
 </module>
