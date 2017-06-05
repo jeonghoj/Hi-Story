@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Story4Action</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css">
+    <script src="https://cdn.ckeditor.com/4.7.0/basic/ckeditor.js"></script>
+
+</head>
+
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <div class="nav">
+        <div class="logo"><a href="/action.html" class="f-logo">HiStory</a></div>
+        <ul class="menu">
+            <li><a href="action.html" class="f-menu">Action</a></li>
+            <li><a href="history.html" class="f-menu">History</a></li>
+            <li><a href="explore.html" class="f-menu">Explore</a></li>
+            <li><a href="setting.html" class="f-menu">Setting</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="left">
+            <div class="page-list">
+                <div class="date f-subSmall">2017.00.00</div>
+                <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
+                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia
+                <div class="date f-subSmall">2017.00.00</div>
+                <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <hr class="hr-page">
+                <div class="date f-subSmall">2017.00.00</div>
+                <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <div class="page"><mark>Lorem ipsum dolor sit amet, adipisicing elit.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
+                <hr class="hr-page">
+                <% for(var i=0; i<page.length;i++){%>
+                            <% if(page[i].Page_Last==1) {%>
+                        <div class="page-list"><%}%>
+                <div class="date f-subSmall"><%= page[i].Page_Date%></div>
+                <div class="page"><%= page[i].Page_Content%></div>
+                <hr class="hr-page">
+                            <% if(page[i].Page_Last==1) {%>
+                        </div>
+                            <%}%>
+                <%}%>
+                </div>
+            </div>
+            <!--마지막페이지 표시-->
+            <div class="page-list">    
+                <div class="date f-sub">2017.00.00</div> 
+                <div class="last-page"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo maxime recusandae libero sint tenetur dolorem, dolorum eligendi. Molestias qui minima odit officiis quae. Quaerat aperiam, ipsam magni delequod</div>
+            </div>
+            <!--글쓰기-->
+            <div class="page-list page-write">
+                <form action="/main/test" method="post">
+                    <input type="file" name="page_image_1">
+                    <input type="file" name="page_image_2">
+                    <input type="file" name="page_image_3">
+                    <input type="file" name="page_image_4">
+                    <input type="file" name="page_image_5">
+                    <div class="textarea"><textarea id="editor1"></textarea></div>
+                    <div class="footer">
+                        <div class="attachment">첨부</div>
+                        <a href="#"> 제출</a>
+                        <input type="submit">
+                    </div>
+                </form>
+                <script>
+                    CKEDITOR.replace( 'editor1');
+                </script>
+            </div>
+
+
+        </div>
+        </div>
+
+        <div class="right">
+            <div class="aside">
+                <div class="infor">
+                    <div class="book-name f-subSmall">Bookname</div>
+                    <div class="story-name f-empha" >Storyname</div>
+                    <div class="date f-subSmall">2017.00.00</div>
+                    <hr class="hr-infor">
+                    <div class="score">
+                        <div class="score-num citation f-subSmall">Citation
+                            <div class="citation-num f-empha">6</div>
+                        </div>
+                        <div class="score-num follow f-subSmall">Follow
+                            <div class="follow-num f-empha">8</div>
+                        </div>
+                        <div class="score-num view f-subSmall">View
+                            <div class="view-num f-empha">670</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-btn">
+                    <a href="#" id="new" class="f-basic">NEW STORY</a>
+                </div>
+            </div>
+            <div class="footer f-subSmall">Company Infor</div>
+        </div>
+    </div>
+
+    <div id="page-set">
+        <div class="cit f-subSmall">Citation</div>
+        <div class="imp f-subSmall">Important</div>
+        <div class="edit f-subSmall">Edit</div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
+    <script src="/js/base.js"></script>
+    <script src="/js/popover.js"></script>
+    <script>
+
+        $.ajax({
+            url:"/main/insert_page",
+            type:"post",
+            data:data,
+            success:function (data) {
+                console.log(data.message);
+            }})
+    </script>
+
+</body>
+
+</html>

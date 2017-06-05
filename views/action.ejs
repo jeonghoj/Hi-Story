@@ -45,7 +45,7 @@
                 <div class="story">
                     <div class="story-header">
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
-                        <div class="story-title"><a href="/story.html" class="f-title"><%= data[i].Story_Title%></a></div>
+                        <div class="story-title"><a href="/main/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <a href="#" class="onoff"><img src="/img/icon/ic_settings_black_24px.svg" border="0"></a>
                         <div class="webui-popover-content">
                             <div class="story-set-popover">
@@ -110,9 +110,17 @@
                 <button id="insert-new-story" class="f-empha">SUBMIT</button>
             </div>
         </div>
-        <div class="story-done"></div>
-        <div class="story-delete"></div>
-    </div>
+        <!--스토리를 끝내는 부분-->
+        <div class='story-done'>
+            
+        </div>
+        <!--스토리를 지우는 부분-->
+        <div class='story-delete'>
+            <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <p class="del-nav">type "<span class="f-empha">story name을 삭제합니다.</span>"</p>
+            <input type="text" id="confirm" placeholder="confirm massage">
+            <input type="submit">
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -20,7 +20,6 @@ const upload = multer({
 });
 // const upload = multer({storage: storage,limits:{fileSize:100*1024*1024},
 //     });
-
 const controller = require('./main_controller');
 const passport = require('../../../config/passport');
 router.get('/',(req,res)=>{
@@ -29,27 +28,11 @@ router.get('/',(req,res)=>{
     });
 });
 router.get('/overview',(req,res)=>{
-    // passport.authenticate('jwt',{session:false});
-    // db.query('select Member_No from member where authID=?',req.user.authID,function (error,results) {
-    //     if(error){
-    //         console.log(error);
-    //         return res.redirect('/');
-    //     }
-    // });
-    // fs.readFile('public/list_book.html','utf8',function (err,data) {
-    //     db.query('select * from book where Member_No=?',req.user.Member_No,function (err,results) {
-    //         // console.log(results);
-    //         res.send(ejs.render(data,{
-    //             data: results}));
-    //     });
-    // });
-    fs.readFile('public/list_book.html','utf8',(error,data)=>{
+    fs.readFile('public/story.html','utf8',(error,data)=>{
         res.send(data);
     });
-    }
-);
-router.post('/list_story',
-    passport.authenticate('jwt',{session:false}),
+});
+router.post('/list_story', passport.authenticate('jwt',{session:false}),
     (req,res)=>{
         let story = null;
         let story_list = [];
@@ -134,12 +117,23 @@ router.get('/action',passport.authenticate('jwt',{session:false}),
         });
 
 });
+router.get('/action/story/:id',(req,res)=>{
+    console.log(req.params.id);
+    var sql = "select book.Book_Name, page.Story_No, page.* " +
+        "from book,story,page " +
+        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
+    db.query(sql,req.params.id,(error,results)=>{
+        JSON.stringify('페이지',results);
+        console.log(results);
+        res.render('story',{page:results});
+    });
 
-router.get('/action/story',(req,res)=>{
-    fs.readFile('public/story.html','utf8',(error,data)=>{
-        res.send(data);
-    })
 });
+// router.get('/action/story',(req,res)=>{
+//     fs.readFile('public/story.html','utf8',(error,data)=>{
+//         res.send(data);
+//     })
+// });
 router.post('/list_page',passport.authenticate('jwt',{session:false}),
     (req,res)=> {
         console.log(req.user);
@@ -157,6 +151,9 @@ router.post('/insert_page',
     ]),(req,res)=>{
     console.log('파일들',req.files);
     res.end('업로드 완료');
+});
+router.post('/test',(req,res)=>{
+    console.log(req.body);
 });
 
 // router.post('/upload',passport.authenticate('jwt',{session:false}),
