@@ -57,21 +57,23 @@
             </div>
             <!--글쓰기-->
             <div class="page-list page-write">
-                <form action="/main/test" method="post">
+                <!--파일보내는곳-->
+                <form action="/main/test" method="post" enctype="multipart/form-data">
                     <input type="file" name="page_image_1">
                     <input type="file" name="page_image_2">
                     <input type="file" name="page_image_3">
                     <input type="file" name="page_image_4">
                     <input type="file" name="page_image_5">
+                    <!--에디터-->
                     <div class="textarea"><textarea id="editor1"></textarea></div>
                     <div class="footer">
+                        <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
                         <div class="attachment">첨부</div>
-                        <a href="#"> 제출</a>
-                        <input type="submit">
+                        <button id="page-submit">제출</button>
                     </div>
                 </form>
                 <script>
-                    CKEDITOR.replace( 'editor1');
+                    CKEDITOR.replace('editor1');
                 </script>
             </div>
 
@@ -114,9 +116,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
-    <script src="/js/base.js"></script>
     <script src="/js/popover.js"></script>
     <script>
+        $("#page-submit").click(function () {
+            var text = CKEDITOR.instances.editor1.getData();
+
+        })
 
         $.ajax({
             url:"/main/insert_page",
