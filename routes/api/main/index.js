@@ -20,42 +20,31 @@ const upload = multer({
     storage:storage,
     limits:{fileSize:100*1024*1024}
 });
+
 const controller = require('./controller_main');
 const passport = require('../../../config/passport');
-router.get('/',(req,res)=>{
-    fs.readFile('public/main_intro.html','utf8',(error,data)=>{
-        res.send(data);
+
+router.post('/list_story', passport.authenticate('jwt',{session:false}), (req,res)=>{
+    let story = null;
+    let story_list = [];
+    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
+    db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+         story =results;
+        for(let i = 0 ; i<story.length; i++){
+            db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                if(error) console.log(error);
+                story[i].Story_Memo=results;
+                story_list.push(story[i]);
+                if(story_list.length === story.length){
+                    console.log('스토리 리스트',story_list);
+                    res.json(story_list);
+                }
+            });
+        }
+
     });
 });
-router.get('/overview',(req,res)=>{
-    fs.readFile('public/story.html','utf8',(error,data)=>{
-        res.send(data);
-    });
-});
-router.post('/list_story', passport.authenticate('jwt',{session:false}),
-    (req,res)=>{
-        let story = null;
-        let story_list = [];
-        //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-        db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
-            if(error) console.log(error);
-             story =results;
-            for(let i = 0 ; i<story.length; i++){
-                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
-                    if(error) console.log(error);
-                    story[i].Story_Memo=results;
-                    story_list.push(story[i]);
-                    if(story_list.length === story.length){
-                        console.log('스토리 리스트',story_list);
-                        res.json(story_list);
-                    }
-                });
-            }
-
-        });
-
-
-    });
 router.post('/list_book',
     passport.authenticate('jwt',{session:false}),
     (req,res)=>{

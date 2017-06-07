@@ -25,7 +25,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //라우트
 app.get('/',(req,res)=>{
-    fs.readFile('public/main_intro.html','utf8',(error,data)=>{
+    fs.readFile('public/intro.html','utf8',(error,data)=>{
         res.send(data);
     });
 });
