@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div id="story_list" class="story-list">
+            <div id="story_list" class="story-list" oncontextmenu="return ture" ondragstart="return true" onselectstart="return ture">
                 <div class="story">
                     <div class="story-header">
                         <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
@@ -53,13 +53,14 @@
                             </div>
                         </div>
                     </div>
+                    <!--메모를 불러올 때도 height 값을 계산해서 크기를 조절해준다.-->
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
-                        <div class="story-memo">Lorem ipsum dolor sit amet, inventore?</div>
+                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>
                     </div>
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
-                        <div class="story-memo">MEMO Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque libero ipsam hic quidem alias iure voluptate molestias. Distinctio aliquid, est. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. </div>
+                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>
                     </div>
                 </div>
                 <!--자바코드-->
@@ -149,6 +150,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/closeup.js"></script>
+    <script src="/js/memo.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 
     <script id="booktemplate" type="text/x-tmpl">

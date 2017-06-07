@@ -257,10 +257,12 @@ body {
     border: 1px dotted red;
 }
 .left .story-list .story .memo{
-    text-align: justify;    
+    text-align: justify;   
+    vertical-align: middle;
 }
 .left .story-list .story .memo .edit {
     opacity: .3;
+    vertical-align: middle;
 }
 .left .story-list .story .memo .edit:hover {
     transition: all .35s ease;
@@ -275,6 +277,10 @@ body {
     border: none;
     font-size: 1rem;
     overflow: hidden;
+/*    width: 600px;*/
+    vertical-align: middle;
+    text-align: justify;
+    resize: none;
 }
 
 /* page-list ================================================== :) */
