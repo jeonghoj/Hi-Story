@@ -9,6 +9,7 @@ const passport = require('passport');
 const express =require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser=require('body-parser');
+const fs=require('fs');
 const app= express();
 const morgan = require('morgan');
 //데이터 로그찍기
@@ -23,6 +24,11 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //라우트
+app.get('/',(req,res)=>{
+    fs.readFile('public/main_intro.html','utf8',(error,data)=>{
+        res.send(data);
+    });
+});
 const routes_auth = require('./routes/api/auth/index');
 const routes_main = require('./routes/api/main/index');
 app.use('/auth',routes_auth);

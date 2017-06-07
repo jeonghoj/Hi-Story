@@ -1,26 +1,26 @@
 /**
  * Created by Jeongho on 2017-05-13.
  */
+const path=require('path');
 const fs=require('fs');
 const db=require('../../../config/db');
 const router =require('express').Router();
 const multer  = require('multer');
 const storage = multer.diskStorage({
     destination:function(req, file, cb) {
-        cb(null, './tmp')
+        cb(null, './public/img')
     },
+    // 파일네임문제
     filename: function (req, file, cb) {
         const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        cb(null,time + '_' + file.fieldname + '_' +file.originalname)
+        cb(null,Date.now()+ '-' + file.fieldname + '-' + file.originalname +'-');
     }
 });
 const upload = multer({
     storage:storage,
     limits:{fileSize:100*1024*1024}
 });
-// const upload = multer({storage: storage,limits:{fileSize:100*1024*1024},
-//     });
-const controller = require('./main_controller');
+const controller = require('./controller_main');
 const passport = require('../../../config/passport');
 router.get('/',(req,res)=>{
     fs.readFile('public/main_intro.html','utf8',(error,data)=>{
@@ -123,6 +123,7 @@ router.get('/action/story/:id',(req,res)=>{
         "from book,story,page " +
         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
     db.query(sql,req.params.id,(error,results)=>{
+        results.push({Story_No : req.params.id});
         JSON.stringify('페이지',results);
         console.log(results);
         res.render('story',{page:results});
@@ -145,16 +146,62 @@ router.post('/list_page',passport.authenticate('jwt',{session:false}),
 });
 // upload.array('image',5)
 // passport.authenticate('jwt',{session:false}),
-router.post('/insert_page',
+// todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
+router.post('/insert_page',passport.authenticate('jwt',{session:false}),
     upload.fields([
-        {name:'page_image_1'},{name:'page_image_2'},{name:'page_image_3'},{name:'page_image_4'},{name:'page_image_5'},
+        {name:'page_image_1',maxcount:1},{name:'page_image_2'},{name:'page_image_3'},{name:'page_image_4'},{name:'page_image_5'},
     ]),(req,res)=>{
     console.log('파일들',req.files);
-    res.end('업로드 완료');
+    const sql = 'insert into page set ?';
+    const page = {
+        Story_No:req.body.Story_No,
+        Member_No:req.user.Member_No,
+        Page_Author:req.user.Member_Name,
+        Page_Content:req.body.Page_Content,
+    };
+    console.log(page);
+    // req.files가 array가 아니네
+    db.query(sql,page,(error,results)=>{
+        if(error) console.log(error);
+        console.log(req.files.length);
+
+        if(req.files!==null){
+        for(let i =0; i<req.files.length;i++){
+            var imgdata = {
+                Page_No:results.insertId,
+                Image_Fieldname:req.files[i].fieldname,
+                Image_Path:req.files[i].path,
+                Image_Originalname:req.files[i].originalname
+            };
+            console.log(imgdata);
+            db.query('insert into image set ?',imgdata,(error,result)=>{
+                if(error) console.log(error);
+                console.log(req.files.length);
+                if(i===req.files.length){
+                    console.log('완료');
+                    res.status(200).json({message:'complete'});
+                }
+            })
+        }}
+    });
+    // const page = {
+    //     Story_No :
+    // }
+
+    // db.query('insert into page set ?',)
+    // res.end('upload');
 });
-router.post('/test',(req,res)=>{
-    console.log(req.body);
-});
+// router.post('/test',
+//     upload.single('page_image_1'),(req,res)=>{
+//         console.log('파일',req.file);
+//         // console.log(req.body);
+//         // res.end('upload');
+//     });
+// router.get('/test1',(req,res)=>{
+//     fs.readFile('public/upload.html','utf8',(error,data)=>{
+//         res.send(data);
+//     });
+// });
 
 // router.post('/upload',passport.authenticate('jwt',{session:false}),
 //     upload.array('bookimg',3),controller.upload);

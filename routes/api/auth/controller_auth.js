@@ -8,19 +8,6 @@ const hasher= bkfd2Password();
 const jwt = require('jsonwebtoken');
 const config = require("../../../config/config.js");
 
-// app.use(session({
-//     secret:'testkey',
-//     resave:false,
-//     saveUninitialized:true,
-//     store:new MySQLStore({
-//         host:dbconfig.host,
-//         port:dbconfig.port,
-//         user:dbconfig.user,
-//         password:dbconfig.password,
-//         database:dbconfig.database
-//     })
-// }));
-
 exports.register = (req,res) => {
     console.log(req.body);
     const {username, password, realname} = req.body;

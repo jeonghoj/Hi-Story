@@ -18,9 +18,9 @@
         <div class="logo"><a href="/action.html" class="f-logo">HiStory</a></div>
         <ul class="menu">
             <li><a href="action.html" class="f-menu">Action</a></li>
-            <li><a href="history.html" class="f-menu">History</a></li>
-            <li><a href="explore.html" class="f-menu">Explore</a></li>
-            <li><a href="setting.html" class="f-menu">Setting</a></li>
+            <li><a href="history.ejs" class="f-menu">History</a></li>
+            <li><a href="explore.ejs" class="f-menu">Explore</a></li>
+            <li><a href="setting.ejs" class="f-menu">Setting</a></li>
         </ul>
     </div>
 
@@ -30,7 +30,7 @@
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
-                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia
+                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia</div>
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <hr class="hr-page">
@@ -38,17 +38,16 @@
                 <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <div class="page"><mark>Lorem ipsum dolor sit amet, adipisicing elit.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
                 <hr class="hr-page">
-                <% for(var i=0; i<page.length;i++){%>
+                <% for(var i=0; i<page.length-1;i++){%>
                             <% if(page[i].Page_Last==1) {%>
                         <div class="page-list"><%}%>
                 <div class="date f-subSmall"><%= page[i].Page_Date%></div>
-                <div class="page"><%= page[i].Page_Content%></div>
+                <div class="page"><%- page[i].Page_Content%></div>
                 <hr class="hr-page">
                             <% if(page[i].Page_Last==1) {%>
                         </div>
                             <%}%>
                 <%}%>
-                </div>
             </div>
             <!--마지막페이지 표시-->
             <div class="page-list">    
@@ -58,29 +57,29 @@
             <!--글쓰기-->
             <div class="page-list page-write">
                 <!--파일보내는곳-->
-                <form action="/main/test" method="post" enctype="multipart/form-data">
+                <form id="new-page" action="/main/insert_page" method="post" enctype="multipart/form-data">
+
                     <input type="file" name="page_image_1">
                     <input type="file" name="page_image_2">
                     <input type="file" name="page_image_3">
                     <input type="file" name="page_image_4">
                     <input type="file" name="page_image_5">
                     <!--에디터-->
-                    <div class="textarea"><textarea id="editor1"></textarea></div>
+                    <input type="hidden" name="Story_No" value="<%= page[page.length-1].Story_No%>">
+                    <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
                         <div class="attachment">첨부</div>
-                        <button id="page-submit">제출</button>
+                        <input type="submit">
+                        <span id = "status"></span>
                     </div>
                 </form>
                 <script>
                     CKEDITOR.replace('editor1');
                 </script>
             </div>
-
-
         </div>
-        </div>
-
+        <!--오른쪽-->
         <div class="right">
             <div class="aside">
                 <div class="infor">
@@ -118,18 +117,29 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script>
-        $("#page-submit").click(function () {
-            var text = CKEDITOR.instances.editor1.getData();
+
+        $("#new-page").submit(function () {
+//            var formData = new FormData($(this)[0]);
+            $("#status").empty().text("File is uploading...");
+            $.ajaxSubmit({
+                url:"/main/insert_page",
+                type:"post",
+//                processData: false,
+//                contentType: false,
+//                data:formData,
+                success:function (data) {
+                    alert(data.message);
+                    setTimeout(function () {
+                        window.location.reload()
+                    },1000)
+                }});
 
         })
-
-        $.ajax({
-            url:"/main/insert_page",
-            type:"post",
-            data:data,
-            success:function (data) {
-                console.log(data.message);
-            }})
+//        CK업데이트 혹시 필요할 지도 몰라 주석
+//        function CKupdate(){
+//            for ( instance in CKEDITOR.instances )
+//                CKEDITOR.instances[instance].updateElement();
+//        }
     </script>
 
 </body>
