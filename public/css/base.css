@@ -321,12 +321,12 @@ mark {
 .left .page-list .last-page {
     text-align: justify;
 }
-.left .page-list .img-box {
+.left .page-list .page .img-box {
     background-color: rgba(245, 245, 245, 1);
-    margin: auto;
     height: 400px;
 }
 .left .page-list .link-box {
+    background-color: white;
     border: 1px solid rgba(0, 0, 0, .3);
     border-radius: 5px;
     box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
@@ -341,10 +341,41 @@ mark {
 }
 /* 만약 가능하다면 글자수에 따라 quotation box의 style을 변경할 수 있도록 하면 좋을 것 같다.*/
 .left .page-list .quot-box {
+    background-color: white;
     padding: 14px;
+
 }
 
-
+/* page img ================================================== :) */
+.left .page-list .page .img-box {
+    width: 600px;
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+.left .page-list .page .img-box img {
+    position: relative;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+.left .page-list .page .img-box #to-left,
+.left .page-list .page .img-box #to-right {
+    display: flex;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    border: none;
+    background: none;
+}
+.left .page-list .page .img-box #to-left {
+    left: 0;
+}
+.left .page-list .page .img-box #to-right {
+    right: 0;
+}
+.left .page-list .page .img-box .hidden {
+    display: none;
+}
 
 /* Page popover ================================================== :) */
 #page-set {

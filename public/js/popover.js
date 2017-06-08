@@ -20,13 +20,17 @@ $(function () {
 
 // 클릭한 부분에 정해둔 box가 popover
 $('.page').click(function () {
-    x = event.pageX;
-    y = event.pageY;
-    $('#page-set').css({
-        "visibility": "visible",
-        "left": x,
-        "top": y
-    });
+    if ($(event.target).hasClass('page') ||
+        $(event.target).is('mark')) {
+//        alert($(event.target).is('mark'));
+        x = event.pageX;
+        y = event.pageY;
+        $('#page-set').css({
+            "visibility": "visible",
+            "left": x,
+            "top": y
+        });
+    }
 });
 // 다른 부분을 클릭하면 popover된 box가 사라짐
 $(document).mouseup(function () {

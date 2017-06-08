@@ -23,16 +23,43 @@
             <li><a href="setting.html" class="f-menu">Setting</a></li>
         </ul>
     </div>
-
+   
     <div class="container">
         <div class="left">
             <div class="page-list">
                 <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
-                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia</div>
+
+                <div class="page">
+
+
+                    <!-- 다음 이미지를 클릭하면 사진이 fade out 되고 새로운 사진이 fade in 된다. -->
+                    <div class="img-box">
+                        <button id="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                        <img class="hidden" src="img/icon/ic_add_box_black_24px.svg">
+                        <img class="active" src="img/icon/ic_clear_black_24px.svg" >
+                        <img class="hidden" src="img/icon/ic_create_black_18px.svg" >
+                        <img class="hidden" src="img/icon/ic_keyboard_arrow_down_black_24px.svg" >
+                        <button id="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                    </div>
+                    <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?
+                </div>
+
+                <div class="page">
+                    <div class="link-box"> 
+                        <span class="f-empha">link title</span> 
+                        <span>short imformation</span> 
+                        <span class="f-subSmall">link URL</span> 
+                    </div>
+                    <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!
+                </div>
+
+                <div class="page">
+                    <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div>
+                    <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia
+                </div>
+
                 <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <div class="page"> <mark>Lorem ipsum dolor.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <hr class="hr-page">
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
@@ -119,6 +146,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
+    <script src="/js/attchment.js"></script>
     <script>
 
         $("#new-page").submit(function () {
