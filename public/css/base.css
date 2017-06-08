@@ -9,6 +9,10 @@
 body {
     overflow: scroll;
 }
+button {
+    border: none;
+    background: none;
+}
 
 /* font ================================================== :) */
 .f-logo {
@@ -122,11 +126,11 @@ body {
     width: 78px;
     text-align: center;
 }
-.right .aside .infor .story-enter {
+.right .aside .infor #story-enter {
     text-align: center;
     opacity: .3;
 }
-.right .aside .infor .story-enter:hover {
+.right .aside .infor #story-enter:hover {
     transition: all .35s ease;
     opacity: .9;
 }
@@ -136,13 +140,13 @@ body {
     box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
     text-align: center;
 }
-.right .aside .aside-btn  #new {
+.right .aside .aside-btn  #new-story-btn {
     text-decoration: none;
     background: none;
     border: none;
     opacity: .3;
 }
-.right .aside .aside-btn  #new:hover{
+.right .aside .aside-btn  #new-story-btn:hover{
     transition: all .35s ease;
     opacity: .9;
 }
