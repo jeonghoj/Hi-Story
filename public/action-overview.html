@@ -44,14 +44,8 @@
                 <div class="story">
                     <div class="story-header">
                         <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
-                        <a href="#" class="onoff"><img src="img/icon/ic_settings_black_24px.svg" border='0'></a>
-                        <div class="webui-popover-content">
-                            <div class="story-set-popover">
-                                <button id="new-memo-btn">NewMemo</button>
-                                <button id="done-btn">Done</button>
-                                <button id="delete-btn">Delete</button>
-                            </div>
-                        </div>
+                        <a href="#" class="sel-story"><img src="img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        
                     </div>
                     <!--메모를 불러올 때도 height 값을 계산해서 크기를 조절해준다.-->
                     <div class="memo">
@@ -108,7 +102,12 @@
                         </div>
                     </div>
                     <hr class="hr-infor">
-                    <div id="story-enter"><a href="/story.html" class="f-basic">ENTER</a></div>
+                    <div class="story-setting">
+                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
+                        <button id="new-memo-btn" class="f-basic">NewMemo</button>
+                        <button id="done-btn" class="f-basic">Done</button>
+                        <button id="delete-btn" class="f-basic">Delete</button>    
+                    </div>
                 </div>
                 <!--뉴스토리 만드는 버튼-->
                 <div class="aside-btn">
@@ -152,6 +151,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/closeup.js"></script>
+    <script src="/js/slide.js"></script>
     <script src="/js/memo.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 

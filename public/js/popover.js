@@ -9,14 +9,14 @@ $(function () {
     });
 });
 
-$(function () {
-    $('.left .story-list .story .story-header .onoff').webuiPopover({
-        html: true,
-        placement: 'bottom',
-        width: 120,
-        selector: true
-    });
-});
+//$(function () {
+//    $('.left .story-list .story .story-header .onoff').webuiPopover({
+//        html: true,
+//        placement: 'bottom',
+//        width: 120,
+//        selector: true
+//    });
+//});
 
 // 클릭한 부분에 정해둔 box가 popover
 $('.page').click(function () {

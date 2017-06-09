@@ -111,6 +111,16 @@ button {
 .right .aside div {
     padding: 2px;
 }
+.right .aside::before {
+    background: rgba(0, 0, 0, .6);
+    content: ' ';
+    display: inline-block;
+    height: 4px;
+    width: 232px;
+    position: relative;
+    left: 0px;    
+    top: 6px;
+}
 .right .aside .infor {
     border: 1px solid rgba(0, 0, 0, .3);    
     box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
@@ -126,13 +136,20 @@ button {
     width: 78px;
     text-align: center;
 }
-.right .aside .infor #story-enter {
+.right .aside .infor .story-setting a {
+    text-decoration: none;
+}
+.right .aside .infor .story-setting * {
     text-align: center;
     opacity: .3;
 }
-.right .aside .infor #story-enter:hover {
+.right .aside .infor .story-setting *:hover {
     transition: all .35s ease;
     opacity: .9;
+}
+.right .aside .infor .story-setting {
+    display: flex;
+    flex-direction: column;
 }
 .right .aside .aside-btn {
     margin-top: 14px;

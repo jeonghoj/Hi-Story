@@ -1,3 +1,9 @@
+// RIGHT ASIDE의 SLIDE UP AND DOWN 구현
+$( '.sel-story' ).click(function() {
+    $('.right .aside .infor').slideUp();
+    $('.right .aside .infor').show('slow');
+});
+
 // history에서 각 book의 설정 화면으로 넘어가는 애니메이션 구현
 // 톱니를 클릭하면 특정 컴포넌트의 class를 토글해줌
 // 토글하면 css를 통해서 transform 시켜줌
@@ -26,4 +32,5 @@ $('.down-btn').click(function () {
         }, 300);
     }
 });
+
 

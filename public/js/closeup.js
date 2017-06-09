@@ -25,7 +25,7 @@ $('.closeup .new-story #new-story-close').click(function () {
 });
 
 // Story del 열기
-$('.webui-popover-content .story-set-popover .story-delete-btn').click(function () {
+$('#delete-btn').click(function () {
     $('.closeup').css({
         "visibility": "visible"
     });
