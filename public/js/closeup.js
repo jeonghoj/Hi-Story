@@ -1,5 +1,5 @@
 // New story 창 열기
-$('.right .aside .aside-btn #new').click(function () {
+$('.right .aside .aside-btn #new-story-btn').click(function () {
     $('.closeup').css({
         "visibility": "visible"
     });

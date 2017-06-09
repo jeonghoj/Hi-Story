@@ -112,7 +112,7 @@ button {
     padding: 2px;
 }
 .right .aside::before {
-    background: rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, .5);
     content: ' ';
     display: inline-block;
     height: 4px;
@@ -577,6 +577,11 @@ mark {
     border-bottom: 1px solid black;
     margin-bottom: 5px;
 }
+.closeup .new-story #new-story-title:hover,
+.closeup .new-story #new-story-title:focus {
+    background-color: rgba(240, 240, 240, 1);
+}
+
 .closeup .new-story #new-story-close {
     position: absolute;
     top: 0px;

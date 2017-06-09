@@ -1,7 +1,12 @@
 // RIGHT ASIDE의 SLIDE UP AND DOWN 구현
 $( '.sel-story' ).click(function() {
     $('.right .aside .infor').slideUp();
-    $('.right .aside .infor').show('slow');
+    $('.right .aside .infor').slideDown('slow');
+});
+// Timeline에서는 story를 클릭하면 보여줌
+$( '.page' ).click(function() {
+    $('.right .aside .infor').slideUp();
+    $('.right .aside .infor').slideDown('slow');
 });
 
 // history에서 각 book의 설정 화면으로 넘어가는 애니메이션 구현
