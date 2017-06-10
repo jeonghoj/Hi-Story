@@ -95,11 +95,14 @@ button {
     justify-content: space-between;
     padding-top: 14px;
     width: 970px;
-    min-height: 1000px;
     margin: auto;
 }
 
 /* right ================================================== :) */
+.right {
+    position: relative;
+    height: 600px;
+}
 .right .aside {
     width: 232px;
     padding-top: 14px;
@@ -138,6 +141,7 @@ button {
 }
 .right .aside .infor .story-setting a {
     text-decoration: none;
+    opacity: 1;
 }
 .right .aside .infor .story-setting * {
     text-align: center;

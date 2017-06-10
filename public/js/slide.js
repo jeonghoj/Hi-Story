@@ -1,7 +1,9 @@
 // RIGHT ASIDE의 SLIDE UP AND DOWN 구현
 $( '.sel-story' ).click(function() {
     $('.right .aside .infor').slideUp();
+    $(event.target).prop('disabled', true)
     $('.right .aside .infor').slideDown('slow');
+    $(event.target).prop('disabled', false);
 });
 // Timeline에서는 story를 클릭하면 보여줌
 $( '.page' ).click(function() {
