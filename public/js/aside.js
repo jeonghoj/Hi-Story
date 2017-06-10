@@ -19,8 +19,13 @@ $("document").ready(function () {
     
 });
 
-$('.left').click(function () {
-    alert(($('.left').offset().top+$('.left').height())
-          + ' and ' + 
-          ($(window).scrollTop()+600));
+// RIGHT ASIDE의 SLIDE UP AND DOWN 구현
+$( '.sel-story' ).click(function() {
+    if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp();
+    $('.right .aside .infor').slideDown('slow');
+});
+// Timeline에서는 story를 클릭하면 보여줌
+$( '.page' ).click(function() {
+    if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp();
+    $('.right .aside .infor').slideDown('slow');
 });
