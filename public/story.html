@@ -33,6 +33,7 @@
 
                     <!-- 다음 이미지를 클릭하면 사진이 fade out 되고 새로운 사진이 fade in 된다. -->
                     <div class="img-box">
+                        <!--TODO: 만약 가능하다면 hit box를 늘리고 싶다.-->
                         <button id="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
                         <img class="hidden" src="img/icon/ic_add_box_black_24px.svg">
                         <img class="active" src="img/icon/ic_clear_black_24px.svg" width="300px" height="300px">
@@ -113,7 +114,7 @@
             <div class="aside">
                 <div class="infor">
                     <div class="book-name f-subSmall">Bookname</div>
-                    <div class="story-name f-empha" >Storyname</div>
+                    <div class="story-name f-empha">Storyname</div>
                     <div class="date f-subSmall">2017.00.00</div>
                     <hr class="hr-infor">
                     <div class="score">
@@ -127,9 +128,13 @@
                             <div class="view-num f-empha">670</div>
                         </div>
                     </div>
-                </div>
-                <div class="aside-btn">
-                    <a href="#" id="new" class="f-basic">NEW STORY</a>
+                    <hr class="hr-infor">
+                    <div class="story-setting">
+                        <button id="citation-btn" class="f-basic">Citation</button>
+                        <button id="imp-btn" class="f-basic">Important</button>
+                        <!--TODO: Edit는 마지막 page인지 확인하고 btn을 뛰운다.-->
+                        <button id="eidt-btn" class="f-basic">Edit</button>
+                    </div>
                 </div>
             </div>
             <div class="footer f-subSmall">Company Infor</div>
@@ -146,6 +151,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/attchment.js"></script>
+    <script src="/js/aside.js"></script>
     <script>
 
         $("#new-page").submit(function () {
