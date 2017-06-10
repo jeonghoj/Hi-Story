@@ -15,10 +15,10 @@
     <div class="nav">
         <div class="logo"><a href="action.html" class="f-logo">HiStory</a></div>
         <ul class="menu">
-            <li><a href="action.html" class="f-menu active">Action</a></li>
-            <li><a href="history.html" class="f-menu">History</a></li>
-            <li><a href="explore.html" class="f-menu">Explore</a></li>
-            <li><a href="setting.html" class="f-menu">Setting</a></li>
+            <li><a href="/action-overview.html" class="f-menu active">Action</a></li>
+            <li><a href="/history.html" class="f-menu">History</a></li>
+            <li><a href="/explore.html" class="f-menu">Explore</a></li>
+            <li><a href="/setting.html" class="f-menu">Setting</a></li>
         </ul>
     </div>
 
@@ -26,40 +26,35 @@
         <div class="left">
             <div class="left-top">
                 <div class="view-mode">
-                    <div class="overview"><a href="action.html" class="f-basic active">Overview</a></div>
-                    <div class="timeline"><a href="/action-tl.html" class="f-basic ">Timeline</a></div>
+                    <div class="overview"><a href="/action-overview.html" class="f-basic active">Overview</a></div>
+                    <div class="timeline"><a href="/action-timeline.html" class="f-basic ">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
                     <div class="arg-popover">
-                        <button>이름 내림</button>
-                        <button>이름 오름</button>
-                        <button>날짜 오름</button>
-                        <button>날짜 내림</button>
-                        <button>사용자 지정</button>
+                        <button id="arg01">이름 내림</button>
+                        <button id="arg02">이름 오름</button>
+                        <button id="arg03">날짜 오름</button>
+                        <button id="arg04">날짜 내림</button>
+                        <button id="arg05">사용자 지정</button>
                     </div>
                 </div>
             </div>
-            <div id="story_list" class="story-list">
+            <div id="story_list" class="story-list" oncontextmenu="return ture" ondragstart="return true" onselectstart="return ture">
                 <div class="story">
                     <div class="story-header">
                         <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
-                        <a href="#" class="onoff"><img src="img/icon/ic_settings_black_24px.svg" border='0'></a>
-                        <div class="webui-popover-content">
-                            <div class="story-set-popover">
-                                <button>NewMemo</button>
-                                <button>Done</button>
-                                <button>Delete</button>
-                            </div>
-                        </div>
+                        <a href="#" class="sel-story"><img src="img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        
+                    </div>
+                    <!--메모를 불러올 때도 height 값을 계산해서 크기를 조절해준다.-->
+                    <div class="memo">
+                        <a href="#" class="edit f-sub">Edit</a>
+                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>
                     </div>
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
-                        <div class="story-memo">Lorem ipsum dolor sit amet, inventore?</div>
-                    </div>
-                    <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
-                        <div class="story-memo">MEMO Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque libero ipsam hic quidem alias iure voluptate molestias. Distinctio aliquid, est. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. 가나다라 마바사 아자차카 타파하. </div>
+                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>
                     </div>
                 </div>
                 <!--자바코드-->
@@ -88,6 +83,7 @@
                 <!--<% }%>-->
             </div>
         </div>
+        
         <div class="right">
             <div class="aside">
                 <div class="infor">
@@ -107,20 +103,27 @@
                         </div>
                     </div>
                     <hr class="hr-infor">
-                    <div class="story-enter"><a href="/story.html" class="f-basic">ENTER</a></div>
+                    <div class="story-setting">
+                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
+                        <button id="new-memo-btn" class="f-basic">NewMemo</button>
+                        <button id="done-btn" class="f-basic">Done</button>
+                        <button id="delete-btn" class="f-basic">Delete</button>    
+                    </div>
                 </div>
                 <!--뉴스토리 만드는 버튼-->
                 <div class="aside-btn">
-                    <button id="new" class="f-basic">NEW STORY</button>
+                    <button id="new-story-btn" class="f-basic">NEW STORY</button>
                 </div>
             </div>
             <div class="footer f-subSmall">Company Infor</div>
         </div>
-
+        
+    </div>
+    
     <!--스토리 추가하는 팝업부분-->
     <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
-        <div class="new-story">
+            <div class="new-story">
             <input type="text" id="new-story-title" placeholder="insert TITLE">
             <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
             <!--여기에 북리스트 추가됨-->
@@ -135,7 +138,7 @@
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
             
-        </div>
+        </div>x
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
@@ -144,11 +147,15 @@
             <input type="submit">
         </div>
     </div>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/closeup.js"></script>
+    <script src="/js/slide.js"></script>
+    <script src="/js/memo.js"></script>
+    <script src="/js/aside.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 
     <script id="booktemplate" type="text/x-tmpl">
@@ -191,6 +198,52 @@
 
             })
         })
+    </script>
+    
+    <script>
+        
+        $('#arg01').click(function () {
+            
+        });
+        
+        $('#arg02').click(function () {
+            
+        });
+        
+        $('#arg03').click(function () {
+            
+        });
+        
+        $('#arg04').click(function () {
+            
+        });
+        
+        $('#arg05').click(function () {
+            
+        });
+        
+        $('#story-enter').click(function () {
+            
+        });
+        
+        $('#new-story-btn').click(function () {
+            
+        });
+        
+        $('#new-memo-btn').click(function () {
+            
+        });
+        
+        $('#done-btn').click(function () {
+            
+        });
+        
+        $('#delete-btn').click(function () {
+            
+        });
+       
+        
+        
     </script>
 
 </body>

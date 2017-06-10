@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css">
     <script src="https://cdn.ckeditor.com/4.7.0/basic/ckeditor.js"></script>
-
 </head>
 
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
@@ -23,16 +22,44 @@
             <li><a href="setting.html" class="f-menu">Setting</a></li>
         </ul>
     </div>
-
+   
     <div class="container">
         <div class="left">
             <div class="page-list">
                 <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
-                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia</div>
+
+                <div class="page">
+
+
+                    <!-- 다음 이미지를 클릭하면 사진이 fade out 되고 새로운 사진이 fade in 된다. -->
+                    <div class="img-box">
+                        <!--TODO: 만약 가능하다면 hit box를 늘리고 싶다.-->
+                        <button id="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                        <img class="hidden" src="img/icon/ic_add_box_black_24px.svg">
+                        <img class="active" src="img/icon/ic_clear_black_24px.svg" width="300px" height="300px">
+                        <img class="hidden" src="img/icon/ic_create_black_18px.svg" >
+                        <img class="hidden" src="img/icon/ic_keyboard_arrow_down_black_24px.svg" >
+                        <button id="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                    </div>
+                    <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?
+                </div>
+
+                <div class="page">
+                    <div class="link-box"> 
+                        <span class="f-empha">link title</span> 
+                        <span>short imformation</span> 
+                        <span class="f-subSmall">link URL</span> 
+                    </div>
+                    <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!
+                </div>
+
+                <div class="page">
+                    <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div>
+                    <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia
+                </div>
+
                 <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
+                <div class="page"> <mark>Lorem ipsum dolor.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <hr class="hr-page">
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"><mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
@@ -41,14 +68,14 @@
 
                 <!--스토리 추가하는 EJS코드-->
                 <!--<% for(var i=0; i<page.length-1;i++){%>-->
-                            <!--<% if(page[i].Page_Last==1) {%>-->
+                    <!--<% if(page[i].Page_Last==1) {%>-->
                         <!--<div class="page-list"><%}%>-->
-                <!--<div class="date f-subSmall"><%= page[i].Page_Date%></div>-->
-                <!--<div class="page"><%- page[i].Page_Content%></div>-->
-                <!--<hr class="hr-page">-->
-                            <!--<% if(page[i].Page_Last==1) {%>-->
+                        <!--<div class="date f-subSmall"><%= page[i].Page_Date%></div>-->
+                        <!--<div class="page"><%- page[i].Page_Content%></div>-->
+                        <!--<hr class="hr-page">-->
+                    <!--<% if(page[i].Page_Last==1) {%>-->
                         <!--</div>-->
-                            <!--<%}%>-->
+                    <!--<%}%>-->
                 <!--<%}%>-->
 
             </div>
@@ -87,7 +114,7 @@
             <div class="aside">
                 <div class="infor">
                     <div class="book-name f-subSmall">Bookname</div>
-                    <div class="story-name f-empha" >Storyname</div>
+                    <div class="story-name f-empha">Storyname</div>
                     <div class="date f-subSmall">2017.00.00</div>
                     <hr class="hr-infor">
                     <div class="score">
@@ -101,9 +128,13 @@
                             <div class="view-num f-empha">670</div>
                         </div>
                     </div>
-                </div>
-                <div class="aside-btn">
-                    <a href="#" id="new" class="f-basic">NEW STORY</a>
+                    <hr class="hr-infor">
+                    <div class="story-setting">
+                        <button id="citation-btn" class="f-basic">Citation</button>
+                        <button id="imp-btn" class="f-basic">Important</button>
+                        <!--TODO: Edit는 마지막 page인지 확인하고 btn을 뛰운다.-->
+                        <button id="eidt-btn" class="f-basic">Edit</button>
+                    </div>
                 </div>
             </div>
             <div class="footer f-subSmall">Company Infor</div>
@@ -119,6 +150,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
+    <script src="/js/attchment.js"></script>
+    <script src="/js/aside.js"></script>
     <script>
 
         $("#new-page").submit(function () {
