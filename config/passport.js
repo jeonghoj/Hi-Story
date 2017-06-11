@@ -8,6 +8,7 @@ const _ = require('lodash');
 const passport = require("passport");
 //jwt 설정
 const passportJWT = require("passport-jwt");
+
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
@@ -26,7 +27,7 @@ const jwtOptionscookie = {
     secretOrKey : config.secret
 };
 
-passport.use( new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
+passport.use('jwth', new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;
     db.query('select * from member where authID=?',[jwt_payload.authID],(error, results) => {
@@ -39,7 +40,8 @@ passport.use( new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
         }
     });
 }));
-passport.use( new JwtStrategy(jwtOptionscookie, (jwt_payload, done) => {
+
+passport.use('jwtc', new JwtStrategy(jwtOptionscookie, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;
     db.query('select * from member where authID=?',[jwt_payload.authID],(error, results) => {
