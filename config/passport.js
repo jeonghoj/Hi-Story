@@ -17,16 +17,29 @@ var cookieExtractor = function(req) {
     return token;
 };
 
-// const jwtOptions = {
-//     jwtFromRequest : ExtractJwt.fromAuthHeader(),
-//     secretOrKey : config.secret
-// };
-const jwtOptions = {
+const jwtOptionshead = {
+    jwtFromRequest : ExtractJwt.fromAuthHeader(),
+    secretOrKey : config.secret
+};
+const jwtOptionscookie = {
     jwtFromRequest : cookieExtractor,
     secretOrKey : config.secret
 };
 
-passport.use( new JwtStrategy(jwtOptions, (jwt_payload, done) => {
+passport.use( new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
+    console.log('payload received', jwt_payload);
+    let user = null;
+    db.query('select * from member where authID=?',[jwt_payload.authID],(error, results) => {
+        if(error) console.log(error);
+        user = results[0];
+        if (user) {
+            done(null, user);
+        } else {
+            done(null, false);
+        }
+    });
+}));
+passport.use( new JwtStrategy(jwtOptionscookie, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;
     db.query('select * from member where authID=?',[jwt_payload.authID],(error, results) => {
