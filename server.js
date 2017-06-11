@@ -1,6 +1,9 @@
 /**
  * Created by Jeongho on 2017-05-10.
  */
+const http=require('http');
+const https=require('https');
+
 const path = require('path');
 //웹페이지 아이콘 설정
 const favicon = require('serve-favicon');
@@ -12,6 +15,14 @@ const bodyParser=require('body-parser');
 const fs=require('fs');
 const app= express();
 const morgan = require('morgan');
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+const port1 = 80;
+const port2 = 443;
+
 //데이터 로그찍기
 app.use(morgan('dev'));
 //정적 파일 셋팅 -> 이걸해줘야 css js 파일 읽을수 있음
@@ -60,5 +71,13 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+// app.listen(3000,()=>console.log('서버 가동'));
 
-app.listen(3000,()=>console.log('서버 가동'));
+http.createServer(app).listen(port1, function(){
+    console.log("Http server listening on port " + port1);
+});
+
+
+https.createServer(options, app).listen(3000, function(){
+    console.log("Https server listening on port " + port2);
+});

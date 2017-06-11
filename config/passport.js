@@ -26,9 +26,6 @@ const jwtOptions = {
     secretOrKey : config.secret
 };
 
-// jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
-// jwtOptions.secretOrKey = config.SECRET;
-
 passport.use( new JwtStrategy(jwtOptions, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;

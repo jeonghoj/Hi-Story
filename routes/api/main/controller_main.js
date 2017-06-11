@@ -24,7 +24,8 @@ exports.list_story= (req,res)=> {
                 story[i].Story_Memo = results;
                 story_list.push(story[i]);
                 if (story_list.length === story.length) {
-                    res.json(story_list);}
+                    res.json(story_list);
+                }
             });
         }
     });
