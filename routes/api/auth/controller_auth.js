@@ -10,11 +10,11 @@ const config = require("../../../config/config.js");
 
 exports.register = (req,res) => {
     console.log(req.body);
-    const {username, password, realname} = req.body;
+    const {userid, password, realname} = req.body;
     hasher({password: password}, (error, pass, salt, hash) => {
         const user = {
-            authID: 'jwt:' + username,
-            Member_ID: username,
+            authID: 'jwt:' + userid,
+            Member_ID: userid,
             Member_PW: hash,
             Member_salt: salt,
             Member_Name: realname

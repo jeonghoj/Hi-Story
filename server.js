@@ -41,6 +41,11 @@ app.get('/',(req,res)=>{
         res.send(data);
     });
 });
+app.get('/signup',(req,res)=>{
+   fs.readFile('views/sign-up.html','utf8',(error,data)=>{
+       res.send(data);
+   });
+});
 app.get('/img/:name',(req,res)=>{
     fs.readFile('public/'+req.params.name,function (error,data) {
         if(error) console.log(error);
@@ -78,6 +83,6 @@ http.createServer(app).listen(port1, function(){
 });
 
 
-https.createServer(options, app).listen(3000, function(){
+https.createServer(options, app).listen(port2, function(){
     console.log("Https server listening on port " + port2);
 });
