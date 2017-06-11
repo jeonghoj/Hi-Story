@@ -17,16 +17,17 @@
         Discover your Vision
         Discover your Ability
         Discover your Possibility-->
-
-    <div class="sign-up">
-        <p>sign up</p>
-        <input type="text" placeholder="Name">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <input type="password" placeholder="Password check">
-        <input type="submit">
-    </div>
-
+    <form action="/auth/register" method="post">
+        <div class="sign-up">
+            <p>sign up</p>
+            <input type="text" placeholder="ID" name="userid">
+            <!--<input type="email" placeholder="Email">-->
+            <input type="password" placeholder="Password" name="password">
+            <!--<input type="password" placeholder="Password check">-->
+            <input type="text" placeholder="Name" name="realname">
+            <input type="submit">
+        </div>
+    </form>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

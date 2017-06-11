@@ -8,11 +8,6 @@ const passport = require('../../../config/passport');
 
 const controller = require('./controller_auth');
 
-router.get('/register',(req,res)=>{
-    fs.readFile('public/auth_register.html','utf8',(error,data) => {
-        res.send(data);});
-});
-
 router.post('/register',controller.register);
 router.post('/login',controller.login);
 
