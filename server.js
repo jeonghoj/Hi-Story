@@ -55,6 +55,7 @@ app.get('/img/:name',(req,res)=>{
 });
 const routes_auth = require('./routes/api/auth/index');
 const routes_main = require('./routes/api/main/index');
+const routes_android = require('./routes/api/android/index');
 app.use('/auth',routes_auth);
 app.use('/main',routes_main);
 // app.use('/api',require('./routes/api'));
