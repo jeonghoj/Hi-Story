@@ -138,3 +138,20 @@ exports.insert_page=(req,res)=>{
     });
 };
 
+exports.timeline=(req,res)=>{
+    let tldata=[];
+    let sql = 'select story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +
+        'from story,page ' +
+        'where page.Story_No=story.Story_No ' +
+        'Order By page.Page_Date DESC ';
+
+    db.query(sql,(error,results)=>{
+        if(error) console.log(error);
+        tldata=results;
+        console.log(tldata);
+        JSON.stringify(tldata);
+        res.render('action_timeline',{tldata:tldata});
+    })
+
+};
+

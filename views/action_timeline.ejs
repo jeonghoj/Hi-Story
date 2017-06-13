@@ -6,7 +6,7 @@
     <title>Action Timeline</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../public/css/base.css">
+    <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css">
 </head>
 
@@ -48,31 +48,19 @@
                 <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam possimus natus rem similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
                 <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia reiciendis obcaecati corporis minima iure? Ullam quos aliquam minima, aperiam voluptatum nostrum facere dolorem necessitatibus rerum labore, culpa praesentium sit illum.</div>
                 <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, adipisicing elit.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, similique.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates nulla sit deleniti. Sit fuga fugit maiores est, eius sapiente error.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit.</mark> Facere temporibus eos, id ratione autem, quisquam culpa praesentium iusto dolorem fugiat nesciunt sit dolore possimus. Tempore quo, optio pariatur repellat cum.</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet.</mark> Quam, delectus officiis nesciunt asperiores quod necessitatibus assumenda at cum. Ratione velit fugit aliquid quae consequatur illo, id inventore quibusdam aspernatur asperiores.</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</mark></div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt ea sequi, laudantium.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <hr class="hr-page">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, voluptate quos voluptas eos rem itaque similique omnis doloremque nulla magnam!</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt perspiciatis beatae vel nemo harum.</mark> Laboriosam possimus natus rem facere quaerat itaque similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi!</mark> Dicta officia consectetur at molestias quos nulla, consequatur odit placeat iusto commodi, numquam est. Magni amet odit, ipsa necessitatibus quo, iure repellendus?</div>
-            </div>
+                <% console.log(tldata); %>
+                <% for(var i=0 ; i<tldata.length ; i++){%>
+                <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
+                <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
+                <div class="date f-subSmall"><%=tldata[i].Page_Date%></div>
+                <div class="page">
+                    <a href="/main/action/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
+                    <%-tldata[i].Page_Content%>
+                    <hr class="hr-page">
+                </div>
+
+                <%}%>
+                </div>
         </div>
 
         <div class="right">
