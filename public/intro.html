@@ -25,17 +25,17 @@
             <span id="typed2"></span>
             <span id="typed3"></span>
         </div>
-        <!--FIXME 서브밋으로 구현하려니까 AJAX에서 에러가 생긴다 일단은 놔두지만 반드시 고칠것-->
+        <!--TODO: FIXME 서브밋으로 구현하려니까 AJAX에서 에러가 생긴다 일단은 놔두지만 반드시 고칠것-->
         <div class="sign-in-up">
             <!--<form id="loginform" action="/auth/login" method="post">-->
             <form action="/auth/login" method="post">
-                <input id="userid" name="userid" type="text" placeholder="ID">
                 <!--이메일 형식으로 바꾸기-->
+                <input id="userid" name="userid" type="text" placeholder="ID">
                 <input id="password" name="password" type="password" placeholder="PW">
-                <input id="login" type="submit" class="f-empha" value="로그인">
+                <input id="login" type="submit" class="f-empha" value="sign in">
             </form>
             <!--<button id="login" type="button" class="f-empha" >로그인</button>-->
-            <a href="sign-up.html" class="f-empha">sign up</a>
+            <a id="sign-up" href="sign-up.html" class="f-empha">sign up</a>
         </div>
     </div>
     <script>
