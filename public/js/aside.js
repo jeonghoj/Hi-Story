@@ -16,7 +16,6 @@ $("document").ready(function () {
             })
         }
     });
-    
 });
 
 // RIGHT ASIDE의 SLIDE UP AND DOWN 구현

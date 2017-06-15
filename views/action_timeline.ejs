@@ -27,17 +27,18 @@
 
             <div class="left-top">
                 <div class="view-mode">
-                    <div class="overview"><a href="/action.html" class="f-basic ">Overview</a></div>
-                    <div class="timeline"><a href="action_timeline.ejs" class="f-basic active">Timeline</a></div>
+                    <div class="overview"><a href="/main/action" class="f-basic ">Overview</a></div>
+                    <div class="timeline"><a href="/main/action/timeline" class="f-basic active">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
                     <div class="arg-popover">
-                        <button>이름 내림</button>
-                        <button>이름 오름</button>
-                        <button>날짜 오름</button>
-                        <button>날짜 내림</button>
-                        <button>사용자 지정</button>
+                        <button id="arg01">이름 내림</button>
+                        <button id="arg02">이름 오름</button>
+                        <button id="arg03">날짜 오름</button>
+                        <button id="arg04">날짜 내림</button>
+                        <button id="arg05">수정 내림</button>
+                        <button id="arg06">수정 오름</button>
                     </div>
                 </div>
             </div>
@@ -58,9 +59,8 @@
                     <%-tldata[i].Page_Content%>
                     <hr class="hr-page">
                 </div>
-
                 <%}%>
-                </div>
+            </div>
         </div>
 
         <div class="right">
@@ -81,9 +81,15 @@
                             <div class="view-num f-empha">670</div>
                         </div>
                     </div>
+                    <hr class="hr-infor">
+                    <div class="story-setting">
+                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
+                        <button id="done-btn" class="f-basic">Done</button>
+                        <button id="delete-btn" class="f-basic">Delete</button>
+                    </div>
                 </div>
                 <div class="aside-btn">
-                    <a href="#" id="new" class="f-basic">NEW STORY</a>
+                    <button id="new-story-btn" class="f-basic">NEW STORY</button>
                 </div>
             </div>
             <div class="footer f-subSmall">Company Infor</div>
@@ -91,16 +97,10 @@
 
     </div>
 
-    <div id="page-set">
-        <div class="cit f-subSmall">Citation</div>
-        <div class="imp f-subSmall">Important</div>
-        <div class="edit f-subSmall">Edit</div>
-    </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
-//2017-06-04 커밋 테스트
+    <script src="/js/aside.js"></script>
 
 </body>
 
