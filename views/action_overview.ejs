@@ -28,7 +28,7 @@
             <div class="left-top">
                 <div class="view-mode">
                     <div class="overview"><a href="/action-overview.html" class="f-basic active">Overview</a></div>
-                    <div class="timeline"><a href="/action-timeline.html" class="f-basic ">Timeline</a></div>
+                    <div class="timeline"><a href="/main/action/timeline" class="f-basic ">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
@@ -130,11 +130,12 @@
     </div>
     
     <!--스토리 추가하는 팝업부분-->
-    <!--TODO Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
+    <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
             <div class="new-story">
                 <form action="/main/insert_story" method="post">
                     <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
+                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록-->
                     <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
                     <!--여기에 북리스트 추가됨-->
                     <div class="new-story-book">
@@ -155,6 +156,7 @@
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
             <p class="del-nav">type "<span class="f-empha">story name을 삭제합니다.</span>"</p>
             <input type="text" id="confirm" placeholder="confirm massage">
             <input type="submit">
@@ -177,7 +179,7 @@
     </script>
 
     <script>
-        //TODO 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
+        //TODO: 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
         $(".aside-btn").click(function () {
             $(".new-story-book").empty();
             $.ajax({
@@ -189,7 +191,7 @@
             })
         });
 
-//        TODO submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
+//      TODO: submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
         $("#insert-new-story").click(function () {
             var data = {
                 Story_Title : $("#new-story-title").val(),
@@ -210,51 +212,28 @@
             })
         })
     </script>
-    
+
     <script>
-        
         $('#arg01').click(function () {
-            
+
         });
-        
         $('#arg02').click(function () {
-            
+
         });
-        
         $('#arg03').click(function () {
-            
+
         });
-        
         $('#arg04').click(function () {
-            
+
         });
-        
         $('#arg05').click(function () {
-            
+
         });
-        
-        $('#story-enter').click(function () {
-            
+        $('#arg06').click(function () {
+
         });
-        
-        $('#new-story-btn').click(function () {
-            
-        });
-        
-        $('#new-memo-btn').click(function () {
-            
-        });
-        
-        $('#done-btn').click(function () {
-            
-        });
-        
-        $('#delete-btn').click(function () {
-            
-        });
-       
-        
-        
+
+
     </script>
 
 </body>
