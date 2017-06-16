@@ -24,11 +24,13 @@ const upload = multer({
 const controller = require('./controller_main');
 const passport = require('../../../config/passport');
 
-router.post('/list_book', passport.authenticate('jwth',{session:false}),controller.list_book);
+//FIXME 안드로이드 인증방식은 아예 따로 둬야한다, 두개 놓으니까 먼저꼐 인식되서 인증이 되지않는다
+// router.post('/list_book', passport.authenticate('jwth',{session:false}),controller.list_book);
 router.post('/list_book', passport.authenticate('jwtc',{session:false}),controller.list_book);
 router.post('/list_story', passport.authenticate('jwtc',{session:false}),controller.list_story);
 
 router.post('/insert_story',passport.authenticate('jwtc',{session:false}),controller.insert_story);
+
 router.get('/action',passport.authenticate('jwtc',{session:false}),controller.action);
 router.get('/action/story/:id',passport.authenticate('jwtc',{session:false}),controller.list_page);
 router.get('/action/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);

@@ -16,7 +16,7 @@
     <div class="nav">
         <div class="logo"><a href="action.html" class="f-logo">HiStory</a></div>
         <ul class="menu">
-            <li><a href="/action-overview.html" class="f-menu active">Action</a></li>
+            <li><a href="/action" class="f-menu active">Action</a></li>
             <li><a href="/history.html" class="f-menu">History</a></li>
             <li><a href="/explore.html" class="f-menu">Explore</a></li>
             <li><a href="/setting.html" class="f-menu">Setting</a></li>
@@ -27,8 +27,8 @@
         <div class="left">
             <div class="left-top">
                 <div class="view-mode">
-                    <div class="overview"><a href="/action-overview.html" class="f-basic active">Overview</a></div>
-                    <div class="timeline"><a href="/main/action/timeline" class="f-basic ">Timeline</a></div>
+                    <div class="overview"><a href="/action" class="f-basic active">Overview</a></div>
+                    <div class="timeline"><a href="/action/timeline" class="f-basic ">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
@@ -45,30 +45,32 @@
                 </div>
             </div>
             <div id="story_list" class="story-list" oncontextmenu="return ture" ondragstart="return true" onselectstart="return ture">
-                <div class="story">
-                    <div class="story-header">
-                        <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
-                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
-                    </div>
-                    <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
-                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>
-                    </div>
-                    <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
-                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>
-                    </div>
-                </div>
+                <!--<div class="story">-->
+                    <!--<div class="story-header">-->
+                        <!--<div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>-->
+                        <!--<a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>-->
+                    <!--</div>-->
+                    <!--<div class="memo">-->
+                        <!--<a href="#" class="edit f-sub">Edit</a>-->
+                        <!--<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>-->
+                    <!--</div>-->
+                    <!--<div class="memo">-->
+                        <!--<a href="#" class="edit f-sub">Edit</a>-->
+                        <!--<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <!--자바코드-->
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
                     <div class="story-header">
-                        <div class='story-no' style='display:none'> <%= data[i].Story_No %></div>
-                        <div class="story-title"><a href="/main/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
+                        <div class="book-no" style="display: none"><%=data[i].Book_Name%></div>
+                        <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart%></div>
+                        <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
+                        <div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <!--TODO: story의 공백을 클릭해도 right 가 바뀌도록 변경-->
                         <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
-                        <a href="" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
@@ -110,6 +112,7 @@
                     </div>
                     <hr class="hr-infor">
                     <div class="story-setting">
+                        <!--TODO AJAX를 통해서 버튼을 설정해주는게 좋을듯, 아니면 미리 내장을 해놓던가-->
                         <!--page를 보러 들어가는 버튼, 제목을 클릭해서도 들어갈 수 있다.-->
                         <!--TODO: anchor 정리-->
                         <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
@@ -136,7 +139,7 @@
             <div class="new-story">
                 <form action="/main/insert_story" method="post">
                     <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
-                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록-->
+                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
                     <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
                     <!--여기에 북리스트 추가됨-->
                     <div class="new-story-book">
@@ -145,6 +148,7 @@
                     <div class="new-story-footer">
                         <input type="checkbox" id="public" name="Story_Public">
                         <label for="public" class="f-subSmall">PUBLIC</label>
+                        <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
                         <input type="submit" class="f-empha">SUBMIT
                         <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
                     </div>
@@ -184,7 +188,7 @@
         $(".aside-btn").click(function () {
             $(".new-story-book").empty();
             $.ajax({
-                url:"/main/list_book",
+                url:"/list_book",
                 type:"post",
                 success:function (data) {
                     $("#booktemplate").tmpl(data).appendTo(".new-story-book");
@@ -202,7 +206,7 @@
             };
             console.log(data);
             $.ajax({
-                url:"/main/insert_story",
+                url:"/insert_story",
                 type:"post",
                 data:data,
 //                headers: {"Authorization": "JWT "+localStorage.getItem("token")},

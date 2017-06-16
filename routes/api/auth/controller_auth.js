@@ -52,7 +52,7 @@ exports.login = (req,res) => {
                 const token = jwt.sign(payload, config.secret,{expiresIn: '30m'});
                 console.log('login',token);
                 res.cookie('jwt',token);
-                res.redirect('/main/action');
+                res.redirect('/action');
 
                 // res.json({message: "ok", token: token});
             } else {
