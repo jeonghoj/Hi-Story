@@ -286,8 +286,10 @@ button {
     vertical-align: middle;
 }
 .left .story-list .story .memo .edit {
+    position: relative;
+    top: 3px;
     opacity: .3;
-    vertical-align: middle;
+    vertical-align: top;
 }
 .left .story-list .story .memo .edit:hover {
     transition: all .35s ease;

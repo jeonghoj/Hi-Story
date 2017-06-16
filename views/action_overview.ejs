@@ -72,7 +72,6 @@
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
-                        <!--TODO: edit의 위치를 box 상단에 붙인다.-->
                         <a href="#" class="edit f-sub">Edit</a>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
                         <!--TODO: memo를 서버에서 불러올 때 textarea를 그 높이에 맞게 조정해준다.-->
@@ -88,14 +87,15 @@
             <div class="aside">
                 <!--TODO: 가장 기본적으로 클릭한 div가 표시하는 data의 번호를 불러올 수 있어야 한다.-->
                 <!--TODO: data 변경을 animation 사이에 끼워넣는다.-->
+                <!--TODO: 처음에는 접혀있도록 한다.-->
                 <div class="infor">
+                    <!--TODO: book name을 클릭하면 history로 story name을 클릭하면 story로 갈 수 있게 anchor를 걸어둔다.-->
                     <div class="book-name f-subSmall">Bookname</div>
                     <div class="story-name f-empha">Storyname</div>
                     <div class="date f-subSmall">2017.00.00</div>
                     <hr class="hr-infor">
                     <div class="score">
-                        <!--다른 user가 story를 인용한 횟수-->
-                        <!--추후에 page infor 아래 그 page를 인용한 page를 보여주도록 한다.-->
+                        <!--다른 user가 story를 인용한 횟수, 각 페이지마다 인용횟수를 저장하고 여기서는 합산해서 보여준다.-->
                         <div class="score-num citation f-subSmall">Citation
                             <div class="citation-num f-empha">6</div>
                         </div>
@@ -133,26 +133,26 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
-            <div class="new-story">
-                <form action="/main/insert_story" method="post">
-                    <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
-                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록-->
-                    <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
-                    <!--여기에 북리스트 추가됨-->
-                    <div class="new-story-book">
+        <div class="new-story">
+            <form action="/main/insert_story" method="post">
+                <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
+                <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록-->
+                <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
+                <!--여기에 북리스트 추가됨-->
+                <div class="new-story-book">
 
-                    </div>
-                    <div class="new-story-footer">
-                        <input type="checkbox" id="public" name="Story_Public">
-                        <label for="public" class="f-subSmall">PUBLIC</label>
-                        <input type="submit" class="f-empha">SUBMIT
-                        <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
-                    </div>
-                </form>
+                </div>
+                <div class="new-story-footer">
+                    <input type="checkbox" id="public" name="Story_Public">
+                    <label for="public" class="f-subSmall">PUBLIC</label>
+                    <input type="submit" class="f-empha">SUBMIT
+                    <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
+                </div>
+            </form>
         </div>
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
-            
+
         </div>
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
