@@ -252,10 +252,10 @@ button {
 
 /* stories ================================================== :) */
 .left .story-list .story {
-    padding-left: 28px;
-    padding-right: 14px;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-left: 25px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     border: 1px solid rgba(0, 0, 0, .2);
     box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
     margin: 14px;
