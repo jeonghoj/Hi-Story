@@ -51,4 +51,4 @@ $('.closeup .story-delete #story-delete-close').click(function () {
 //    });
 });
 
-
+// TODO: 모든 창 닫기에서 esc나 다른 부분을 클릭해도 나가지도록 한다.

@@ -6,7 +6,7 @@ $("document").ready(function () {
     $(window).scroll(function () {
         var leftBot = left.offset().top+left.height();
         var rightBot = right.offset().top+right.height();
-        
+
         if (leftBot >= $(window).scrollTop()+600) {
             right.animate({
                 top: $(window).scrollTop() + "px"
@@ -19,6 +19,8 @@ $("document").ready(function () {
 });
 
 // RIGHT ASIDE의 SLIDE UP AND DOWN 구현
+// TODO: 처음에는 접혀있도록 구현
+// TODO: action에서 story의 공백을 클릭해도 right가 바뀌도록 변경
 $( '.sel-story' ).click(function() {
     if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp();
     $('.right .aside .infor').slideDown('slow');
