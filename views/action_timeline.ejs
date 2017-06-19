@@ -43,24 +43,25 @@
                 </div>
             </div>
 
-            <div class="page-list">
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam possimus natus rem similique unde! Sequi placeat incidunt repellat eligendi alias dolorum quod aperiam odit! Quo, perspiciatis, maxime!</div>
-                <div class="page"> <a href="../public/story.html" class="story-title f-empha">Story title</a> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia reiciendis obcaecati corporis minima iure? Ullam quos aliquam minima, aperiam voluptatum nostrum facere dolorem necessitatibus rerum labore, culpa praesentium sit illum.</div>
-                <hr class="hr-page">
-                <% console.log(tldata); %>
-                <% for(var i=0 ; i<tldata.length ; i++){%>
+            <% for(var i=0 ; i<tldata.length ; i++){%>
+            <!--데이터가 없다면-->
+            <% if(tldata === undefined){%>
+            <div>데이터 없음 메세지</div>
+            <%break;%>
+            <!--처음엔 무조건 출력-->
+            <%}else if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+            <div class="page-list"><%}%>
                 <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
                 <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
-                <div class="date f-subSmall"><%=tldata[i].Page_Date%></div>
+                <% if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+                <div class="date f-subSmall"><%=tldata[i].Page_Date%></div><%}%>
                 <div class="page">
                     <a href="/main/action/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
                     <%-tldata[i].Page_Content%>
-                    <hr class="hr-page">
                 </div>
-                <%}%>
-            </div>
+            <% if(tldata[i+1]==null ? true : tldata[i+1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+            </div><%}%>
+            <%}%>
         </div>
 
         <div class="right">
