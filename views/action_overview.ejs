@@ -47,7 +47,7 @@
                 <div class="story">
                     <div class="story-header">
                         <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
-                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
@@ -66,7 +66,7 @@
                         <div class='story-no' style='display:none'> <%= data[i].Story_No %></div>
                         <div class="story-title"><a href="/main/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
-                        <a href="" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">

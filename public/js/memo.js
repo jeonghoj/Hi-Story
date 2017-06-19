@@ -23,6 +23,7 @@ $('.edit').click(function () {
         $(this).next().attr('readonly', 'readonly').css({
             "opacity": "1"
         });
+        // box가 작아졌을 때 크기를 줄인다.
         $(this).next().css({
             'height': $(this).next().prop('scrollHeight')
         });
