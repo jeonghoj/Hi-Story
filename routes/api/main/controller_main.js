@@ -55,7 +55,7 @@ exports.action=(req,res)=>{
     let story = null;
     let story_list = [];
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select * from story where Member_No=?',req.user.Member_No,(error,results)=>{
+    db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
         story =results;
         for(let i = 0 ; i<story.length; i++){
@@ -154,4 +154,3 @@ exports.timeline=(req,res)=>{
     })
 
 };
-

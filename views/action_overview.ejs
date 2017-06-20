@@ -14,12 +14,12 @@
 
     <!--TODO: anchor 정리, ejs 파일로 확실히 갈 수 있도록 정리한다.-->
     <div class="nav">
-        <div class="logo"><a href="action.html" class="f-logo">HiStory</a></div>
+        <div class="logo"><a href="/action" class="f-logo">HiStory</a></div>
         <ul class="menu">
-            <li><a href="/action-overview.html" class="f-menu active">Action</a></li>
-            <li><a href="/history.html" class="f-menu">History</a></li>
-            <li><a href="/explore.html" class="f-menu">Explore</a></li>
-            <li><a href="/setting.html" class="f-menu">Setting</a></li>
+            <li><a href="/action" class="f-menu active">Action</a></li>
+            <li><a href="/history" class="f-menu">History</a></li>
+            <li><a href="/explore" class="f-menu">Explore</a></li>
+            <li><a href="/setting" class="f-menu">Setting</a></li>
         </ul>
     </div>
 
@@ -27,13 +27,14 @@
         <div class="left">
             <div class="left-top">
                 <div class="view-mode">
-                    <div class="overview"><a href="/action-overview.html" class="f-basic active">Overview</a></div>
-                    <div class="timeline"><a href="/main/action/timeline" class="f-basic ">Timeline</a></div>
+                    <div class="overview"><a href="/action" class="f-basic active">Overview</a></div>
+                    <div class="timeline"><a href="/action/timeline" class="f-basic ">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
                     <div class="arg-popover">
-                        <!--TODO: 각 기능 구현-->
+                        <!--TODO: 각 기능 구현
+                            정렬 기준은 일단 story 이름, 생성 날짜, 수정 날짜의 오름, 내림차순으로 6가지이다.-->
                         <button id="arg01">이름 내림</button>
                         <button id="arg02">이름 오름</button>
                         <button id="arg03">날짜 오름</button>
@@ -44,32 +45,36 @@
                 </div>
             </div>
             <div id="story_list" class="story-list" oncontextmenu="return ture" ondragstart="return true" onselectstart="return ture">
-                <div class="story">
-                    <div class="story-header">
-                        <div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>
-                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
-                    </div>
-                    <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
-                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>
-                    </div>
-                    <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
-                        <textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>
-                    </div>
-                </div>
+                <!--<div class="story">-->
+                    <!--<div class="story-header">-->
+                        <!--<div class="story-title"><a href="story.html" class="f-title">Story Title</a></div>-->
+                        <!--<a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>-->
+                    <!--</div>-->
+                    <!--<div class="memo">-->
+                        <!--<a href="#" class="edit f-sub">Edit</a>-->
+                        <!--<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>-->
+                    <!--</div>-->
+                    <!--<div class="memo">-->
+                        <!--<a href="#" class="edit f-sub">Edit</a>-->
+                        <!--<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus pariatur minima quo quod eum nemo praesentium, provident, molestias corrupti maiores impedit velit sint beatae, eos iste deserunt omnis itaque reprehenderit. doloremque.</textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--자바코드-->
 
                 <!--자바코드-->
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
                     <div class="story-header">
-                        <div class='story-no' style='display:none'> <%= data[i].Story_No %></div>
-                        <div class="story-title"><a href="/main/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
+                        <div class="book-no" style="display: none"><%=data[i].Book_Name%></div>
+                        <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart%></div>
+                        <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
+                        <div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
-                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
+                        <!--TODO: edit의 위치를 box 상단에 붙인다.-->
                         <a href="#" class="edit f-sub">Edit</a>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
                         <!--TODO: memo를 서버에서 불러올 때 textarea를 그 높이에 맞게 조정해준다.-->
@@ -86,13 +91,13 @@
                 <!--TODO: 가장 기본적으로 클릭한 div가 표시하는 data의 번호를 불러올 수 있어야 한다.-->
                 <!--TODO: data 변경을 animation 사이에 끼워넣는다.-->
                 <div class="infor">
-                    <!--TODO: book name을 클릭하면 history로 story name을 클릭하면 story로 갈 수 있게 anchor를 걸어둔다.-->
                     <div class="book-name f-subSmall">Bookname</div>
                     <div class="story-name f-empha">Storyname</div>
                     <div class="date f-subSmall">2017.00.00</div>
                     <hr class="hr-infor">
                     <div class="score">
-                        <!--다른 user가 story를 인용한 횟수, 각 페이지마다 인용횟수를 저장하고 여기서는 합산해서 보여준다.-->
+                        <!--다른 user가 story를 인용한 횟수-->
+                        <!--추후에 page infor 아래 그 page를 인용한 page를 보여주도록 한다.-->
                         <div class="score-num citation f-subSmall">Citation
                             <div class="citation-num f-empha">6</div>
                         </div>
@@ -107,15 +112,16 @@
                     </div>
                     <hr class="hr-infor">
                     <div class="story-setting">
+                        <!--TODO AJAX를 통해서 버튼을 설정해주는게 좋을듯, 아니면 미리 내장을 해놓던가-->
                         <!--page를 보러 들어가는 버튼, 제목을 클릭해서도 들어갈 수 있다.-->
                         <!--TODO: anchor 정리-->
-                        <button id="story-enter" ><a href="/story.html" class="f-basic">Enter</a></button>
+                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
                         <!--새로운 메모를 작성한다.-->
-                        <button id="new-memo-btn" class="f-basic">Make new memo</button>
+                        <button id="new-memo-btn" class="f-basic">NewMemo</button>
                         <!--story를 끝낸다.-->
-                        <button id="done-btn" class="f-basic">Make to history</button>
+                        <button id="done-btn" class="f-basic">Done</button>
                         <!--story를 지운다.-->
-                        <button id="delete-btn" class="f-basic">Delete this story</button>
+                        <button id="delete-btn" class="f-basic">Delete</button>    
                     </div>
                 </div>
                 <!--새로운 story를 만든다.-->
@@ -130,25 +136,27 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
-        <div class="new-story">
-            <form action="/main/insert_story" method="post">
-                <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
-                <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
-                <!--여기에 북리스트 추가됨-->
-                <div class="new-story-book">
+            <div class="new-story">
+                <form action="/insert_story" method="post">
+                    <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
+                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
+                    <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
+                    <!--여기에 북리스트 추가됨-->
+                    <div class="new-story-book">
 
-                </div>
-                <div class="new-story-footer">
-                    <input type="checkbox" id="public" name="Story_Public">
-                    <label for="public" class="f-subSmall">PUBLIC</label>
-                    <input type="submit" class="f-empha">SUBMIT
-                    <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
-                </div>
-            </form>
+                    </div>
+                    <div class="new-story-footer">
+                        <input type="checkbox" id="public" name="Story_Public">
+                        <label for="public" class="f-subSmall">PUBLIC</label>
+                        <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
+                        <input type="submit" class="f-empha">SUBMIT
+                        <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
+                    </div>
+                </form>
         </div>
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
-
+            
         </div>
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
@@ -180,7 +188,7 @@
         $(".aside-btn").click(function () {
             $(".new-story-book").empty();
             $.ajax({
-                url:"/main/list_book",
+                url:"/list_book",
                 type:"post",
                 success:function (data) {
                     $("#booktemplate").tmpl(data).appendTo(".new-story-book");
@@ -198,7 +206,7 @@
             };
             console.log(data);
             $.ajax({
-                url:"/main/insert_story",
+                url:"/insert_story",
                 type:"post",
                 data:data,
 //                headers: {"Authorization": "JWT "+localStorage.getItem("token")},
