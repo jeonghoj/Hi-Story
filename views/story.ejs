@@ -55,7 +55,7 @@
             <!--글쓰기-->
             <div class="page-list page-write">
                 <!--파일보내는곳-->
-                <form id="new-page" action="/main/insert_page" method="post" enctype="multipart/form-data">
+                <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
                     <input type="file" name="page_image" multiple>
                     <!--에디터-->
                     <input type="hidden" name="Story_No" value="<%= page[page.length-1].Story_No%>">
@@ -109,7 +109,7 @@
 //            var formData = new FormData($(this)[0]);
             $("#status").empty().text("File is uploading...");
             $.ajaxSubmit({
-                url:"/main/insert_page",
+                url:"/insert_page",
                 type:"post",
                 success:function (data) {
                     alert(data.message);
