@@ -28,14 +28,17 @@
         <!--FIXME 서브밋으로 구현하려니까 AJAX에서 에러가 생긴다 일단은 놔두지만 반드시 고칠것-->
         <form action="/auth/login" method="post">
             <div class="sign-in-up">
+                <!--TODO: id를 바꿨으니 이 id에 맞춰서 코드도 바꿔야 한다.-->
                 <!--<form id="loginform" action="/auth/login" method="post">-->
-                <input id="userid" name="userid" type="text" placeholder="ID">
-                <!--이메일 형식으로 바꾸기-->
-                <input id="password" name="password" type="password" placeholder="PW">
+                <input id="user-id" name="user-id type="text" placeholder="ID">
+                <br>
+                <input id="user-password" name="user-password" type="password" placeholder="PW">
                 <!--<input id="login" type="submit" class="f-empha" value="로그인">-->
                 <br>
-                <button id="login" type="submit" class="f-empha" >로그인</button>
-                <a href="/signup" class="f-empha">sign up</a>
+                <button id="sign-in" type="submit" class="f-empha">Sign In</button>
+                <br>
+                <a id="sign-up" href="/signup" class="f-empha">Sign Up</a>
+                <a id="lost-password" href="">Lost your password?</a>
             </div>
         </form>
     </div>
