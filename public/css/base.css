@@ -396,8 +396,8 @@ mark {
     top: 50%;
     transform: translate(0%, -50%);
 }
-.left .page-list .page .img-box #to-left,
-.left .page-list .page .img-box #to-right {
+.left .page-list .page .img-box .to-left,
+.left .page-list .page .img-box .to-right {
     display: flex;
     position: absolute;
     z-index: 100;
@@ -405,10 +405,10 @@ mark {
     border: none;
     background: none;
 }
-.left .page-list .page .img-box #to-left {
+.left .page-list .page .img-box .to-left {
     left: 0;
 }
-.left .page-list .page .img-box #to-right {
+.left .page-list .page .img-box .to-right {
     right: 0;
 }
 .left .page-list .page .img-box .hidden {

@@ -15,9 +15,9 @@
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
     <div class="nav">
-        <div class="logo"><a href="/action.html" class="f-logo">HiStory</a></div>
+        <div class="logo"><a href="/action" class="f-logo">HiStory</a></div>
         <ul class="menu">
-            <li><a href="action.html" class="f-menu">Action</a></li>
+            <li><a href="/action" class="f-menu">Action</a></li>
             <li><a href="history.ejs" class="f-menu">History</a></li>
             <li><a href="explore.ejs" class="f-menu">Explore</a></li>
             <li><a href="setting.ejs" class="f-menu">Setting</a></li>
@@ -39,7 +39,19 @@
                         <div class="page-list"><%}%>
                 <div class="date f-subSmall"><%= page[i].Page_Date%></div>
                 <div class="page">
-                    <% %>
+                    <% if(page[i].Imgdata !== undefined) { %>
+                    <div class="img-box">
+                        <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                        <% for(var j=0; j<page[i].Imgdata.length;j++){%>
+                    <% if(j===0){%>
+                        <img class="active" style="max-height:100%" src="/<%=page[i].Imgdata[j].Image_Path %>">
+                    <%}else{%>
+                        <img class="hidden" style="max-height:100%" src="/<%=page[i].Imgdata[j].Image_Path %>">
+                    <%}%>
+                        <%}%>
+                        <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                    </div>
+                    <%}%>
                     <%- page[i].Page_Content%></div>
                 <hr class="hr-page">
                             <% if(page[i].Page_Last==1) {%>
@@ -103,8 +115,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
+    <script src="/js/attchment.js"></script>
     <script>
-
         $("#new-page").submit(function () {
 //            var formData = new FormData($(this)[0]);
             $("#status").empty().text("File is uploading...");
@@ -114,7 +126,6 @@
                 success:function (data) {
                     alert(data.message);
                 }});
-
         })
 //        CK업데이트 혹시 필요할 지도 몰라 주석
 //        function CKupdate(){

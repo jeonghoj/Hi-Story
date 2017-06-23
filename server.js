@@ -46,8 +46,10 @@ app.get('/signup',(req,res)=>{
        res.send(data);
    });
 });
-app.get('/img/:name',(req,res)=>{
-    fs.readFile('public/'+req.params.name,function (error,data) {
+
+app.get('/public/img/:name',(req,res)=>{
+    console.log(req.params.name);
+    fs.readFile('public/img/'+req.params.name,function (error,data) {
         if(error) console.log(error);
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
         res.end(data);
