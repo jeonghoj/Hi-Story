@@ -59,7 +59,7 @@
                 <!--<div class="story">-->
                     <!--<div class="story-header">-->
                         <!--<div class='story-no' style='display:none'><%= data[i].Story_No %></div>-->
-                        <!--<div class="story-title"><a href="/main/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>-->
+                        <!--<div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>-->
                         <!--<a href="#" class="onoff"><img src="/img/icon/ic_settings_black_24px.svg" border="0"></a>-->
                         <!--<div class="webui-popover-content">-->
                             <!--<div class="story-set-popover">-->
@@ -165,7 +165,7 @@
         $(".aside-btn").click(function () {
             $(".new-story-book").empty();
             $.ajax({
-                url:"/main/list_book",
+                url:"/list_book",
                 type:"post",
 //                headers: {"Authorization": "JWT "+localStorage.getItem("token")},
                 success:function (data) {
@@ -184,7 +184,7 @@
             };
             console.log(data);
             $.ajax({
-                url:"/main/insert_story",
+                url:"/insert_story",
                 type:"post",
                 data:data,
 //                headers: {"Authorization": "JWT "+localStorage.getItem("token")},

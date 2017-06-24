@@ -34,12 +34,12 @@
                     <!-- 다음 이미지를 클릭하면 사진이 fade out 되고 새로운 사진이 fade in 된다. -->
                     <div class="img-box">
                         <!--TODO: 만약 가능하다면 hit box를 늘리고 싶다.-->
-                        <button id="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                        <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
                         <img class="hidden" src="img/icon/ic_add_box_black_24px.svg">
                         <img class="active" src="img/icon/ic_clear_black_24px.svg" width="300px" height="300px">
                         <img class="hidden" src="img/icon/ic_create_black_18px.svg" >
                         <img class="hidden" src="img/icon/ic_keyboard_arrow_down_black_24px.svg" >
-                        <button id="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                        <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
                     </div>
                     <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?
                 </div>
@@ -87,7 +87,7 @@
             <!--글쓰기-->
             <div class="page-list page-write">
                 <!--파일보내는곳-->
-                <form id="new-page" action="/main/insert_page" method="post" enctype="multipart/form-data">
+                <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
 
                     <input type="file" name="page_image_1">
                     <input type="file" name="page_image_2">
@@ -158,7 +158,7 @@
 //            var formData = new FormData($(this)[0]);
             $("#status").empty().text("File is uploading...");
             $.ajaxSubmit({
-                url:"/main/insert_page",
+                url:"/insert_page",
                 type:"post",
                 success:function (data) {
                     alert(data.message);
@@ -166,7 +166,6 @@
                         window.location.reload()
                     },1000)
                 }});
-
         })
     </script>
 
