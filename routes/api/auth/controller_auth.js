@@ -49,7 +49,7 @@ exports.login = (req,res) => {
             if(hash === user.Member_PW) {
                 // id로 사람 구분
                 const payload = {authID: 'jwt:'+user.Member_ID};
-                const token = jwt.sign(payload, config.secret,{expiresIn: '30m'});
+                const token = jwt.sign(payload, config.secret,{expiresIn: '300m'});
                 console.log('login',token);
                 res.cookie('jwt',token);
                 res.redirect('/action');

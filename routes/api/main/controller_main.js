@@ -65,14 +65,13 @@ exports.action=(req,res)=>{
                 story_list.push(story[i]);
                 if(story_list.length === story.length){
                     JSON.stringify(story_list);
-                    console.log('스토리 리스트',story_list);
+                    // console.log('스토리 리스트',story_list);
                     res.render('action_overview',{data:story_list});
                 }
             });
         }
     });
 };
-// TODO 페이지 불러올때 이미지도 추가
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
@@ -98,13 +97,14 @@ exports.list_page=(req,res)=>{
     });
 };
 exports.insert_page=(req,res)=>{
+    console.log(req.body);
     console.log('업로드된 파일',req.files);
     const sql = 'insert into page set ?';
     const page = {
         Story_No:req.body.Story_No,
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
-        Page_Content:req.body.Page_Content,
+        Page_Content:req.body.page_content,
     };
     db.query(sql,page,(error,results)=>{
         if(error) console.log(error);
@@ -141,7 +141,6 @@ exports.timeline=(req,res)=>{
     db.query(sql,(error,results)=>{
         if(error) console.log(error);
         tldata=results;
-        console.log(tldata);
         JSON.stringify(tldata);
         res.render('action_timeline',{tldata:tldata});
     })
