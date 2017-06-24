@@ -85,7 +85,6 @@ exports.list_page=(req,res)=>{
             let Page_No = page[i].Page_No;
             db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
                 if(error) console.log(error);
-                console.log(results);
                 page[i].Imgdata=results;
                 list_page.push(page[i]);
                 if(list_page.length===page.length){
@@ -107,27 +106,26 @@ exports.insert_page=(req,res)=>{
         Page_Author:req.user.Member_Name,
         Page_Content:req.body.Page_Content,
     };
-    console.log(req.files[0].fieldname);
     db.query(sql,page,(error,results)=>{
-        console.log('페이지query',results.insertId);
-        const page_no=results.insertId;
         if(error) console.log(error);
-        if(req.files!==null){
+        const page_no=results.insertId;
+        if(req.files[0]!==undefined){
             for(let i =0; i<req.files.length;i++){
-                let dbimgdata = {
+                let imgdata = {
                     Page_No:page_no,
                     Image_Fieldname:req.files[i].fieldname,
                     Image_Path:req.files[i].path,
                     Image_Originalname:req.files[i].originalname
                 };
-                db.query('insert into image set ?',dbimgdata,(error,result)=>{
+                db.query('insert into image set ?',imgdata,(error)=>{
                     if(error) console.log(error);
                     if(i===req.files.length-1){
                         console.log('완료');
                         res.status(200).json({message:'complete'});
                     }
                 })
-            }}else{
+            }
+        }else{
             res.status(200).json({message:'complete(noimg)'});
         }
     });

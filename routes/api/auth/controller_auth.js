@@ -61,3 +61,27 @@ exports.login = (req,res) => {
         });
     });
 };
+
+exports.sendmail=(req,res)=>{
+    const nodemailer=require('nodemailer');
+
+    let transporter=nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'historygdrive@gmail.com',
+            pass: '20170406'
+        }
+    });
+    let mailoptions={
+        from:'historygdrive@gmail.com',
+        to:'jjhh3079@gmail.com',
+        subject:'이메일 제목',
+        text:'테스트',
+    };
+    transporter.sendMail(mailoptions,function (err,info) {
+        if(err) console.log(err);
+        console.log('Mail send Success -',info.response);
+        transporter.close();
+        res.status(200);
+    })
+};

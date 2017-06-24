@@ -39,7 +39,7 @@
                         <div class="page-list"><%}%>
                 <div class="date f-subSmall"><%= page[i].Page_Date%></div>
                 <div class="page">
-                    <% if(page[i].Imgdata !== undefined) { %>
+                    <% if(page[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
                         <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
                         <% for(var j=0; j<page[i].Imgdata.length;j++){%>
