@@ -42,11 +42,11 @@ exports.insert_story=(req,res)=>{
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
             console.log(error);
-            res.json({message:'fail!'});
+            res.send(false);
         }
         else{
             console.log('스토리 삽입 성공!');
-            res.json({message:'ok!'});
+            res.send(true);
         }
     });
 };
@@ -75,10 +75,26 @@ exports.action=(req,res)=>{
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
-    const sql = "select book.Book_Name, page.Story_No, page.* " +
+    const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
         "from book,story,page " +
         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
     db.query(sql,req.params.id,(error,results)=>{
+        console.log(results.length);
+        // 페이지가 없을경우
+        if(results.length===0)
+        {
+            db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
+                'from book,story ' +
+                'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
+                if(error) console.log(error);
+                console.log(results);
+                res.render('story',
+                    {   page:results,
+                        Story_No: req.params.id});
+            });
+
+        }
+        // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
         page=results;
         for(let i=0;i<page.length;i++){
             let Page_No = page[i].Page_No;
@@ -89,6 +105,7 @@ exports.list_page=(req,res)=>{
                 if(list_page.length===page.length){
                     list_page.push({Story_No : req.params.id});
                     JSON.stringify(list_page);
+                    console.log(list_page);
                     res.render('story',{page:list_page});
                 }
             })
@@ -131,17 +148,20 @@ exports.insert_page=(req,res)=>{
     });
 };
 
+//TODO 값이 없을때 서버, 웹에서의 처리
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +
-        'from story,page ' +
-        'where page.Story_No=story.Story_No ' +
-        'Order By page.Page_Date DESC ';
+    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +
+        'from story,page,book ' +
+        'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
+        'Order By page.Page_Date DESC';
 
     db.query(sql,(error,results)=>{
+        if(results.length===0) res.render('action_timeline',{tldata:null});
         if(error) console.log(error);
         tldata=results;
         JSON.stringify(tldata);
+        console.log(tldata);
         res.render('action_timeline',{tldata:tldata});
     })
 

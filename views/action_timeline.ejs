@@ -16,9 +16,9 @@
         <div class="logo"><a href="/action" class="f-logo">HiStory</a></div>
         <ul class="menu">
             <li><a href="/action" class="f-menu active">Action</a></li>
-            <li><a href="history.ejs" class="f-menu">History</a></li>
-            <li><a href="explore.ejs" class="f-menu">Explore</a></li>
-            <li><a href="setting.ejs" class="f-menu">Setting</a></li>
+            <li><a href="/history" class="f-menu">History</a></li>
+            <li><a href="/explore" class="f-menu">Explore</a></li>
+            <li><a href="/setting" class="f-menu">Setting</a></li>
         </ul>
     </div>
 
@@ -42,15 +42,13 @@
                     </div>
                 </div>
             </div>
-
-            <% for(var i=0 ; i<tldata.length ; i++){%>
-            <!--데이터가 없다면-->
-            <% if(tldata === undefined){%>
+            <%if(tldata === null){%>
             <div>데이터 없음 메세지</div>
-            <%break;%>
-            <!--처음엔 무조건 출력-->
-            <%}else if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+            <%}else{%>
+            <% for(var i=0 ; i<tldata.length ; i++){%>
+            <% if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
             <div class="page-list"><%}%>
+                <div class="book-title" style="display: none"><%=tldata[i].Book_Name%></div>
                 <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
                 <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
                 <% if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
@@ -61,6 +59,7 @@
                 </div>
             <% if(tldata[i+1]==null ? true : tldata[i+1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
             </div><%}%>
+            <%}%>
             <%}%>
         </div>
 

@@ -62,6 +62,7 @@
                 <!--자바코드-->
 
                 <!--자바코드-->
+                <% console.log(data);%>
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
                     <div class="story-header">
@@ -141,10 +142,12 @@
                     <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
                     <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
                     <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
+
                     <!--여기에 북리스트 추가됨-->
                     <div class="new-story-book">
 
                     </div>
+
                     <div class="new-story-footer">
                         <input type="checkbox" id="public" name="Story_Public">
                         <label for="public" class="f-subSmall">PUBLIC</label>
@@ -191,7 +194,12 @@
                 url:"/list_book",
                 type:"post",
                 success:function (data) {
-                    $("#booktemplate").tmpl(data).appendTo(".new-story-book");
+                    console.log(data);
+                    for(var i=0; i<data.length;i++){
+                        console.log("실행중?");
+                        $(".new-story-book")
+                            .append("<input class='new-book' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
+                    }
                 }
             })
         });
@@ -209,9 +217,14 @@
                 url:"/insert_story",
                 type:"post",
                 data:data,
-//                headers: {"Authorization": "JWT "+localStorage.getItem("token")},
-                success:function (data) {
-                    console.log(data.message);
+                success:function (returns) {
+                    if(returns === true)
+                    {
+                        alert('success');
+                    }else
+                    {
+                        alert('fail');
+                    }
                 }
 
             })
