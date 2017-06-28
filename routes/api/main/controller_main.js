@@ -115,13 +115,22 @@ exports.list_page=(req,res)=>{
 };
 exports.insert_page=(req,res)=>{
     console.log(req.body);
-    console.log('업로드된 파일',req.files);
+    console.log('업로드된 파일',req.files)
+    console.log(req.body.Story_No);
+    console.log(parseInt(req.body.Story_No)); 
+    console.log(typeof(req.body.Story_No));
+    let story_no=(req.body.Story_No).replace("\u0000","").replace("\u0001","");
+    console.log(story_no);
+    
+    let page_content=decodeURIComponent(req.body.page_content);
+    console.log('storyno',story_no);
+    console.log('pagecon',page_content);
     const sql = 'insert into page set ?';
     const page = {
-        Story_No:req.body.Story_No,
+        Story_No:parseInt(story_no),
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
-        Page_Content:req.body.page_content,
+        Page_Content:page_content,
     };
     db.query(sql,page,(error,results)=>{
         if(error) console.log(error);
