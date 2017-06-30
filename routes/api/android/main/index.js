@@ -34,6 +34,6 @@ router.get('/action/story/:id',passport.authenticate('jwth',{session:false}),con
 router.get('/action/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
 router.post('/insert_page',passport.authenticate('jwth',{session:false}),
-    upload.array('page_image',6),controller.insert_page);
+    upload.array('Page_Image',6),controller.insert_page);
 
 module.exports = router;

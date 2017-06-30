@@ -37,6 +37,6 @@ router.get('/action/timeline',passport.authenticate('jwtc',{session:false}),cont
 
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
 router.post('/insert_page',passport.authenticate('jwtc',{session:false}),
-    upload.array('page_image',5),controller.insert_page);
+    upload.array('Page_Image',6),controller.insert_page);
 
 module.exports = router;
