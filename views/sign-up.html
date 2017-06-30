@@ -11,24 +11,21 @@
 
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
-    <!--    HiStory
-        Discover YOU!
-        Discover your Meaning
-        Discover your Vision
-        Discover your Ability
-        Discover your Possibility-->
     <form action="/auth/register" method="post">
         <div class="sign-up">
-            <p>sign up</p>
-            <input type="text" placeholder="ID" name="userid">
+            <div>Sign Up</div>
+            <input id="make-user-id" type="text" placeholder="ID" name="userid" autocomplete="off">
+            <br>
             <!--<input type="email" placeholder="Email">-->
-            <input type="password" placeholder="Password" name="password">
-            <!--<input type="password" placeholder="Password check">-->
-            <input type="text" placeholder="Name" name="realname">
+            <input id="make-user-password" type="password" placeholder="Password" name="password">
+            <br>
+            <input id="check-user-password" type="password" placeholder="Password check" name="password">
+            <br>            <!--<input type="password" placeholder="Password check">-->
+            <input id="make-user-name" type="text" placeholder="Name" name="realname" autocomplete="off">
+            <br>
             <input type="submit">
         </div>
     </form>
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>

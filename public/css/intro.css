@@ -16,6 +16,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 .header {
     font-size: 4rem;
     width: 846px;
@@ -58,4 +59,16 @@ body {
 #sign-up:hover, #lost-password:hover {
     opacity: 1;
     transition: all .35s ease;
+}
+
+.sign-up input {
+    width: 250px;
+    border: 1px solid rgba(0, 0, 0, 1);
+    padding: 3px;
+    margin: 2px;
+}
+.sign-up>div {
+    font-size: 1.2rem;
+    margin: 5px;
+    margin-bottom: 15px;
 }

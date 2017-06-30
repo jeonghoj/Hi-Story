@@ -25,3 +25,13 @@ $(function () {
         }
     });
 });
+
+// sign up에서 pw 확인
+$('.sign-up input[type="submit"]').click(function () {
+    if($('.sign-up input[type="text"]').val() != ""
+    && $('.sign-up input[type="password"]').val() != "") {
+        if($('#make-user-password').val() != $('#check-user-password').val()) {
+            event.preventDefault();
+        }
+    }
+});
