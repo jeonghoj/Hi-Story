@@ -36,6 +36,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //라우트
 
+
 app.get('/',(req,res)=>{
     fs.readFile('views/intro.html','utf8',(error,data)=>{
         res.send(data);
@@ -50,13 +51,19 @@ app.get('/signup',(req,res)=>{
 app.get('/public/img/:name',(req,res)=>{
     console.log(req.params.name);
     fs.readFile('public/img/'+req.params.name,function (error,data) {
-        if(error) console.log(error);
+        if(error) {
+            console.log(error);
+        }
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
         res.end(data);
     })
 });
 const routes_auth = require('./routes/api/auth/index');
 const routes_main = require('./routes/api/main/index');
+const routes_a_auth=require('./routes/api/android/auth/index');
+const routes_a_main=require('./routes/api/android/main/index');
+app.use('/android/auth',routes_a_auth);
+app.use('/android',routes_a_main);
 app.use('/auth',routes_auth);
 app.use('/',routes_main);
 

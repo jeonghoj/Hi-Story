@@ -2,14 +2,21 @@
  * Created by Jeongho on 2017-05-11.
  */
 // const passport = require('../../../config/passport');
-const db = require('../../../config/db');
+// require에는 상대경로만 들어가므로 currentworkingdirectory를 추가한다
+const cwd = process.cwd();
+const db = require(cwd+"/config/db");
 const bkfd2Password = require("pbkdf2-password");
 const hasher= bkfd2Password();
-const jwt = require('jsonwebtoken');
-const config = require("../../../config/config.js");
-
-
-
+const jwt = require("jsonwebtoken");
+const config = require(cwd+"/config/config");
+const nodemailer=require('nodemailer');
+let transporter=nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'historygdrive@gmail.com',
+        pass: '20170406'
+    }
+});
 exports.register = (req,res) => {
     console.log(req.body);
     const {userid, password, realname} = req.body;
@@ -32,7 +39,7 @@ exports.register = (req,res) => {
             } else {
                 let mailoptions={
                     from:'historygdrive@gmail.com',
-                    to:'jjhh3079@gmail.com',
+                    to:userid,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
                     text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?verifycode='+verifycode,
                 };
@@ -49,7 +56,8 @@ exports.register = (req,res) => {
 
 exports.login = (req,res) => {
     console.log('로그인',req.body);
-    const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
+    // TODO 웹에서 널값 못보내도록 막기처리 해줘야
+    const { userid , password } = req.body;
     const sql='select * from member where Member_ID=?';
     db.query(sql,[userid],(error,results) => {
         if(error){
@@ -64,14 +72,13 @@ exports.login = (req,res) => {
                 if(user.Member_EmailVerified===0)
                 {
                     console.log('아직 이메일 인증이 되지 않은 회원입니다');
+                    res.json({message:"email not verified, please check your email"});
                 }else {
                     // id로 사람 구분
                     const payload = {authID: 'jwt:'+user.Member_ID};
                     const token = jwt.sign(payload, config.secret,{expiresIn: '9000m'});
                     console.log('login',token);
-                    res.cookie('jwt',token);
-                    res.redirect('/action');
-                    // res.json({message: "ok", token: token});
+                    res.json({message: "ok", token: token});
                 }
 
             } else {
@@ -79,26 +86,6 @@ exports.login = (req,res) => {
             }
         });
     });
-};
-
-exports.verifyemail=(req,res)=>{
-    console.log(req.params.code);
-    let verifycode = req.params.code;
-    let sql = 'update member set Member_EmailVerified=1 where Member_VerifyCode=?';
-    db.query(sql,verifycode,(error,result)=>{
-        console.log(result);
-        if(error) console.log(error);
-
-        if(result.affectedRows===0){
-            console.log('데이터없거나 잘못된 접근');
-        }else if(result.changedRows===0){
-            console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
-            res.redirect('/');
-        }else{
-            console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
-            res.redirect('/');
-        }
-    })
 };
 
 function randomString() {
