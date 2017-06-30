@@ -117,11 +117,11 @@ exports.insert_page=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
     console.log('업로드된 파일',req.files);
-    console.log((req.body.Story_No).slice(12,));
-    console.log((req.body.Page_Content).slice(8.));
+    let Story_No=req.body.Story_No;
+    let Page_Content=req.body.Page_Content;
     // let Story_No=(req.body.Story_No).replace("\u0000","").replace("\u0001","");
-    let Story_No=parseInt((req.body.Story_No).slice(12.));
-    let Page_Content=(req.body.Page_Content).slice(8.);
+    Story_No=parseInt(Story_No.slice(2));
+    Page_Content=Page_Content.slice(2);
     console.log('storyno',Story_No);
     console.log('pagecon',Page_Content);
 

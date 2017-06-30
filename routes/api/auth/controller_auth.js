@@ -7,9 +7,14 @@ const bkfd2Password = require("pbkdf2-password");
 const hasher= bkfd2Password();
 const jwt = require('jsonwebtoken');
 const config = require("../../../config/config.js");
-
-
-
+const nodemailer=require('nodemailer');
+let transporter=nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'historygdrive@gmail.com',
+        pass: '20170406'
+    }
+});
 exports.register = (req,res) => {
     console.log(req.body);
     const {userid, password, realname} = req.body;
