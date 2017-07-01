@@ -1,8 +1,8 @@
 /**
  * Created by Jeongho on 2017-05-13.
  */
-const path=require('path');
 const cwd = process.cwd();
+const path=require('path');
 const db=require(cwd+'/config/db');
 const fs=require('fs');
 exports.list_book=(req,res)=>{
@@ -43,11 +43,11 @@ exports.insert_story=(req,res)=>{
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
             console.log(error);
-            res.send(false);
+            res.json({result:false, message:'스토리 삽입 실패!'});
         }
         else{
             console.log('스토리 삽입 성공!');
-            res.send(true);
+            res.json({result:false, message:'스토리 삽입 성공!'});
         }
     });
 };
@@ -66,8 +66,7 @@ exports.action=(req,res)=>{
                 story_list.push(story[i]);
                 if(story_list.length === story.length){
                     JSON.stringify(story_list);
-                    // console.log('스토리 리스트',story_list);
-                    res.render('action_overview',{data:story_list});
+                    res.json(story_list);
                 }
             });
         }
@@ -115,15 +114,25 @@ exports.list_page=(req,res)=>{
     });
 };
 exports.insert_page=(req,res)=>{
+    //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
     console.log('업로드된 파일',req.files);
+    let Story_No=req.body.Story_No;
+    let Page_Content=req.body.Page_Content;
+    // let Story_No=(req.body.Story_No).replace("\u0000","").replace("\u0001","");
+    Story_No=parseInt(Story_No.slice(2));
+    Page_Content=Page_Content.slice(2);
+    console.log('storyno',Story_No);
+    console.log('pagecon',Page_Content);
+
 
     const sql = 'insert into page set ?';
     const page = {
-        Story_No:req.body.Story_No,
+        Story_No:Story_No,
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
         Page_Content:Page_Content,
+        Page_Link:req.body.Page_Link
     };
     db.query(sql,page,(error,results)=>{
         if(error) console.log(error);
