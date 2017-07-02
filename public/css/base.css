@@ -237,6 +237,15 @@ button {
 .webui-popover-content .arg-popover button:hover {
     border: 1px dotted red;
 }
+.left .left-top .arg_ {
+    width: 68px;
+    text-align: center;
+    margin-left: 14px;
+    font-size: .9em;
+    position: relative;
+    top: 3px;
+    opacity: .3;
+}
 .left .left-top .view-mode a{
     text-decoration: none;    
     opacity: .3;
