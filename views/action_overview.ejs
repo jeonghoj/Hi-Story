@@ -139,28 +139,27 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
-            <div class="new-story">
-                <form action="/insert_story" method="post">
-                    <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
-                    <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
-                    <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
+        <!--TODO 북 공개 여부가 스토리 전부의 공개 여부를 결정하므로 대폭 수정해야함-->
+        <div class="new-story">
+            <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
+            <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
+            <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
+            <!--FIXME 북 추가하는 부분 만듬으로써 디자인이 틀어짐 수정해주시면 감사 ㅠㅠ-->
+            <div class="new-book">
+                <input type="text" id="new-book-title" placeholder="insert book">
+                <input type="checkbox" id="new-book-public">공개여부
+                <button id="insert-new-book">새북 추가</button>
+            </div>
+            <!--여기에 북리스트 추가됨-->
+            <div class="new-story-book">
+            </div>
 
-                    <!--여기에 북리스트 추가됨-->
-                    <!--TODO 스토리 추가 할때 북 추가 할수 있게끔 AJAX 버튼 구현-->
-                    <div class="new-story-book">
-                        <input type="text" id="new-book-title" placeholder="insert book">
-                        <input type="checkbox" id="new-book-public">공개여부
-                        <button id="new-book-btn">새북 추가</button>
-                    </div>
-
-                    <div class="new-story-footer">
-                        <input type="checkbox" id="public" name="Story_Public">
-                        <label for="public" class="f-subSmall">PUBLIC</label>
-                        <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
-                        <input type="submit" class="f-empha">SUBMIT
-                        <!--<button id="insert-new-story" class="f-empha">SUBMIT</button>-->
-                    </div>
-                </form>
+            <div class="new-story-footer">
+                <label for="public" class="f-subSmall">PUBLIC</label>
+                <input type="checkbox" id="public" name="Story_Public">
+                <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
+                <button id="insert-new-story" class="f-empha">SUBMIT</button>
+            </div>
         </div>
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
@@ -201,34 +200,49 @@
                 success:function (data) {
                     console.log(data);
                     for(var i=0; i<data.length;i++){
-                        console.log("실행중?");
                         $(".new-story-book")
-                            .append("<input class='new-book' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
+                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
                     }
                 }
             })
         });
+        $("#insert-new-book").click(function () {
+            var newbook = {
+                Book_Name : $('#new-book-title').val(),
+            }
+            $.ajax({
+                url:"/insert_book",
+                type:"post",
+                data:newbook,
+                success: function (data) {
+                    console.log(data);
+                    $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
+                }
+            })
+        })
 
 //      TODO: submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
         $("#insert-new-story").click(function () {
-            var data = {
+            var newstory = {
                 Story_Title : $("#new-story-title").val(),
-                Book_No : $("#book_no").val(),
+                Book_No : $(":input:radio[name=Book_No]:checked").val(),
                 Story_Public : !(!!$("#public").is(":checked"))
-//                true 는 공개 false는 비공개
             };
-            console.log(data);
+            //true 는 공개 false는 비공개
             $.ajax({
                 url:"/insert_story",
                 type:"post",
-                data:data,
-                success:function (returns) {
-                    if(returns === true)
+                data:newstory,
+                success:function (data) {
+                    if(data.result === true)
                     {
                         alert('success');
+                        location.replace(data.url);
+
                     }else
                     {
-                        alert('fail');
+                        alert('일시적으로 문제가 발생했습니다. 다시 요청해주세요');
+                        location.replace(data.url);
                     }
                 }
 

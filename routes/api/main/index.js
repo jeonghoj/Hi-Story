@@ -35,6 +35,7 @@ router.get('/public/img/:name',controller.imageload);
 router.post('/list_book', passport.authenticate('jwtc',{session:false}),controller.list_book);
 router.post('/list_story', passport.authenticate('jwtc',{session:false}),controller.list_story);
 
+router.post('/insert_book',passport.authenticate('jwtc',{session:false}),controller.insert_book);
 router.post('/insert_story',passport.authenticate('jwtc',{session:false}),controller.insert_story);
 
 router.get('/action',passport.authenticate('jwtc',{session:false}),controller.action);

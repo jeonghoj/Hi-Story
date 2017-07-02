@@ -25,6 +25,8 @@ exports.signup=(req,res)=>{
         res.send(data);
     });
 };
+
+
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
     fs.readFile('public/img/'+req.params.name,function (error,data) {
@@ -42,6 +44,20 @@ exports.list_book=(req,res)=>{
         if(error) console.log(error);
         res.json(results);
     });
+};
+exports.insert_book=(req,res)=>{
+    console.log('북삽입',req.body);
+    const new_book={
+        Member_No:req.user.Member_No,
+        Book_Name:req.body.Book_Name,
+        Book_Author:req.user.Member_Name
+    };
+    db.query('insert into book set ? ',new_book,(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        res.json(results.insertId);
+    });
+
 };
 exports.list_story= (req,res)=> {
     let story = null;
@@ -63,6 +79,7 @@ exports.list_story= (req,res)=> {
     });
 };
 exports.insert_story=(req,res)=>{
+    console.log(req.body);
     const new_story={
         Book_No : req.body.Book_No,
         Member_No : req.user.Member_No,
@@ -74,11 +91,11 @@ exports.insert_story=(req,res)=>{
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
             console.log(error);
-            res.send(false);
+            res.send({result:false,url:'/action'});
         }
         else{
             console.log('스토리 삽입 성공!');
-            res.send(true);
+            res.json({result:true,url:'/action'});
         }
     });
 };
