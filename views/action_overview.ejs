@@ -60,9 +60,10 @@
                     <!--</div>-->
                 <!--</div>-->
                 <!--자바코드-->
-
-                <!--자바코드-->
-                <% console.log(data);%>
+                <%if(!data){%>
+                <!--TODO 데이터 없을때의 메세지, 문구, 동작 디자인해주세요 ^^-->
+                <div>데이터 없음</div>
+                <%}else{%>
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
                     <div class="story-header">
@@ -83,7 +84,8 @@
                     </div>
                     <%}%>
                 </div>
-                <% }%>
+                <%}%>
+                <%}%>
             </div>
         </div>
         

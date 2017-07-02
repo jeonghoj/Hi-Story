@@ -37,27 +37,7 @@ app.set('view engine', 'ejs');
 //라우트
 
 
-app.get('/',(req,res)=>{
-    fs.readFile('views/intro.html','utf8',(error,data)=>{
-        res.send(data);
-    });
-});
-app.get('/signup',(req,res)=>{
-   fs.readFile('views/sign-up.html','utf8',(error,data)=>{
-       res.send(data);
-   });
-});
 
-app.get('/public/img/:name',(req,res)=>{
-    console.log(req.params.name);
-    fs.readFile('public/img/'+req.params.name,function (error,data) {
-        if(error) {
-            console.log(error);
-        }
-        res.writeHead(200, {'Content-Type': 'image/jpeg'});
-        res.end(data);
-    })
-});
 const routes_auth = require('./routes/api/auth/index');
 const routes_main = require('./routes/api/main/index');
 const routes_a_auth=require('./routes/api/android/auth/index');
