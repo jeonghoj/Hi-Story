@@ -5,6 +5,11 @@ const cwd = process.cwd();
 const path=require('path');
 const db=require(cwd+'/config/db');
 const fs=require('fs');
+exports.history=(req,res)=>{
+    let sql = 'select';
+    db.query()
+
+};
 exports.list_book=(req,res)=>{
     console.log(req.user);
     db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
@@ -16,14 +21,14 @@ exports.list_story= (req,res)=> {
     let story = null;
     let story_list = [];
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select * from story where Member_No=?', req.user.Member_No, (error, results) => {
+    db.query('select Story_No,Book_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Public,Story_Priority,Story_Memo ' +
+        'from story where Member_No=?', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         story = results;
         for (let i = 0; i < story.length; i++) {
             db.query('select * from story_memo where Story_No=?', story[i].Story_No, (error, results) => {
                 if (error) console.log(error);
                 story[i].Story_Memo = results;
-                story_list.push(story[i]);
                 if (story_list.length === story.length) {
                     res.json(story_list);
                 }
@@ -63,9 +68,9 @@ exports.action=(req,res)=>{
             db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
                 if(error) console.log(error);
                 story[i].Story_Memo=results;
-                story_list.push(story[i]);
                 if(story_list.length === story.length){
                     JSON.stringify(story_list);
+                    console.log(story_list);
                     res.json(story_list);
                 }
             });

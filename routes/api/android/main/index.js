@@ -26,6 +26,8 @@ const controller = require('./controller_main');
 const passport = require(cwd+'/config/passport');
 //TODO 다른 사용자가 url로 다른 사용자의 글에 접근시 401 unauthorized 작업
 // 헤더에 JWT 토큰  삽입
+// router.post('/android_init',passport.authenticate('jwth',{session:false}),controller.android_init);
+
 router.post('/list_book', passport.authenticate('jwth',{session:false}),controller.list_book);
 router.post('/list_story', passport.authenticate('jwth',{session:false}),controller.list_story);
 router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
