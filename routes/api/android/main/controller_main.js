@@ -25,7 +25,6 @@ exports.action= (req,res)=> {
         }
     });
 };
-
 exports.history=(req,res)=>{
     let historydata=null;
     let sql = 'select book.Book_No,Book_Name,Book_Public ' +
@@ -52,6 +51,20 @@ exports.username=(req,res)=>{
     res.json({Member_Name:req.user.Member_Name});
 };
 
+exports.insert_book=(req,res)=>{
+    console.log('북삽입',req.body);
+    const new_book={
+        Member_No:req.user.Member_No,
+        Book_Name:req.body.Book_Name,
+        Book_Author:req.user.Member_Name
+    };
+    db.query('insert into book set ? ',new_book,(error,results)=>{
+        if(error) console.log(error);
+        db.query('select Book_No,Book_Name,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
+            res.json(results);
+        });
+    });
+};
 exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
     console.log(req.body);

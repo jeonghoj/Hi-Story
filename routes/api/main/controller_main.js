@@ -56,7 +56,6 @@ exports.insert_book=(req,res)=>{
         console.log(results);
         res.json(results.insertId);
     });
-
 };
 exports.list_story= (req,res)=> {
     let story = null;
