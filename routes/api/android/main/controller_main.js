@@ -35,7 +35,7 @@ exports.history=(req,res)=>{
         if(error) console.log(error);
         historydata=results;
         for(let i=0;i<historydata.length;i++){
-            db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Strory_DateEnd ' +
+            db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
                 'from story ' +
                 'where Book_No=?',historydata[i].Book_No,(error,results)=>{
                 if(error) console.log(error);
