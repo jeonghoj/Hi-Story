@@ -13,7 +13,7 @@
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
     <div class="nav">
-        <div class="logo"><a href="/action" class="f-logo">HiStory</a></div>
+        <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
         <ul class="menu">
             <li><a href="/action" class="f-menu active">Action</a></li>
             <li><a href="/history" class="f-menu">History</a></li>
@@ -30,17 +30,7 @@
                     <div class="overview"><a href="/action" class="f-basic ">Overview</a></div>
                     <div class="timeline"><a href="/action/timeline" class="f-basic active">Timeline</a></div>
                 </div>
-                <a href="#" class="f-basic arg">ARG</a>
-                <div class="webui-popover-content">
-                    <div class="arg-popover">
-                        <button id="arg01">이름 내림</button>
-                        <button id="arg02">이름 오름</button>
-                        <button id="arg03">날짜 오름</button>
-                        <button id="arg04">날짜 내림</button>
-                        <button id="arg05">수정 내림</button>
-                        <button id="arg06">수정 오름</button>
-                    </div>
-                </div>
+                <a class="f-basic arg_" style="opacity: 0.01;">ARG</a>
             </div>
             <%if(tldata === null){%>
             <div>데이터 없음 메세지</div>
@@ -83,7 +73,8 @@
                     </div>
                     <hr class="hr-infor">
                     <div class="story-setting">
-                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter</a></button>
+                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter into history</a></button>
+                        <hr class="hr-infor">
                         <button id="done-btn" class="f-basic">Done</button>
                         <button id="delete-btn" class="f-basic">Delete</button>
                     </div>

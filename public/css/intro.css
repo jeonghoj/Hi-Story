@@ -12,9 +12,11 @@ body {
 .intro-page,
 .sign-up {
     position: fixed;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border: 3px solid rgba(50, 50 , 50, 1);
+    padding: 100px;
 }
 
 .header {

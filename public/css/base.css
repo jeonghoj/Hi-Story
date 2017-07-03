@@ -18,9 +18,9 @@ button {
 
 /* font ================================================== :) */
 .f-logo {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: rgba(50, 50, 50, 1);
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: rgba(100, 100, 100, 1);
     text-decoration: none;
 }
 .f-menu {
@@ -71,10 +71,20 @@ button {
 }
 .nav .logo {
     padding-left: 24px;
+    margin-bottom: 8px;
+
+}
+.nav .logo img {
+    width: 45px;
+    margin-right: -9px;
+    position: relative;
+    top: 3px;
+    z-index: -10;
 }
 .nav ul.menu {
     list-style: none;
-    display: flex;    
+    display: flex;
+    margin-bottom: 0px;
 }
 .nav ul li {
     width: 82px;
@@ -236,6 +246,15 @@ button {
 }
 .webui-popover-content .arg-popover button:hover {
     border: 1px dotted red;
+}
+.left .left-top .arg_ {
+    width: 68px;
+    text-align: center;
+    margin-left: 14px;
+    font-size: .9em;
+    position: relative;
+    top: 3px;
+    opacity: .3;
 }
 .left .left-top .view-mode a{
     text-decoration: none;    
@@ -579,7 +598,7 @@ mark {
     top: 50%;
     left: 50%;
     width: 560px;
-    height: 345px;
+    height: 365px;
     padding: 20px;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 1);
@@ -594,10 +613,11 @@ mark {
     padding: 5px;
     border-bottom: 1px solid black;
     margin-bottom: 5px;
+    background-color: rgba(240, 240 ,240, 1);
 }
 .closeup .new-story #new-story-title:hover,
 .closeup .new-story #new-story-title:focus {
-    background-color: rgba(240, 240, 240, 1);
+    background-color: rgba(210, 210, 210, 1);
 }
 
 .closeup .new-story #new-story-close {

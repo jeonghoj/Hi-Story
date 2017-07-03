@@ -15,7 +15,7 @@
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
     <div class="nav">
-        <div class="logo"><a href="/action" class="f-logo">HiStory</a></div>
+        <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
         <ul class="menu">
             <li><a href="/action" class="f-menu">Action</a></li>
             <li><a href="history.ejs" class="f-menu">History</a></li>
@@ -28,6 +28,9 @@
         <!--왼쪽-->
         <div class="left">
             <!--메인페이지-->
+            <div class="left-top">
+                <a class="f-basic arg_" style="opacity: 0.01;">ARG</a>
+            </div>
             <div class="page-list">
                 <!--예시-->
                 <div class="date f-subSmall">2017.00.00</div>
@@ -109,12 +112,21 @@
                     </div>
                     <hr class="hr-infor">
                     <div class="story-setting">
-                        <button id="page-edit" class="f-basic">Edit this page</button>
+                        <!--story name과 public을 변경-->
+                        <button id="change-story-infor" class="f-basic">Edit history information</button>
+                        <button id="page-edit" class="f-basic">Edit last page</button>
+                        <hr class="hr-infor">
+                        <button id="done-btn" class="f-basic">Done</button>
+                        <button id="delete-btn" class="f-basic">Delete</button>
                     </div>
                     <%}%>
                 </div>
             </div>
-            <div class="footer f-subSmall">Company Infor</div>
+            <div class="footer f-subSmall">
+                <!--TODO: 서비스 이용에 대한 네비게인션이 있으면 좋겠지만 추후에 구현하도록 한다.-->
+                END 키를 이용해서 마지막 페이지로 이동 <br>
+                Company Infor
+            </div>
         </div>
     </div>
 
