@@ -9,7 +9,7 @@ const fs=require('fs');
 exports.action= (req,res)=> {
     let story = null;
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select Book_Name,Story_No,story.Book_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Public,Story_Priority ' +
+    db.query('select story.Book_No,Book_Name,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
         'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
@@ -31,8 +31,13 @@ exports.history=(req,res)=>{
     db.query(sql,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
     });
+};
+
+exports.update_book=(req,res)=>{
+    console.log('구현예정');
 
 };
+
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -53,6 +58,7 @@ exports.insert_story=(req,res)=>{
         }
     });
 };
+
 
 exports.list_page=(req,res)=>{
     let page=null;

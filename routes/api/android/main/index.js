@@ -29,11 +29,13 @@ const passport = require(cwd+'/config/passport');
 router.post('/action',passport.authenticate('jwth',{session:false}),controller.action);
 router.post('/history',passport.authenticate('jwth',{session:false}),controller.history);
 
-router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
+router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
 
 router.get('/action/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.get('/action/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
+
+router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
 router.post('/insert_page',passport.authenticate('jwth',{session:false}),
     upload.array('Page_Image',6),controller.insert_page);
 
