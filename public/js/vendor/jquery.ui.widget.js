@@ -20,7 +20,7 @@
 		factory( jQuery );
 	}
 }(function( $ ) {
-/*!
+/*!z
  * jQuery UI Widget 1.11.4
  * http://jqueryui.com
  *
