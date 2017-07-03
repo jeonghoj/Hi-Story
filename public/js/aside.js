@@ -19,26 +19,32 @@ $("document").ready(function () {
 });
 //TODO 슬라이드 업 애니메이션 후  -> 문자를 추가 -> 슬라이드 다운 애니메이션
 
-$( '.sel-story,.story' ).click(function(e) {
-    if(!$(event.target).is('.edit, .f-title')) {
-        $('.book-name').empty();
-        $('.story-name').empty();
-        $('.date').empty();
-        if (!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp();
+$( '.sel-story, .story' ).click(function () {
 
-        var index = $(this).index();
-        //변수를 집어넣을땐 + + 사이에 ^^7
-        var storyno=$('.story-no:eq('+index+')').text();
-        var bookname = $('.book-no:eq(' + index + ')').text();
-        var storyname = $('.story-title:eq(' + index + ')').text();
-        var storydate = $('.story-start-date:eq(' + index + ')').text();
-        $('#story-enter').children('a').attr("href","/action/story/"+storyno);
-        $('.book-name').append(bookname);
-        $('.story-name').append(storyname);
-        $('.date').append(storydate);
+    var index = $(this).index()
+
+    if(!$(event.target).is('.edit, .f-title')) {
+        if (!$('.right .aside .infor').is(':animated')) {
+            $('.right .aside .infor').slideUp(300, function () {
+                $('.story-no-infor').empty();
+                $('.book-name').empty();
+                $('.story-name').empty();
+                $('.date').empty();
+
+                //변수를 집어넣을땐 + + 사이에 ^^7
+                var storyno = $('.story-no:eq(' + index + ')').text();
+                var bookname = $('.book-no:eq(' + index + ')').text();
+                var storyname = $('.story-title:eq(' + index + ')').text();
+                var storydate = $('.story-start-date:eq(' + index + ')').text();
+                $('#story-enter').children('a').attr("href", "/action/story/" + storyno);
+                $('.story-no-infor').append(storyno);
+                $('.book-name').append(bookname);
+                $('.story-name').append(storyname);
+                $('.date').append(storydate);
+            });
+        }
 
         $('.right .aside .infor').slideDown('slow');
-
     }
 });
 
@@ -48,7 +54,6 @@ $( '.page' ).click(function() {
 
     var index = $(this).index();
     var booktitle =$('.book-title:eq('+ index +')');
-
 
     $('.right .aside .infor').slideDown('slow');
 });
