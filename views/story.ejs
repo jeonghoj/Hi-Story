@@ -25,8 +25,11 @@
     </div>
 
     <div class="container">
+        <!--왼쪽-->
         <div class="left">
+            <!--메인페이지-->
             <div class="page-list">
+                <!--예시-->
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
@@ -34,11 +37,12 @@
                 <div class="date f-subSmall">2017.00.00</div>
                 <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
                 <hr class="hr-page">
+                <!--본문-->
                 <% if(page[0].Page_No !== undefined){%>
                 <% for(var i=0; i<page.length-1;i++){%>
                             <% if(page[i].Page_Last==1) {%>
                         <div class="page-list"><%}%>
-                <div class="date f-subSmall"><%= page[i].Page_Date%></div>
+                <div class="date f-subSmall"><%= page[i].Page_Date.toISOString().slice(0, 19).replace('T', ' ')%></div>
                 <div class="page">
                     <% if(page[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
@@ -61,18 +65,18 @@
                 <%}%>
                 <%}%>
             </div>
-            <!--마지막페이지 표시-->
+            <!--마지막페이지 예시-->
             <div class="page-list">    
                 <div class="date f-sub">2017.00.00</div> 
                 <div class="last-page"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo maxime recusandae libero sint tenetur dolorem, dolorum eligendi. Molestias qui minima odit officiis quae. Quaerat aperiam, ipsam magni delequod</div>
             </div>
             <!--글쓰기-->
             <div class="page-list page-write">
-                <!--파일보내는곳-->
+
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
+                    <!--파일보내는곳-->
                     <input type="file" name="Page_Image" multiple>
                     <!--에디터-->
-
                     <input type="hidden" name="Story_No"
                            value="<%= (page[0].Page_No === undefined) ? Story_No : page[page.length-1].Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
@@ -83,6 +87,7 @@
                         <span id = "status"></span>
                     </div>
                 </form>
+                <!--에디터 표시 스크립트-->
                 <script>
                     CKEDITOR.replace('editor1');
                 </script>
@@ -95,7 +100,7 @@
                     <%if(page !== null) {%>
                     <div class="book-name f-subSmall"><%=page[0].Book_Name%></div>
                     <div class="story-name f-empha" ><%=page[0].Story_Title%></div>
-                    <div class="date f-subSmall"><%=page[0].Story_DateStart%></div>
+                    <div class="date f-subSmall"><%=page[0].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                     <hr class="hr-infor">
                     <div class="score">
                         <div class="score-num citation f-subSmall">Page Citation

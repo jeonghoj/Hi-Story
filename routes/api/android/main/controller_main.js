@@ -25,8 +25,12 @@ exports.action= (req,res)=> {
     });
 };
 exports.history=(req,res)=>{
-    let sql = 'select ';
-    db.query()
+    let sql = 'select book.Book_No,book.Book_Name,story.Story_Title,story.Story_Owner from book,story where book.Member_No=? and book.Book_No=story.Book_No';
+    db.query(sql,req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+
+
+    });
 
 };
 exports.list_book=(req,res)=>{
