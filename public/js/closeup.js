@@ -1,4 +1,4 @@
-// New story 창 열기
+// New story 열기
 $('.right .aside .aside-btn #new-story-btn').click(function () {
     $('.closeup').css({
         "visibility": "visible"
@@ -11,7 +11,7 @@ $('.right .aside .aside-btn #new-story-btn').click(function () {
 //    });
 });
 
-// New story 창 닫기
+// New story 닫기
 $('.closeup .new-story #new-story-close').click(function () {
     $('.closeup').css({
         "visibility": "hidden"
@@ -20,7 +20,7 @@ $('.closeup .new-story #new-story-close').click(function () {
         "visibility": "hidden"
     });
 //    $('body').css({
-//        "overflow": "scroll" 
+//        "overflow": "scroll"
 //    });
 });
 
@@ -50,5 +50,16 @@ $('.closeup .story-delete #story-delete-close').click(function () {
 //        "overflow": "scroll" 
 //    });
 });
+
+// Done 열기
+$('.right .aside .aside-btn #new-story-btn').click(function () {
+    $('.closeup').css({
+        "visibility": "visible"
+    });
+    $('.closeup .new-story').css({
+        "visibility": "visible"
+    });
+});
+// Done 닫기
 
 // TODO: 모든 창 닫기에서 esc나 다른 부분을 클릭해도 나가지도록 한다.

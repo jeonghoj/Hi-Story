@@ -78,7 +78,8 @@
 
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
                     <!--파일보내는곳-->
-                    <input type="file" name="Page_Image" multiple>
+                    <input type="file" name="Page_Image" id="file" style="display: none;" multiple>
+                    <label for="file" id="file-label">파일 첨부</label>
                     <!--에디터-->
                     <input type="hidden" name="Story_No"
                            value="<%= (page[0].Page_No === undefined) ? Story_No : page[page.length-1].Story_No%>">

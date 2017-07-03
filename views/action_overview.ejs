@@ -72,7 +72,7 @@
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
-                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
@@ -142,6 +142,7 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
+
         <!--TODO 북 공개 여부가 스토리 전부의 공개 여부를 결정하므로 대폭 수정해야함-->
         <div class="new-story">
             <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
@@ -164,15 +165,22 @@
                 <button id="insert-new-story" class="f-empha">SUBMIT</button>
             </div>
         </div>
+
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
-            
+            <div class="f-menu">The Last Page</div>
+            <!--에디터-->
+            <div class="textarea-done"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="footer">
+
+            </div>
         </div>
+
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
-            <p class="del-nav">type "<span class="f-empha">story name을 삭제합니다.</span>"</p>
+            <p class="del-nav">type "<span class="f-empha del-name">story name을 삭제합니다.</span>"</p>
             <input type="text" id="confirm" placeholder="confirm massage">
             <input type="submit">
         </div>

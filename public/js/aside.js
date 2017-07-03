@@ -19,9 +19,9 @@ $("document").ready(function () {
 });
 //TODO 슬라이드 업 애니메이션 후  -> 문자를 추가 -> 슬라이드 다운 애니메이션
 
-$( '.sel-story, .story' ).click(function () {
+$('.story').click(function () {
 
-    var index = $(this).index()
+    var index = $(this).index();
 
     if(!$(event.target).is('.edit, .f-title')) {
         if (!$('.right .aside .infor').is(':animated')) {
@@ -30,6 +30,7 @@ $( '.sel-story, .story' ).click(function () {
                 $('.book-name').empty();
                 $('.story-name').empty();
                 $('.date').empty();
+                $('.del-name').empty();
 
                 //변수를 집어넣을땐 + + 사이에 ^^7
                 var storyno = $('.story-no:eq(' + index + ')').text();
@@ -40,6 +41,7 @@ $( '.sel-story, .story' ).click(function () {
                 $('.story-no-infor').append(storyno);
                 $('.book-name').append(bookname);
                 $('.story-name').append(storyname);
+                $('.del-name').append(storyname + "을(를) 삭제합니다.");
                 $('.date').append(storydate);
             });
         }
