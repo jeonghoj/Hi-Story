@@ -39,7 +39,6 @@ exports.history=(req,res)=>{
                 'from story ' +
                 'where Book_No=?',historydata[i].Book_No,(error,results)=>{
                 if(error) console.log(error);
-                console.log(results);
                 historydata[i].Story=results;
                 if(i===historydata.length-1){
                     res.json(historydata);
