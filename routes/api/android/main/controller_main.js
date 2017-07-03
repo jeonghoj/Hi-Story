@@ -42,7 +42,6 @@ exports.history=(req,res)=>{
                 console.log(results);
                 historydata[i].Story=results;
                 if(i===historydata.length-1){
-                    console.log(historydata);
                     res.json(historydata);
                 }
             });
@@ -50,19 +49,32 @@ exports.history=(req,res)=>{
 
     });
 };
-
 exports.username=(req,res)=>{
     res.json({Member_Name:req.user.Member_Name});
 };
-exports.update_book_title=(req,res)=>{
-    console.log(req.body);
-    let updatebook={
 
+exports.update_book_title=(req,res)=>{
+    // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
+    console.log(req.body);
+    let booktitle={
+        Book_Name:req.body.Book_Name,
     };
-    let sql='update into book set ?';
-    // db.query(sql,updatebook,(error,results)=>{
-    //
-    // });
+    let sql='update into book set ? where Book_No=? and Member_No=?';
+    db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
+        if(error) {
+            console.log(error);
+        }
+        if(results.affectedRows===0){
+            // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
+            res.json({result:false,message:'잘못된 접근입니다.'});
+        }else if(results.changedRows===0){
+            res.json({result:false,message:'같은 내용입니다'});
+        }else{
+            console.log('book변경');
+            res.json({result:true,message:'변경되었습니다.'})
+        }
+
+    });
 
 
 };
@@ -73,7 +85,6 @@ exports.insert_story=(req,res)=>{
         Member_No : req.user.Member_No,
         Story_Title : req.body.Story_Title,
         Story_Owner : req.user.Member_Name,
-        Story_Public : req.body.Story_Public ? 1 : 0,
     };
     console.log('뉴스토리',new_story);
     db.query('insert into story set ? ',new_story, (error)=>{

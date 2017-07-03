@@ -26,7 +26,6 @@ exports.signup=(req,res)=>{
     });
 };
 
-
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
     fs.readFile('public/img/'+req.params.name,function (error,data) {
