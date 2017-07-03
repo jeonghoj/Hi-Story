@@ -31,7 +31,7 @@ router.post('/history',passport.authenticate('jwth',{session:false}),controller.
 
 router.post('/username',passport.authenticate('jwth',{session:false}),controller.username);
 
-router.post('/insert_book',passport.authenticate('jwtc',{session:false}),controller.insert_book);
+router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
 router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book_title);
 
 router.get('/action/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);

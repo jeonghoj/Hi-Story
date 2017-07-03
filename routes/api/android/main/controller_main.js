@@ -52,6 +52,7 @@ exports.username=(req,res)=>{
 };
 
 exports.insert_book=(req,res)=>{
+    // TODO: Book_Public들어가야함!
     console.log('북삽입',req.body);
     const new_book={
         Member_No:req.user.Member_No,

@@ -49,7 +49,8 @@ exports.insert_book=(req,res)=>{
     const new_book={
         Member_No:req.user.Member_No,
         Book_Name:req.body.Book_Name,
-        Book_Author:req.user.Member_Name
+        Book_Author:req.user.Member_Name,
+        // Book_Public : req.body.Book_Public ? 1 : 0,
     };
     db.query('insert into book set ? ',new_book,(error,results)=>{
         if(error) console.log(error);
@@ -83,7 +84,6 @@ exports.insert_story=(req,res)=>{
         Member_No : req.user.Member_No,
         Story_Title : req.body.Story_Title,
         Story_Owner : req.user.Member_Name,
-        Story_Public : req.body.Story_Public ? 1 : 0,
     };
     console.log('뉴스토리',new_story);
     db.query('insert into story set ? ',new_story, (error)=>{
