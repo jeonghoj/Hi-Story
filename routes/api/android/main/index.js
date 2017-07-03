@@ -29,7 +29,7 @@ const passport = require(cwd+'/config/passport');
 router.post('/action',passport.authenticate('jwth',{session:false}),controller.action);
 router.post('/history',passport.authenticate('jwth',{session:false}),controller.history);
 
-router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
+// router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
 
 router.get('/action/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.get('/action/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);

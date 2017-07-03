@@ -27,14 +27,43 @@ exports.action= (req,res)=> {
 };
 
 exports.history=(req,res)=>{
-    let sql = 'select book.Book_No,book.Book_Name,story.Story_Title,story.Story_Owner from book,story where book.Member_No=? and book.Book_No=story.Book_No';
-    db.query(sql,req.user.Member_No,(error,results)=>{
+    let historydata=null;
+    let sql = 'select book.Book_No,Book_Name,Book_Public ' +
+        'from book' +
+        'where Member_No=?';
+    db.query('select book.Book_No,Book_Name,Book_Public from book where Member_No=?',req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
+        historydata=results;
+        for(let i=0;i<historydata.length;i++){
+            db.query('select Story_No,Story_Title,Story_Owner ' +
+                'from story ' +
+                'where Book_No=?',historydata[i].Book_No,(error,results)=>{
+                if(error) console.log(error);
+                console.log(results);
+                historydata[i].Story=results;
+                if(i===historydata.length-1){
+                    console.log(historydata);
+                    res.json(historydata);
+                }
+            });
+        }
+
     });
 };
 
-exports.update_book=(req,res)=>{
-    console.log('구현예정');
+exports.username=(req,res)=>{
+    res.json({Member_Name:req.user.Member_Name});
+};
+exports.update_book_title=(req,res)=>{
+    console.log(req.body);
+    let updatebook={
+
+    };
+    let sql='update into book set ?';
+    // db.query(sql,updatebook,(error,results)=>{
+    //
+    // });
+
 
 };
 
