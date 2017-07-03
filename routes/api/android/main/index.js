@@ -26,13 +26,16 @@ const controller = require('./controller_main');
 const passport = require(cwd+'/config/passport');
 //TODO 다른 사용자가 url로 다른 사용자의 글에 접근시 401 unauthorized 작업
 // 헤더에 JWT 토큰  삽입
-router.post('/list_book', passport.authenticate('jwth',{session:false}),controller.list_book);
-router.post('/list_story', passport.authenticate('jwth',{session:false}),controller.list_story);
-router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
-router.get('/action',passport.authenticate('jwth',{session:false}),controller.action);
+router.post('/action',passport.authenticate('jwth',{session:false}),controller.action);
+router.post('/history',passport.authenticate('jwth',{session:false}),controller.history);
+
+router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
+
 router.get('/action/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.get('/action/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
+
+router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
 router.post('/insert_page',passport.authenticate('jwth',{session:false}),
     upload.array('Page_Image',6),controller.insert_page);
 

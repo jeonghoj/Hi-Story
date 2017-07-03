@@ -5,12 +5,59 @@ const path=require('path');
 const cwd = process.cwd();
 const db=require(cwd+'/config/db');
 const fs=require('fs');
+const passport=require(cwd+'/config/passport');
+
+exports.intro=(req,res,next)=>{
+    // FIXME 추후 문제 발생 소지
+    passport.authenticate('jwtc', {session: false}, function(err, user, info) {
+        if (err) return next(err);
+        if (!user) {
+            console.log('유저없음');
+            return fs.readFile('views/intro.html','utf8',(error,data)=>{
+                res.send(data);});
+        }else {
+            res.redirect('/action');
+        }
+    })(req, res, next);
+};
+exports.signup=(req,res)=>{
+    fs.readFile('views/sign-up.html','utf8',(error,data)=>{
+        res.send(data);
+    });
+};
+
+
+exports.imageload=(req,res)=>{
+    console.log(req.params.name);
+    fs.readFile('public/img/'+req.params.name,function (error,data) {
+        if(error) {
+            console.log(error);
+        }
+        res.writeHead(200, {'Content-Type': 'image/jpeg'});
+        res.end(data);
+    })
+};
+
 exports.list_book=(req,res)=>{
     console.log(req.user);
     db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
         if(error) console.log(error);
         res.json(results);
     });
+};
+exports.insert_book=(req,res)=>{
+    console.log('북삽입',req.body);
+    const new_book={
+        Member_No:req.user.Member_No,
+        Book_Name:req.body.Book_Name,
+        Book_Author:req.user.Member_Name
+    };
+    db.query('insert into book set ? ',new_book,(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        res.json(results.insertId);
+    });
+
 };
 exports.list_story= (req,res)=> {
     let story = null;
@@ -32,6 +79,7 @@ exports.list_story= (req,res)=> {
     });
 };
 exports.insert_story=(req,res)=>{
+    console.log(req.body);
     const new_story={
         Book_No : req.body.Book_No,
         Member_No : req.user.Member_No,
@@ -43,11 +91,11 @@ exports.insert_story=(req,res)=>{
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
             console.log(error);
-            res.send(false);
+            res.send({result:false,url:'/action'});
         }
         else{
             console.log('스토리 삽입 성공!');
-            res.send(true);
+            res.json({result:true,url:'/action'});
         }
     });
 };
@@ -58,19 +106,25 @@ exports.action=(req,res)=>{
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
     db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
-        story =results;
-        for(let i = 0 ; i<story.length; i++){
-            db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
-                if(error) console.log(error);
-                story[i].Story_Memo=results;
-                story_list.push(story[i]);
-                if(story_list.length === story.length){
-                    JSON.stringify(story_list);
-                    // console.log('스토리 리스트',story_list);
-                    res.render('action_overview',{data:story_list});
-                }
-            });
+        // 데이터가 없다면
+        if(results[0]===undefined){
+             res.render('action_overview',{data:false});
+        }else {
+            story =results;
+            for(let i = 0 ; i<story.length; i++){
+                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                    if(error) console.log(error);
+                    story[i].Story_Memo=results;
+                    story_list.push(story[i]);
+                    if(story_list.length === story.length){
+                        JSON.stringify(story_list);
+                        // console.log('스토리 리스트',story_list);
+                        res.render('action_overview',{data:story_list});
+                    }
+                });
+            }
         }
+
     });
 };
 exports.list_page=(req,res)=>{

@@ -12,8 +12,8 @@ const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
-var cookieExtractor = function(req) {
-    var token = null;
+const cookieExtractor = function(req) {
+    let token = null;
     if (req && req.cookies) token = req.cookies['jwt'];
     return token;
 };

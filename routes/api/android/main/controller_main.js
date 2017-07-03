@@ -5,32 +5,39 @@ const cwd = process.cwd();
 const path=require('path');
 const db=require(cwd+'/config/db');
 const fs=require('fs');
-exports.list_book=(req,res)=>{
-    console.log(req.user);
-    db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
-        if(error) console.log(error);
-        res.json(results);
-    });
-};
-exports.list_story= (req,res)=> {
+
+exports.action= (req,res)=> {
     let story = null;
-    let story_list = [];
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select * from story where Member_No=?', req.user.Member_No, (error, results) => {
+    db.query('select story.Book_No,Book_Name,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
+        'from story,book ' +
+        'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         story = results;
         for (let i = 0; i < story.length; i++) {
             db.query('select * from story_memo where Story_No=?', story[i].Story_No, (error, results) => {
                 if (error) console.log(error);
-                story[i].Story_Memo = results;
-                story_list.push(story[i]);
-                if (story_list.length === story.length) {
-                    res.json(story_list);
+                story[i].Story_Memo=results;
+                if (i === story.length-1) {
+                    res.json(story);
                 }
             });
         }
     });
 };
+
+exports.history=(req,res)=>{
+    let sql = 'select book.Book_No,book.Book_Name,story.Story_Title,story.Story_Owner from book,story where book.Member_No=? and book.Book_No=story.Book_No';
+    db.query(sql,req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+    });
+};
+
+exports.update_book=(req,res)=>{
+    console.log('구현예정');
+
+};
+
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -52,26 +59,7 @@ exports.insert_story=(req,res)=>{
     });
 };
 
-exports.action=(req,res)=>{
-    let story = null;
-    let story_list = [];
-    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
-        if(error) console.log(error);
-        story =results;
-        for(let i = 0 ; i<story.length; i++){
-            db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
-                if(error) console.log(error);
-                story[i].Story_Memo=results;
-                story_list.push(story[i]);
-                if(story_list.length === story.length){
-                    JSON.stringify(story_list);
-                    res.json(story_list);
-                }
-            });
-        }
-    });
-};
+
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
@@ -113,13 +101,13 @@ exports.list_page=(req,res)=>{
         }
     });
 };
+
 exports.insert_page=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
     console.log('업로드된 파일',req.files);
     let Story_No=req.body.Story_No;
     let Page_Content=req.body.Page_Content;
-    // let Story_No=(req.body.Story_No).replace("\u0000","").replace("\u0001","");
     Story_No=parseInt(Story_No.slice(2));
     Page_Content=Page_Content.slice(2);
     console.log('storyno',Story_No);
