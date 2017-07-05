@@ -30,7 +30,7 @@ const jwtOptionscookie = {
 passport.use('jwth', new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;
-    db.query('select * from member where authID=?',[jwt_payload.authID],(error, results) => {
+    db.query('select Member_No,authID,Member_Name from member where authID=?',[jwt_payload.authID],(error, results) => {
         if(error) console.log(error);
         user = results[0];
         if (user) {

@@ -71,15 +71,12 @@
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
-                        <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
                         <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
-                        <!--TODO: edit의 위치를 box 상단에 붙인다.-->
                         <button class="edit f-sub">Edit</button>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
-                        <!--TODO: memo를 서버에서 불러올 때 textarea를 그 높이에 맞게 조정해준다.-->
                         <textarea class="story-memo" rows="1" cols="74"><%=data[i].Story_Memo[j].Story_Memo_Text%></textarea>
                     </div>
                     <%}%>

@@ -41,7 +41,6 @@ exports.imageload=(req,res)=>{
 };
 
 exports.list_book=(req,res)=>{
-    console.log(req.user);
     db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
         if(error) console.log(error);
         res.json(results);
@@ -100,8 +99,6 @@ exports.insert_story=(req,res)=>{
         }
     });
 };
-
-
 
 exports.list_page=(req,res)=>{
     let page=null;
@@ -210,10 +207,10 @@ exports.action=(req,res)=>{
 };
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +
+    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
-        'Order By page.Page_Date DESC';
+        'Order By page.Page_UpdateDate DESC';
 
     db.query(sql,(error,results)=>{
         if(results.length===0) res.render('action_timeline',{tldata:null});

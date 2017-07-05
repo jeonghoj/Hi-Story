@@ -203,10 +203,10 @@ exports.insert_page=(req,res)=>{
 //TODO 값이 없을때 서버, 웹에서의 처리
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +
+    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
-        'Order By page.Page_Date DESC';
+        'Order By page.Page_UpdateDate DESC';
 
     db.query(sql,(error,results)=>{
         if(results.length===0) res.render('action_timeline',{tldata:null});
