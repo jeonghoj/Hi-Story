@@ -34,8 +34,6 @@ $('.edit').click(function () {
 $("#new-memo-btn").click(function () {
     var no = $(event.target).parent().parent().find('.story-no-infor').text();
 
-    // alert($('.story').length);
-
     for (var i=0; i<$('.story').length-1; i++) {
         var j = i+1;
         var no_ = $('.story:eq('+j+')').find('.story-no').text();

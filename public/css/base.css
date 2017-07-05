@@ -457,13 +457,16 @@ mark {
 /* Writeing ================================================== :) */
 .left .page-write {
     margin-bottom: 400px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 .left .page-write #file-label {
     padding: 0px 5px 0px 5px;
     background: rgba(240, 240, 240, 1);
     border: 1px solid rgba(200, 200, 200, 1);
     margin: 0px 0px 15px 0px;
+}
+.left .page-write #file-label:hover {
+    background: rgba(200, 200, 200, 1);
 }
 .left .page-write .textarea {
     width: 668px;
@@ -479,11 +482,14 @@ mark {
 .left .page-write .footer * {
     margin-left: 15px;
     margin-top: 5px;
+    padding: 0px 5px 0px 5px;
     text-decoration: none;
     background: rgba(240, 240, 240, 1);
     border: 1px solid rgba(200, 200, 200, 1);
 }
-
+.left .page-write .footer *:hover {
+    background: rgba(200, 200, 200, 1);
+}
 
 /* Books ================================================== :) */
 .book-list {
