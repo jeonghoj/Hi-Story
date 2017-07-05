@@ -70,14 +70,40 @@
                         <div class="book-no" style="display: none"><%=data[i].Book_Name%></div>
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
+<<<<<<< HEAD
                         <div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
+=======
+                        <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
+                        <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
+                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                    </div>
+                    <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
+                    <div class="memo">
+                        <!--TODO: edit의 위치를 box 상단에 붙인다.-->
+                        <button class="edit f-sub">Edit</button>
+>>>>>>> 3a003abab1d228072a8433a090f04cc271680d52
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
                         <div class="story-memo"><%=data[i].Story_Memo[j].Story_Memo_Text%></div>
+                        <button>전송</button>
+                        <script>
+                            $('.edit.f-sub').click(function (event) {
+                                console.log(event.target);
+                                var Story_Memo=$(event.target).parent().children('.story-memo');
+                                var Story_Memo_Text=Story_Memo.html();
+                                console.log(Story_Memo_Text);
+                                Story_Memo.empty();
+                                Story_Memo.append("<input type='text' value="+ Story_Memo_Text+">");
+                            })
+                            $('.story-memo').click(function (event) {
+                                console.log('되나되나?');
+
+                            })
+                        </script>
                     </div>
                     <%}%>
                 </div>
@@ -93,9 +119,9 @@
                 <div class="infor">
                     <!--TODO: 첫화면에는 가장 나중에 작성한 스토리를 표시?-->
                     <div class="story-no-infor" style='display:none'></div>
-                    <div class="book-name f-subSmall">Bookname</div>
-                    <div class="story-name f-empha">Storyname</div>
-                    <div class="date f-subSmall">2017.00.00</div>
+                    <div class="book-name f-subSmall"><%=(data === false) ? null : data[0].Book_Name%></div>
+                    <div class="story-name f-empha"><%=(data === false) ? null : data[0].Story_Title%></div>
+                    <div class="date f-subSmall"><%=(data === false) ? null : data[0].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                     <hr class="hr-infor">
                     <div class="score">
                         <!--다른 user가 story를 인용한 횟수-->
@@ -117,7 +143,7 @@
                         <!--TODO AJAX를 통해서 버튼을 설정해주는게 좋을듯, 아니면 미리 내장을 해놓던가-->
                         <!--page를 보러 들어가는 버튼, 제목을 클릭해서도 들어갈 수 있다.-->
                         <!--TODO: anchor 정리-->
-                        <button id="story-enter"><a href="/story.html" class="f-basic">Enter into history</a></button>
+                        <button id="story-enter"><a href="/story/<%=(data === false) ? null :data[0].Story_No%>" class="f-basic">Enter into history</a></button>
                         <!--새로운 메모를 작성한다.-->
                         <button id="new-memo-btn" class="f-basic">Make new memo</button>
                         <hr class="hr-infor">
@@ -191,13 +217,6 @@
     <script src="/js/slide.js"></script>
     <script src="/js/memo.js"></script>
     <script src="/js/aside.js"></script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-
-    <script id="booktemplate" type="text/x-tmpl">
-        <input id="book_no" name="Book_No" type="radio" value=${Book_No}>${Book_Name}
-        <br>
-    </script>
-
     <script>
         //TODO: 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
         $(".aside-btn").click(function () {
@@ -212,8 +231,9 @@
                             .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
                     }
                 }
-            })
+            });
         });
+
         $("#insert-new-book").click(function () {
             var newbook = {
                 Book_Name : $('#new-book-title').val(),
@@ -226,8 +246,8 @@
                     console.log(data);
                     $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
                 }
-            })
-        })
+            });
+        });
 
 //      TODO: submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
         $("#insert-new-story").click(function () {
@@ -242,20 +262,16 @@
                 type:"post",
                 data:newstory,
                 success:function (data) {
-                    if(data.result === true)
-                    {
+                    if(data.result === true){
                         alert('success');
                         location.replace(data.url);
-
-                    }else
-                    {
+                    }else{
                         alert('일시적으로 문제가 발생했습니다. 다시 요청해주세요');
                         location.replace(data.url);
                     }
                 }
-
-            })
-        })
+            });
+        });
     </script>
 
     <script>
