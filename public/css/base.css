@@ -740,3 +740,10 @@ mark {
     width: 670px;
     height: 400px;
 }
+.closeup .story-done #story-done-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    opacity: .7;
+    padding: 3px;
+}

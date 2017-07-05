@@ -52,14 +52,26 @@ $('.closeup .story-delete #story-delete-close').click(function () {
 });
 
 // Done 열기
-$('.right .aside .aside-btn #new-story-btn').click(function () {
+$('#done-btn').click(function () {
     $('.closeup').css({
         "visibility": "visible"
     });
-    $('.closeup .new-story').css({
+    $('.closeup .story-done').css({
         "visibility": "visible"
     });
 });
+
 // Done 닫기
+$('.closeup .story-done #story-done-close').click(function () {
+    $('.closeup').css({
+        "visibility": "hidden"
+    });
+    $('.closeup .story-done').css({
+        "visibility": "hidden"
+    });
+//    $('body').css({
+//        "overflow": "scroll"
+//    });
+});
 
 // TODO: 모든 창 닫기에서 esc나 다른 부분을 클릭해도 나가지도록 한다.

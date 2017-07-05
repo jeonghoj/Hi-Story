@@ -70,23 +70,12 @@
                         <div class="book-no" style="display: none"><%=data[i].Book_Name%></div>
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
-<<<<<<< HEAD
                         <div class="story-title"><a href="/action/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
                         <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
                         <a href="#" class="edit f-sub">Edit</a>
-=======
-                        <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
-                        <!--TODO: 클릭 시 페이지의 view가 상단으로 이동하는 것을 막는다.-->
-                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
-                    </div>
-                    <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
-                    <div class="memo">
-                        <!--TODO: edit의 위치를 box 상단에 붙인다.-->
-                        <button class="edit f-sub">Edit</button>
->>>>>>> 3a003abab1d228072a8433a090f04cc271680d52
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
                         <div class="story-memo"><%=data[i].Story_Memo[j].Story_Memo_Text%></div>
                         <button>전송</button>
@@ -192,10 +181,14 @@
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
             <div class="f-menu">The Last Page</div>
+            <a href='#' id='story-done-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--에디터-->
-            <div class="textarea-done"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="textarea"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
             <div class="footer">
-
+                <div class="attachment">첨부</div>
+                <input type="submit" id="submit" style="display: none;">
+                <label for="submit">제출</label>
+                <span id = "status"></span>
             </div>
         </div>
 
