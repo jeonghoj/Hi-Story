@@ -25,6 +25,9 @@ exports.signup=(req,res)=>{
         res.send(data);
     });
 };
+exports.logout=(req,res)=>{
+    res.clearCookie('jwt').redirect('/');
+};
 
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
@@ -44,8 +47,8 @@ exports.list_book=(req,res)=>{
         res.json(results);
     });
 };
+// TODO book_public버튼 구현
 exports.insert_book=(req,res)=>{
-    console.log('북삽입',req.body);
     const new_book={
         Member_No:req.user.Member_No,
         Book_Name:req.body.Book_Name,
@@ -98,33 +101,8 @@ exports.insert_story=(req,res)=>{
     });
 };
 
-exports.action=(req,res)=>{
-    let story = null;
-    let story_list = [];
-    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
-        if(error) console.log(error);
-        // 데이터가 없다면
-        if(results[0]===undefined){
-             res.render('action_overview',{data:false});
-        }else {
-            story =results;
-            for(let i = 0 ; i<story.length; i++){
-                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
-                    if(error) console.log(error);
-                    story[i].Story_Memo=results;
-                    story_list.push(story[i]);
-                    if(story_list.length === story.length){
-                        JSON.stringify(story_list);
-                        // console.log('스토리 리스트',story_list);
-                        res.render('action_overview',{data:story_list});
-                    }
-                });
-            }
-        }
 
-    });
-};
+
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
@@ -203,6 +181,33 @@ exports.insert_page=(req,res)=>{
 };
 
 //TODO 값이 없을때 서버, 웹에서의 처리
+exports.action=(req,res)=>{
+    let story = null;
+    let story_list = [];
+    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
+    db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+        // 데이터가 없다면
+        if(results[0]===undefined){
+            res.render('action_overview',{data:false});
+        }else {
+            story =results;
+            for(let i = 0 ; i<story.length; i++){
+                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                    if(error) console.log(error);
+                    story[i].Story_Memo=results;
+                    story_list.push(story[i]);
+                    if(story_list.length === story.length){
+                        JSON.stringify(story_list);
+                        // console.log('스토리 리스트',story_list);
+                        res.render('action_overview',{data:story_list});
+                    }
+                });
+            }
+        }
+
+    });
+};
 exports.timeline=(req,res)=>{
     let tldata=[];
     let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_Date ' +

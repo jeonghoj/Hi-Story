@@ -87,7 +87,6 @@
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
                         <div class="attachment">첨부</div>
                         <input type="submit">
-                        <span id = "status"></span>
                     </div>
                 </form>
                 <!--에디터 표시 스크립트-->
@@ -143,7 +142,6 @@
     <script src="/js/aside.js"></script>
     <script>
         $("#new-page").submit(function () {
-            $("#status").empty().text("File is uploading...");
             $.ajaxSubmit({
                 url:"/insert_page",
                 type:"post",

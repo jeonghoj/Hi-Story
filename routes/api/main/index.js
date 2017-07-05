@@ -28,6 +28,7 @@ const passport = require(cwd+'/config/passport');
 //FIXME 안드로이드 인증방식은 아예 따로 둬야한다, 두개 놓으니까 먼저꼐 인식되서 인증이 되지않는다
 router.get('/',controller.intro);
 router.get('/signup',controller.signup);
+router.get('/logout',controller.logout);
 // TODO 그 사용자만 이미지 로드할수있게 수정
 router.get('/public/img/:name',controller.imageload);
 
@@ -39,7 +40,7 @@ router.post('/insert_book',passport.authenticate('jwtc',{session:false}),control
 router.post('/insert_story',passport.authenticate('jwtc',{session:false}),controller.insert_story);
 
 router.get('/action',passport.authenticate('jwtc',{session:false}),controller.action);
-router.get('/action/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
+router.get('/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
 router.get('/story/:id',passport.authenticate('jwtc',{session:false}),controller.list_page);
 
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
