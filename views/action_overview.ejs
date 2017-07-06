@@ -191,7 +191,6 @@
                 url:"/list_book",
                 type:"post",
                 success:function (data) {
-                    console.log(data);
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
                             .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
@@ -209,7 +208,6 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    console.log(data);
                     $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
                 }
             });
