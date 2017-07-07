@@ -36,7 +36,7 @@ $(document).ready(function () {
     }
 
     // 저장된 cookie가 없는 경우에 기본적으로 이름 순 정렬
-    if (cookie_check == null) {
+    if ((cookie_check == null) || (cookie_check == undefined)) {
         // setCookie('argNum', 0);
         story_ary.sort(function (a, b) {
             return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
