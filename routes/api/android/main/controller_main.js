@@ -120,7 +120,6 @@ exports.list_page=(req,res)=>{
         "from book,story,page " +
         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
     db.query(sql,req.params.id,(error,results)=>{
-        console.log(results.length);
         // 페이지가 없을경우
         if(results.length===0)
         {
@@ -128,7 +127,6 @@ exports.list_page=(req,res)=>{
                 'from book,story ' +
                 'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
                 if(error) console.log(error);
-                console.log(results);
                 res.render('story',
                     {   page:results,
                         Story_No: req.params.id});
@@ -146,7 +144,6 @@ exports.list_page=(req,res)=>{
                 if(list_page.length===page.length){
                     list_page.push({Story_No : req.params.id});
                     JSON.stringify(list_page);
-                    console.log(list_page);
                     res.render('story',{page:list_page});
                 }
             })
