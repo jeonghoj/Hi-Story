@@ -33,19 +33,19 @@
             </div>
             <div class="page-list">
                 <!--예시-->
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>
-                <div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia</div>
-                <div class="date f-subSmall">2017.00.00</div>
-                <div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>
-                <hr class="hr-page">
+                <!--<div class="date f-subSmall">2017.00.00</div>-->
+                <!--<div class="page"> <div class="img-box"> img max size </div> <mark>Lorem amet, consectetur adipisicing elit.</mark> Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>-->
+                <!--<div class="page"> <div class="link-box"> <span class="f-empha">link title</span> <span >short imformation</span> <span class="f-subSmall">link URL</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur adipisicing facere quaerat itaque elit.</mark> Laboriosam p!</div>-->
+                <!--<div class="page"> <div class="quot-box f-title"> Quotation box is look like this! <span class="f-sub"> <br> - Ha Dongho</span> </div> <mark>Lorem ipsum dolor sit amet, consectetur elit.</mark> Quia</div>-->
+                <!--<div class="date f-subSmall">2017.00.00</div>-->
+                <!--<div class="page"> <mark>Lorem ipsum dolor.</mark>  Ullam temporibus harum at, totam similique vitae minima est explicabo recusandae a id illum ea, error cupiditate odio facere amet adipisci praesentium?</div>-->
+                <!--<hr class="hr-page">-->
                 <!--본문-->
                 <% if(page[0].Page_No !== undefined){%>
                 <% for(var i=0; i<page.length-1;i++){%>
                             <% if(page[i].Page_Last==1) {%>
                         <div class="page-list"><%}%>
-                <div class="date f-subSmall"><%= page[i].Page_Date.toISOString().slice(0, 19).replace('T', ' ')%></div>
+                <div class="date f-subSmall"><%= page[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div>
                 <div class="page">
                     <% if(page[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
@@ -77,9 +77,11 @@
             <div class="page-list page-write">
 
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
-                    <!--파일보내는곳-->
-                    <input type="file" name="Page_Image" id="file" style="display: none;" multiple>
-                    <label for="file" id="file-label">파일 첨부</label>
+                    <!--파일첨부-->
+                    <!--파일(파일은 한개만 가능)-->
+                    <input type="file" name="Page_File">
+                    <!--이미지-->
+                    <input type="file" name="Page_Image" multiple>
                     <!--에디터-->
                     <input type="hidden" name="Story_No"
                            value="<%= (page[0].Page_No === undefined) ? Story_No : page[page.length-1].Story_No%>">
@@ -87,9 +89,7 @@
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
                         <div class="attachment">첨부</div>
-                        <input type="submit" id="submit" style="display: none;">
-                        <label for="submit">제출</label>
-                        <span id = "status"></span>
+                        <input type="submit">
                     </div>
                 </form>
                 <!--에디터 표시 스크립트-->
@@ -145,7 +145,6 @@
     <script src="/js/aside.js"></script>
     <script>
         $("#new-page").submit(function () {
-            $("#status").empty().text("File is uploading...");
             $.ajaxSubmit({
                 url:"/insert_page",
                 type:"post",

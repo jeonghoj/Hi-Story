@@ -28,7 +28,7 @@
             <div class="left-top">
                 <div class="view-mode">
                     <div class="overview"><a href="/action" class="f-basic active">Overview</a></div>
-                    <div class="timeline"><a href="/action/timeline" class="f-basic ">Timeline</a></div>
+                    <div class="timeline"><a href="/timeline" class="f-basic ">Timeline</a></div>
                 </div>
                 <a href="#" class="f-basic arg">ARG</a>
                 <div class="webui-popover-content">
@@ -52,7 +52,7 @@
                     <!--</div>-->
                     <!--<div class="memo">-->
                         <!--<a href="#" class="edit f-sub">Edit</a>-->
-                        <!--<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>-->
+                        <!--&lt;!&ndash;<textarea class="story-memo" value="Lorem ipsum dolor sit amet." rows="1" cols="74" readonly>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, doloremque.</textarea>&ndash;&gt;-->
                     <!--</div>-->
                     <!--<div class="memo">-->
                         <!--<a href="#" class="edit f-sub">Edit</a>-->
@@ -219,7 +219,6 @@
                 url:"/list_book",
                 type:"post",
                 success:function (data) {
-                    console.log(data);
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
                             .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
@@ -237,7 +236,6 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    console.log(data);
                     $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
                 }
             });

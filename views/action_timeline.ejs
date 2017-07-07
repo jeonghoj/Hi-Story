@@ -28,7 +28,7 @@
             <div class="left-top">
                 <div class="view-mode">
                     <div class="overview"><a href="/action" class="f-basic ">Overview</a></div>
-                    <div class="timeline"><a href="/action/timeline" class="f-basic active">Timeline</a></div>
+                    <div class="timeline"><a href="/timeline" class="f-basic active">Timeline</a></div>
                 </div>
                 <a class="f-basic arg_" style="opacity: 0.01;">ARG</a>
             </div>
@@ -36,18 +36,18 @@
             <div>데이터 없음 메세지</div>
             <%}else{%>
             <% for(var i=0 ; i<tldata.length ; i++){%>
-            <% if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+            <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
             <div class="page-list"><%}%>
                 <div class="book-title" style="display: none"><%=tldata[i].Book_Name%></div>
                 <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
                 <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
-                <% if(i===0 ? true : tldata[i-1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
-                <div class="date f-subSmall"><%=tldata[i].Page_Date%></div><%}%>
+                <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
+                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate%></div><%}%>
                 <div class="page">
                     <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
                     <%-tldata[i].Page_Content%>
                 </div>
-            <% if(tldata[i+1]==null ? true : tldata[i+1].Page_Date.getDate() !== tldata[i].Page_Date.getDate()){%>
+            <% if(tldata[i+1]==null ? true : tldata[i+1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
             </div><%}%>
             <%}%>
             <%}%>

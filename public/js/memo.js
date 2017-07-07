@@ -8,24 +8,24 @@ $(document).ready(function () {
 });
 
 $('.edit').click(function () {
-    if ($(this).next().is('[readonly]')) {
+    if ($(this).next().next().is('[readonly]')) {
 //        alert("!");
         $(this).css({
             "opacity": "1"
         });
-        $(this).next().removeAttr('readonly').css({
+        $(this).next().next().removeAttr('readonly').css({
             "opacity": ".5"
         });
     } else {
         $(this).css({
             "opacity": ".3"
         });
-        $(this).next().attr('readonly', 'readonly').css({
+        $(this).next().next().attr('readonly', 'readonly').css({
             "opacity": "1"
         });
         // box가 작아졌을 때 크기를 줄인다.
         $(this).next().css({
-            'height': $(this).next().prop('scrollHeight')
+            'height': $(this).next().next().prop('scrollHeight')
         });
     }
 });
