@@ -30,15 +30,18 @@ $('.edit').click(function () {
     }
 });
 
+$(document).ready(function () {
+    $('.story-no-infor').append('1');
+});
+
 // 새 메모 추가
 $("#new-memo-btn").click(function () {
     var no = $(event.target).parent().parent().find('.story-no-infor').text();
 
     for (var i=0; i<$('.story').length-1; i++) {
-        var j = i+1;
-        var no_ = $('.story:eq('+j+')').find('.story-no').text();
+        var no_ = $('.story:eq('+i+')').find('.story-no').text();
         if(no == no_) {
-            $('.story:eq('+j+')').append("<div> INSERT THE MEMO </div>");
+            $('.story:eq('+i+')').append("<div> INSERT THE MEMO </div>");
             break;
         }
     }
