@@ -28,14 +28,16 @@ exports.signup=(req,res)=>{
 exports.logout=(req,res)=>{
     res.clearCookie('jwt').redirect('/');
 };
-// exports.filedown=(req,res)=>{
-//     fs.readFile(cwd+'/userfile/'+req.params.name,(error,data)=>{
-//         if(error) console.log(error);
-//         const filename = req.params.name;
-//         const filepath = cwd+"/userfile/"+filename;
-//         res.download(filepath);
-//     });
-// };
+exports.check_idOverlap=(req,res)=>{
+    const sql = 'select count(*) as overlap from member where Member_ID=?';
+    db.query(sql,req.body.userid,(error,results)=>{
+        if(results[0].overlap === 0) {
+            res.json({result: true, message:'사용 가능한 아이디입니다!'});
+        }else{
+            res.json({result:false,message:'중복된 아이디입니다.'})
+        }
+    });
+};
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
     fs.readFile(cwd+'/userfile/'+req.params.name,function (error,data) {
@@ -77,6 +79,31 @@ exports.list_story=(req,res)=>{
         }
 
     });
+};
+
+exports.update_book_title=(req,res)=>{
+    // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
+    console.log(req.body);
+    let booktitle={
+        Book_Name:req.body.Book_Name,
+    };
+    let sql='update into book set ? where Book_No=? and Member_No=?';
+    db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+        if(results.affectedRows===0){
+            // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
+            res.json({result:false,message:'잘못된 접근입니다.'});
+        }else if(results.changedRows===0){
+            res.json({result:false,message:'같은 내용입니다'});
+        }else{
+            console.log('book변경');
+            res.json({result:true,message:'변경되었습니다.'})
+        }
+    });
+};
+exports.update_book_public=(req,res)=>{
+    console.log(req.body.Book_No);
+    console.log(req.body.Book_Public);
 };
 
 exports.delete_story=(req,res)=>{
@@ -125,7 +152,6 @@ exports.insert_story=(req,res)=>{
         }
     });
 };
-
 exports.insert_page=(req,res)=>{
     console.log(req.body);
     console.log('업로드된 파일',req.files);
@@ -245,6 +271,36 @@ exports.action= (req,res)=> {
         }
     });
 };
+exports.history=(req,res)=>{
+    // TODO 널값처리 해줘야
+    let historydata = null;
+    db.query('select book.Book_No,Book_Name,Book_Public ' +
+        'from book ' +
+        'where Member_No=?',req.user.Member_No,(error,results)=>{
+        if(error) console.log(error);
+        historydata=results;
+        for(let i =0; i<historydata.length;i++){
+            historydata[i].Story=[];
+        }
+        db.query('select Book_No,Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
+            'from story ' +
+            'where Member_No=?',req.user.Member_No,(error,results)=>{
+            if(error) console.log(error);
+            for(let i=0;historydata.length;i++){
+                for(let j=0;results.length;j++){
+                    if(historydata[i].Book_No === results[j].Book_No){
+                        historydata[i].Story.push(results[j]);
+                    }
+                }
+                if(i===story.length-1){
+                    res.json(historydata);
+                }
+            }
+        });
+    });
+
+
+};
 exports.timeline=(req,res)=>{
     let tldata=[];
     let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
@@ -326,3 +382,12 @@ exports.list_page=(req,res)=>{
 
     });
 };
+
+// exports.filedown=(req,res)=>{
+//     fs.readFile(cwd+'/userfile/'+req.params.name,(error,data)=>{
+//         if(error) console.log(error);
+//         const filename = req.params.name;
+//         const filepath = cwd+"/userfile/"+filename;
+//         res.download(filepath);
+//     });
+// };

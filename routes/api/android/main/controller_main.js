@@ -2,25 +2,36 @@
  * Created by Jeongho on 2017-05-13.
  */
 const cwd = process.cwd();
-const path=require('path');
 const db=require(cwd+'/config/db');
 const fs=require('fs');
-
 exports.action= (req,res)=> {
     let story = null;
-    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select story.Book_No,Book_Name,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
-        'from story,book ' +
-        'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
+    //FIXME : promise로 이중쿼리 구현
+    db.query('select * from story where Member_No=?', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
-        story = results;
-        for (let i = 0; i < story.length; i++) {
-            db.query('select * from story_memo where Story_No=?', story[i].Story_No, (error, results) => {
-                if (error) console.log(error);
-                story[i].Story_Memo=results;
-                if (i === story.length-1) {
-                    res.json(story);
+        // 데이터가 없다면
+        if(results[0]===undefined){
+            res.render('action_overview',{data:false});
+        }else{
+            story = results;
+            for(let i=0;i<story.length;i++) {
+                story[i].Story_Memo = [];
+            }
+            db.query('select story_memo.* ' +
+                'from story,story_memo ' +
+                'where story.Story_No=story_memo.Story_No and story.Member_No=?',req.user.Member_No, (error, results) => {
+                if(error) console.log(error);
+                for(let i=0; i<story.length;i++) {
+                    for (let j = 0; j < results.length; j++) {
+                        if (story[i].Story_No === results[j].Story_No) {
+                            story[i].Story_Memo.push(results[j]);
+                        }
+                    }
+                    if(i===story.length-1){
+                        res.json(story);
+                    }
                 }
+
             });
         }
     });
@@ -51,21 +62,6 @@ exports.username=(req,res)=>{
     res.json({Member_Name:req.user.Member_Name});
 };
 
-exports.insert_book=(req,res)=>{
-    // TODO: Book_Public들어가야함!
-    console.log('북삽입',req.body);
-    const new_book={
-        Member_No:req.user.Member_No,
-        Book_Name:req.body.Book_Name,
-        Book_Author:req.user.Member_Name
-    };
-    db.query('insert into book set ? ',new_book,(error,results)=>{
-        if(error) console.log(error);
-        db.query('select Book_No,Book_Name,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
-            res.json(results);
-        });
-    });
-};
 exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
     console.log(req.body);
@@ -86,33 +82,8 @@ exports.update_book_title=(req,res)=>{
             console.log('book변경');
             res.json({result:true,message:'변경되었습니다.'})
         }
-
-    });
-
-
-};
-
-exports.insert_story=(req,res)=>{
-    const new_story={
-        Book_No : req.body.Book_No,
-        Member_No : req.user.Member_No,
-        Story_Title : req.body.Story_Title,
-        Story_Owner : req.user.Member_Name,
-    };
-    console.log('뉴스토리',new_story);
-    db.query('insert into story set ? ',new_story, (error)=>{
-        if(error){
-            console.log(error);
-            res.json({result:false, message:'스토리 삽입 실패!'});
-        }
-        else{
-            console.log('스토리 삽입 성공!');
-            res.json({result:false, message:'스토리 삽입 성공!'});
-        }
     });
 };
-
-
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
@@ -151,7 +122,40 @@ exports.list_page=(req,res)=>{
         }
     });
 };
-
+exports.insert_book=(req,res)=>{
+    // TODO: Book_Public들어가야함!
+    console.log('북삽입',req.body);
+    const new_book={
+        Member_No:req.user.Member_No,
+        Book_Name:req.body.Book_Name,
+        Book_Author:req.user.Member_Name
+    };
+    db.query('insert into book set ? ',new_book,(error,results)=>{
+        if(error) console.log(error);
+        db.query('select Book_No,Book_Name,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
+            res.json(results);
+        });
+    });
+};
+exports.insert_story=(req,res)=>{
+    const new_story={
+        Book_No : req.body.Book_No,
+        Member_No : req.user.Member_No,
+        Story_Title : req.body.Story_Title,
+        Story_Owner : req.user.Member_Name,
+    };
+    console.log('뉴스토리',new_story);
+    db.query('insert into story set ? ',new_story, (error)=>{
+        if(error){
+            console.log(error);
+            res.json({result:false, message:'스토리 삽입 실패!'});
+        }
+        else{
+            console.log('스토리 삽입 성공!');
+            res.json({result:false, message:'스토리 삽입 성공!'});
+        }
+    });
+};
 exports.insert_page=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
@@ -196,7 +200,6 @@ exports.insert_page=(req,res)=>{
         }
     });
 };
-
 //TODO 값이 없을때 서버, 웹에서의 처리
 exports.timeline=(req,res)=>{
     let tldata=[];
