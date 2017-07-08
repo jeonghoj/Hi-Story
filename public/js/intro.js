@@ -32,6 +32,16 @@ $('.sign-up input[type="submit"]').click(function () {
     && $('.sign-up input[type="password"]').val() != "") {
         if($('#make-user-password').val() != $('#check-user-password').val()) {
             event.preventDefault();
+            alert("비밀번호를 확인하세요.");
+            // focus를 주던가... 지금 할 필요는 없는 작업 같음
         }
     }
 });
+
+// 비밀번호를 입력하지 않으면 submit 되지 않음
+$('#sign-in').click(function () {
+    if($('#user-id').val() == "" || $('#user-password').val() == "") {
+        event.preventDefault();
+        alert("아이디 혹은 비밀번호를 확인해 주세요.");
+    }
+})
