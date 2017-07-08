@@ -55,7 +55,7 @@ $( '.page, .last-page' ).click(function(event) {
     if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp();
     $('.story-setting').empty();
     $('.story-setting').append('<button id="change-story-infor" class="f-basic">Edit history information</button>');
-    if($(this).is($('.page:last')) && (!($('.last-page').length)))
+    if( ($(this).is($('.page:last')) && (!($('.last-page').length))) || ($(this).is($('.last-page'))))
     {
         $('.story-setting').append('<button id="page-edit" class="f-basic">Edit last page</button>');
     }

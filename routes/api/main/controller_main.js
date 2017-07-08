@@ -28,14 +28,14 @@ exports.signup=(req,res)=>{
 exports.logout=(req,res)=>{
     res.clearCookie('jwt').redirect('/');
 };
-exports.filedown=(req,res)=>{
-    fs.readFile(cwd+'/userfile/'+req.params.name,(error,data)=>{
-        if(error) console.log(error);
-        const filename = req.params.name;
-        const filepath = cwd+"/userfile/"+filename;
-        res.download(filepath);
-    });
-};
+// exports.filedown=(req,res)=>{
+//     fs.readFile(cwd+'/userfile/'+req.params.name,(error,data)=>{
+//         if(error) console.log(error);
+//         const filename = req.params.name;
+//         const filepath = cwd+"/userfile/"+filename;
+//         res.download(filepath);
+//     });
+// };
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
     fs.readFile(cwd+'/userfile/'+req.params.name,function (error,data) {
@@ -77,6 +77,18 @@ exports.list_story=(req,res)=>{
         }
 
     });
+};
+
+exports.delete_story=(req,res)=>{
+    db.query('delete from story where Story_No=?',req.body.Story_No,(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
+        }else{
+            res.json({message:'성공적으로 삭제되었습니다.',result:true});
+        }
+    })
 };
 
 // TODO book_public버튼 구현
@@ -132,30 +144,29 @@ exports.insert_page=(req,res)=>{
                 return db.rollback(()=>{throw error;});
             }
             const page_no = results.insertId;
-            if(req.files.Page_File[0]!==undefined){
-                // TODO : 확장자 검사
-                let filedata = {
-                    Page_No:page_no,
-                    File_Fieldname:req.files.Page_File[0].fieldname,
-                    File_Path:req.files.Page_File[0].path,
-                    File_Originalname:req.files.Page_File[0].originalname,
-                };
-                db.query('insert into file set ?',filedata,(error)=>{
-                    if(error){
-                        return db.rollback(()=>{throw error;});
-                    }
-                });
-                console.log('파일넣는데이터',filedata);
-            }
-            if(req.files.Page_Image[0]!==undefined){
-
-                for(let i=0;i<req.files.Page_Image.length;i++){
+            // if(!(req.files.Page_File)){
+            //     // TODO : 확장자 검사
+            //     let filedata = {
+            //         Page_No:page_no,
+            //         File_Fieldname:req.files.Page_File[0].fieldname,
+            //         File_Path:req.files.Page_File[0].path,
+            //         File_Originalname:req.files.Page_File[0].originalname,
+            //     };
+            //     db.query('insert into file set ?',filedata,(error)=>{
+            //         if(error){
+            //             return db.rollback(()=>{throw error;});
+            //         }
+            //     });
+            //     console.log('파일넣는데이터',filedata);
+            // }
+            if(req.files){
+                for(let i=0;i<req.files.length;i++){
                     let imgdata={};
                     imgdata={
                         Page_No:page_no,
-                        File_Fieldname:req.files.Page_Image[i].fieldname,
-                        File_Path:req.files.Page_Image[i].path,
-                        File_Originalname:req.files.Page_Image[i].originalname
+                        File_Fieldname:req.files[i].fieldname,
+                        File_Path:req.files[i].path,
+                        File_Originalname:req.files[i].originalname
                     };
                     db.query('insert into file set ?',imgdata,(error)=>{
                         if(error){
@@ -168,13 +179,14 @@ exports.insert_page=(req,res)=>{
                 if(error){
                     return db.rollback(()=>{throw error});
                 }
+                console.log('Transaction Complete.');
+                res.json({result:true, url:'/story/'+req.body.Story_No});
             });
-            console.log('Transaction Complete.');
+
             // db엔드콜 하면 문제가 생긴다 connection pool에 대해서 알아보라는데?
             // db.end();
-            res.json({result:true});
-        });
 
+        });
     })
     // db.query(sql,page,(error,results)=>{
     //     if(error) console.log(error);
@@ -254,7 +266,7 @@ exports.list_page=(req,res)=>{
     let page=null;
     const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
         "from book,story,page " +
-        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
+        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
     db.query(sql,req.params.id,(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
@@ -273,12 +285,13 @@ exports.list_page=(req,res)=>{
                 page[i].Imgdata=[];
             }
             // TODO :작업중
-            db.query('select image.* ' +
-                'from image,page ' +
-                'where page.Member_No=? and image.Page_No=page.Page_No',req.user.Member_No,(error,results)=>{
+            db.query('select file.* ' +
+                'from file,page ' +
+                'where page.Member_No=? and file.Page_No=page.Page_No',req.user.Member_No,(error,results)=>{
                 if(error) console.log(error);
+                const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
-                    for(let j=0; j<results.length;j++){
+                    for(let j=0; j<filecount;j++){
                         if(page[i].Page_No===results[j].Page_No){
                             page[i].Imgdata.push(results[j]);
                         }

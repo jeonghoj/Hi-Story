@@ -51,11 +51,11 @@
                     <div class="img-box">
                         <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
                         <% for(var j=0; j<page[i].Imgdata.length;j++){%>
-                    <% if(j===0){%>
-                        <img class="active" style="max-height:100%" src="/<%=page[i].Imgdata[j].Image_Path %>">
-                    <%}else{%>
-                        <img class="hidden" style="max-height:100%" src="/<%=page[i].Imgdata[j].Image_Path %>">
-                    <%}%>
+                        <% if(j===0){%>
+                        <img class="active" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].File_Path %>">
+                        <%}else{%>
+                        <img class="hidden" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].File_Path %>">
+                        <%}%>
                         <%}%>
                         <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
                     </div>
@@ -79,7 +79,7 @@
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
                     <!--파일첨부-->
                     <!--파일(파일은 한개만 가능)-->
-                    <input type="file" name="Page_File">
+                    <!--<input type="file" name="Page_File">-->
                     <!--이미지-->
                     <input type="file" name="Page_Image" multiple>
                     <!--에디터-->
@@ -145,12 +145,27 @@
     <script src="/js/aside.js"></script>
     <script>
         $("#new-page").submit(function () {
-            $.ajaxSubmit({
+            event.preventDefault();
+            for ( instance in CKEDITOR.instances )
+                CKEDITOR.instances[instance].updateElement();
+            var formData = new FormData(this);
+            $.ajax({
                 url:"/insert_page",
                 type:"post",
+                data:formData,
                 success:function (data) {
-                    alert(data.message);
-                }});
+                    if(data.result){
+                        alert('성공적으로 삽입되었습니다!');
+                        location.replace(data.url);
+                    }else{
+                        alert('데이터가 삽입되지 않았습니다')
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
         })
 //        CK업데이트 혹시 필요할 지도 몰라 주석
 //        function CKupdate(){
