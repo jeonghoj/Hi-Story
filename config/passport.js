@@ -4,20 +4,16 @@
 
 const db = require('./db');
 const config  = require('./config');
-const _ = require('lodash');
 const passport = require("passport");
-//jwt 설정
 const passportJWT = require("passport-jwt");
-
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
-
+//jwt 설정
 const cookieExtractor = function(req) {
     let token = null;
     if (req && req.cookies) token = req.cookies['jwt'];
     return token;
 };
-
 const jwtOptionshead = {
     jwtFromRequest : ExtractJwt.fromAuthHeader(),
     secretOrKey : config.secret
@@ -26,7 +22,6 @@ const jwtOptionscookie = {
     jwtFromRequest : cookieExtractor,
     secretOrKey : config.secret
 };
-
 passport.use('jwth', new JwtStrategy(jwtOptionshead, (jwt_payload, done) => {
     console.log('payload received', jwt_payload);
     let user = null;

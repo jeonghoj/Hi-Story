@@ -1,24 +1,26 @@
 /**
  * Created by Jeongho on 2017-05-11.
  */
-// const passport = require('../../../config/passport');
-const db = require('../../../config/db');
+const cwd = process.cwd();
+const db = require(cwd+'/config/db');
 const bkfd2Password = require("pbkdf2-password");
 const hasher= bkfd2Password();
 const jwt = require('jsonwebtoken');
-const config = require("../../../config/config.js");
+const config = require(cwd+"/config/config.js");
+const emailaccount=require(cwd+'/config/emailaccount');
 const nodemailer=require('nodemailer');
 let transporter=nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'historygdrive@gmail.com',
-        pass: '20170406'
+        user: emailaccount.emailid,
+        pass: emailaccount.emailpw
     }
 });
 exports.register = (req,res) => {
     console.log(req.body);
     const {userid, password, realname} = req.body;
-    let verifycode=randomString();
+    let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
+    // let verifycode=randomString();
     hasher({password: password}, (error, pass, salt, hash) => {
         const user = {
             authID: 'jwt:' + userid,
@@ -38,8 +40,9 @@ exports.register = (req,res) => {
                 let mailoptions={
                     from:'historygdrive@gmail.com',
                     to:'jjhh3079@gmail.com',
+                    // to:user.Member_ID,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?verifycode='+verifycode,
+                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?token='+emailtoken,
                 };
                 transporter.sendMail(mailoptions,function (err,info) {
                     if(err) console.log(err);
@@ -51,7 +54,6 @@ exports.register = (req,res) => {
         });
     });
 };
-
 exports.login = (req,res) => {
     console.log('로그인',req.body);
     const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
@@ -85,33 +87,77 @@ exports.login = (req,res) => {
         });
     });
 };
-
 exports.verifyemail=(req,res)=>{
     console.log(req.params.code);
-    let verifycode = req.params.code;
-    let sql = 'update member set Member_EmailVerified=1 where Member_VerifyCode=?';
-    db.query(sql,verifycode,(error,result)=>{
-        console.log(result);
-        if(error) console.log(error);
-
-        if(result.affectedRows===0){
-            console.log('데이터없거나 잘못된 접근');
-        }else if(result.changedRows===0){
-            console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
-            res.redirect('/');
+    jwt.verify(req.params.token,config.secret,(error,decoded)=>{
+        if(decoded===undefined){
+            res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
         }else{
-            console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
-            res.redirect('/');
+            let sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
+            db.query(sql,decoded.Member_ID,(error,result)=>{
+                console.log(result);
+                if(error) console.log(error);
+                if(result.affectedRows===0){
+                    console.log('데이터없거나 잘못된 접근');
+                }else if(result.changedRows===0){
+                    console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
+                    res.redirect('/');
+                }else{
+                    console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
+                    res.redirect('/');
+                }
+            });
         }
-    })
+    });
 };
-
+exports.find_PW=(req,res)=>{
+    const payload = {Member_ID: req.body.userid};
+    const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
+    console.log(token);
+    let mailoptions={
+        from:'historygdrive@gmail.com',
+        to:'jjhh3079@gmail.com',
+        subject:'비밀번호 초기화',
+        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. http://127.0.0.1/auth/init_PW?memberinfo='+token,
+    };
+    transporter.sendMail(mailoptions,(err,info) => {
+        if(err) console.log(err);
+        console.log('Mail send Success -',info.response);
+        transporter.close();
+        res.status(200).json({message : '비밀번호 초기화 이메일을 발송했습니다!'});
+    });
+};
+exports.init_PW=(req,res)=>{
+    // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
+    jwt.verify(req.body.token,config.secret,(error,decoded)=>{
+        if(error) console.log(error);
+        if(decoded===undefined){
+            res.json({message:'잘못된 토큰입니다. 비밀번호 초기화를 다시 진행해주세요',result:false});
+        }else{
+            hasher({password: req.body.Member_PW}, (error, pass, salt, hash) => {
+                if (error) console.log(error);
+                const init_PW = {
+                    Member_PW: hash,
+                    Member_salt: salt,
+                };
+                db.query('update into member set ? where Member_ID=?', init_PW, decoded.Member_ID, (error, results) => {
+                    if (error) console.log(error);
+                    if (results.affectedRows === 1) {
+                        res.json({message: '비밀번호가 성공적으로 변경되었습니다.', result: true});
+                    } else {
+                        res.json({message: '잘못된 정보입니다.',result:false});
+                    }
+                });
+            });
+        }
+    });
+};
 function randomString() {
-    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-    var string_length = 18;
-    var randomstring = '';
-    for (var i=0; i<string_length; i++) {
-        var rnum = Math.floor(Math.random() * chars.length);
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+    const string_length = 18;
+    let randomstring = '';
+    for (let i=0; i<string_length; i++) {
+        let rnum = Math.floor(Math.random() * chars.length);
         randomstring += chars.substring(rnum,rnum+1);
     }
 //document.randform.randomfield.value = randomstring;
