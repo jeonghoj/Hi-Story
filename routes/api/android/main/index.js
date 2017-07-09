@@ -33,7 +33,7 @@ router.post('/username',passport.authenticate('jwth',{session:false}),controller
 router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
 router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book_title);
 router.post('/delete_story',passport.authenticate('jwth',{session:false}),controller.delete_story);
-router.get('/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);
+router.post('/story/:id',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.get('/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
 

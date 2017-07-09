@@ -97,42 +97,106 @@ exports.delete_story=(req,res)=>{
         }
     })
 };
+// exports.list_page=(req,res)=>{
+//     let page=null;
+//     let list_page=[];
+//     const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
+//         "from book,story,page " +
+//         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
+//     db.query(sql,req.params.id,(error,results)=>{
+//         // 페이지가 없을경우
+//         if(results.length===0)
+//         {
+//             db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
+//                 'from book,story ' +
+//                 'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
+//                 if(error) console.log(error);
+//                 res.render('story',
+//                     {   page:results,
+//                         Story_No: req.params.id});
+//             });
+//
+//         }
+//         // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
+//         page=results;
+//         for(let i=0;i<page.length;i++){
+//             let Page_No = page[i].Page_No;
+//             db.query('select * from image where Image_Fieldname=? and No=?','Page_Image',Page_No,(error,results)=>{
+//                 if(error) console.log(error);
+//                 page[i].Imgdata=results;
+//                 list_page.push(page[i]);
+//                 if(list_page.length===page.length){
+//                     list_page.push({Story_No : req.params.id});
+//                     JSON.stringify(list_page);
+//                     res.render('story',{page:list_page});
+//                 }
+//             })
+//
+//         }
+//     });
+// };
+
 exports.list_page=(req,res)=>{
     let page=null;
-    let list_page=[];
     const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
         "from book,story,page " +
-        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
+        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
     db.query(sql,req.params.id,(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
         {
             db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
                 'from book,story ' +
-                'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
+                'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
                 if(error) console.log(error);
                 res.render('story',
                     {   page:results,
                         Story_No: req.params.id});
             });
+        }else{
+            page=results;
+            for(let i=0;i<page.length;i++){
+                page[i].Imgdata=[];
+            }
+            // TODO :작업중
+            db.query('select image.* ' +
+                'from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
+                if(error) console.log(error);
+                const filecount = results ? results.length : 0;
+                for(let i=0;i<page.length;i++){
+                    for(let j=0; j<filecount;j++){
+                        if(page[i].Page_No===results[j].No){
+                            page[i].Imgdata.push(results[j]);
+                        }
+                    }
+                    if(i===page.length-1){
+                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                        return res.json(page);
+                    }
+                }
+
+            });
+
+            // for(let i=0;i<page.length;i++){
+            //     let Page_No = page[i].Page_No;
+            //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
+            //         if(error) console.log(error);
+            //         page[i].Imgdata=results;
+            //         list_page.push(page[i]);
+            //         if(list_page.length===page.length){
+            //             list_page.push({Story_No : req.params.id});
+            //             JSON.stringify(list_page);
+            //             // console.log(list_page);
+            //             res.render('story',{page:list_page});
+            //         }
+            //     })
+            //
+            // }
 
         }
         // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
-        page=results;
-        for(let i=0;i<page.length;i++){
-            let Page_No = page[i].Page_No;
-            db.query('select * from image where Image_Fieldname=? and No=?','Page_Image',Page_No,(error,results)=>{
-                if(error) console.log(error);
-                page[i].Imgdata=results;
-                list_page.push(page[i]);
-                if(list_page.length===page.length){
-                    list_page.push({Story_No : req.params.id});
-                    JSON.stringify(list_page);
-                    res.render('story',{page:list_page});
-                }
-            })
 
-        }
     });
 };
 
@@ -160,14 +224,20 @@ exports.insert_story=(req,res)=>{
         Story_Owner : req.user.Member_Name,
     };
     db.query('insert into story set ? ',new_story, (error,results)=>{
-        if(error){
-            console.log(error);
-            res.json({result:false, message:'스토리 삽입 실패!'});
-        }
-        else{
-            console.log('스토리 삽입 성공!');
-            res.json({result:true, message:'스토리 삽입 성공!',Story_No:results.insertId});
-        }
+        console.log(results);
+        db.query('select Story_No,Story_DateStart,Story_Citation,Story_Follow,Story_View ' +
+            'from story ' +
+            'where Story_No=?',results.insertId,(error,results)=>{
+            if(error){
+                console.log(error);
+                res.json({result:false, message:'스토리 삽입 실패!'});
+            }
+            else{
+                console.log('스토리 삽입 성공!');
+                res.json({result:true, message:'스토리 삽입 성공!',Story:results[0]});
+            }
+        });
+
     });
 };
 exports.insert_page=(req,res)=>{
