@@ -138,9 +138,9 @@ exports.delete_story=(req,res)=>{
 
 exports.list_page=(req,res)=>{
     let page=null;
-    const sql = "select story.Story_Citation,story.Story_Follow,story.Story_View,Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
-        "from story,page " +
-        "where page.Member_No=? and story.Story_No = page.Story_No=?";
+    const sql = "select Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
+        "from page " +
+        "where page.Member_No=? and page.Story_No=?";
     db.query(sql,[req.user.Member_No,req.body.Story_No],(error,results)=>{
         // 페이지가 없을경우
         if(!results)
@@ -162,7 +162,6 @@ exports.list_page=(req,res)=>{
                 'from image,page ' +
                 'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
                 if(error) console.log(error);
-                console.log(results);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
                     for(let j=0; j<filecount;j++){
@@ -176,9 +175,18 @@ exports.list_page=(req,res)=>{
                         }
                     }
                     if(i===page.length-1){
+                        db.query('select Story_Citation,Story_Follow,Story_View ' +
+                            'from story ' +
+                            'where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
+                            if(error) console.log(error);
+                            return res.json({
+                                Story_Citation:results.Story_Citation,
+                                Story_Follow:results.Story_Follow,
+                                Story_View:results.Story_View,
+                                Page_Data:page});
+                        });
                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                        console.log(page);
-                        return res.json(page);
+
                     }
                 }
 
