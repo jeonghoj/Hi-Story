@@ -138,12 +138,12 @@ exports.delete_story=(req,res)=>{
 
 exports.list_page=(req,res)=>{
     let page=null;
-    const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
-        "from book,story,page " +
-        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
-    db.query(sql,req.params.id,(error,results)=>{
+    const sql = "select story.Story_Citation,story.Story_Follow,story.Story_View,Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
+        "from story,page " +
+        "where page.Member_No=? and story.Story_No = page.Story_No=?";
+    db.query(sql,[req.user.Member_No,req.body.Story_No],(error,results)=>{
         // 페이지가 없을경우
-        if(results.length===0)
+        if(!results)
         {
             db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
                 'from book,story ' +
@@ -156,22 +156,28 @@ exports.list_page=(req,res)=>{
         }else{
             page=results;
             for(let i=0;i<page.length;i++){
-                page[i].Imgdata=[];
+                page[i].Page_Imgdata=[];
             }
-            // TODO :작업중
             db.query('select image.* ' +
                 'from image,page ' +
                 'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
                 if(error) console.log(error);
+                console.log(results);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
                     for(let j=0; j<filecount;j++){
                         if(page[i].Page_No===results[j].No){
-                            page[i].Imgdata.push(results[j]);
+                            let Imgdata = {
+                                Image_No:results[j].Image_No,
+                                Image_Path:results[j].Image_Path,
+                                Image_Originalname:results[j].Image_Originalname
+                            };
+                            page[i].Page_Imgdata.push(Imgdata);
                         }
                     }
                     if(i===page.length-1){
                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                        console.log(page);
                         return res.json(page);
                     }
                 }
