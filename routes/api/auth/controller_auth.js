@@ -19,7 +19,8 @@ let transporter=nodemailer.createTransport({
 exports.register = (req,res) => {
     console.log(req.body);
     const {userid, password, realname} = req.body;
-    let verifycode=randomString();
+    let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
+    // let verifycode=randomString();
     hasher({password: password}, (error, pass, salt, hash) => {
         const user = {
             authID: 'jwt:' + userid,
@@ -41,7 +42,7 @@ exports.register = (req,res) => {
                     to:'jjhh3079@gmail.com',
                     // to:user.Member_ID,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?verifycode='+verifycode,
+                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?token='+emailtoken,
                 };
                 transporter.sendMail(mailoptions,function (err,info) {
                     if(err) console.log(err);
@@ -88,25 +89,30 @@ exports.login = (req,res) => {
 };
 exports.verifyemail=(req,res)=>{
     console.log(req.params.code);
-    let verifycode = req.params.code;
-    let sql = 'update member set Member_EmailVerified=1 where Member_VerifyCode=?';
-    db.query(sql,verifycode,(error,result)=>{
-        console.log(result);
-        if(error) console.log(error);
-        if(result.affectedRows===0){
-            console.log('데이터없거나 잘못된 접근');
-        }else if(result.changedRows===0){
-            console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
-            res.redirect('/');
+    jwt.verify(req.params.token,config.secret,(error,decoded)=>{
+        if(decoded===undefined){
+            res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
         }else{
-            console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
-            res.redirect('/');
+            let sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
+            db.query(sql,decoded.Member_ID,(error,result)=>{
+                console.log(result);
+                if(error) console.log(error);
+                if(result.affectedRows===0){
+                    console.log('데이터없거나 잘못된 접근');
+                }else if(result.changedRows===0){
+                    console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
+                    res.redirect('/');
+                }else{
+                    console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
+                    res.redirect('/');
+                }
+            });
         }
-    })
+    });
 };
 exports.find_PW=(req,res)=>{
     const payload = {Member_ID: req.body.userid};
-    const token = jwt.sign(payload, config.secret ,{expiresIn: '1m'});
+    const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
     console.log(token);
     let mailoptions={
         from:'historygdrive@gmail.com',
@@ -144,7 +150,6 @@ exports.init_PW=(req,res)=>{
                 });
             });
         }
-
     });
 };
 function randomString() {
