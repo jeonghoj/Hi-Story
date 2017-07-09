@@ -188,12 +188,12 @@ exports.insert_page=(req,res)=>{
                 for(let i=0;i<req.files.length;i++){
                     let imgdata={};
                     imgdata={
-                        Page_No:page_no,
-                        File_Fieldname:req.files[i].fieldname,
-                        File_Path:req.files[i].path,
-                        File_Originalname:req.files[i].originalname
+                        No:page_no,
+                        Image_Fieldname:req.files[i].fieldname,
+                        Image_Path:req.files[i].path,
+                        Image_Originalname:req.files[i].originalname
                     };
-                    db.query('insert into file set ?',imgdata,(error)=>{
+                    db.query('insert into image set ?',imgdata,(error)=>{
                         if(error){
                             return db.rollback(()=>{throw error;});
                         }
@@ -340,14 +340,14 @@ exports.list_page=(req,res)=>{
                 page[i].Imgdata=[];
             }
             // TODO :작업중
-            db.query('select file.* ' +
-                'from file,page ' +
-                'where page.Member_No=? and file.Page_No=page.Page_No',req.user.Member_No,(error,results)=>{
+            db.query('select image.* ' +
+                'from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',req.user.Member_No,'Page_Image',(error,results)=>{
                 if(error) console.log(error);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
                     for(let j=0; j<filecount;j++){
-                        if(page[i].Page_No===results[j].Page_No){
+                        if(page[i].Page_No===results[j].No){
                             page[i].Imgdata.push(results[j]);
                         }
                     }

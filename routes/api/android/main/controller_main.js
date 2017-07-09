@@ -87,13 +87,13 @@ exports.update_book_title=(req,res)=>{
 
 exports.delete_story=(req,res)=>{
     console.log(req.body);
-    db.query('delete from story where Member_No=? and Story_No=?',req.user.Member_No,req.body.Story_No,(error,results)=>{
+    db.query('delete from story where Member_No=? and Story_No=?',req.user.Member_No,parseInt(req.body.Story_No),(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
-            res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
+            res.json({message:'error',result:false});
         }else{
-            res.json({message:'성공적으로 삭제되었습니다.',result:true});
+            res.json({message:'success',result:true});
         }
     })
 };
@@ -121,7 +121,7 @@ exports.list_page=(req,res)=>{
         page=results;
         for(let i=0;i<page.length;i++){
             let Page_No = page[i].Page_No;
-            db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
+            db.query('select * from image where Image_Fieldname=? and No=?','Page_Image',Page_No,(error,results)=>{
                 if(error) console.log(error);
                 page[i].Imgdata=results;
                 list_page.push(page[i]);
@@ -197,7 +197,7 @@ exports.insert_page=(req,res)=>{
         if(req.files[0]!==undefined){
             for(let i =0; i<req.files.length;i++){
                 let imgdata = {
-                    Page_No:page_no,
+                    No:page_no,
                     Image_Fieldname:req.files[i].fieldname,
                     Image_Path:req.files[i].path,
                     Image_Originalname:req.files[i].originalname
