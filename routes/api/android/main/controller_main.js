@@ -170,7 +170,7 @@ exports.insert_story=(req,res)=>{
             }
             else{
                 console.log('스토리 삽입 성공!');
-                res.json({result:true, message:'스토리 삽입 성공!',Story_No:results[0]});
+                res.json({result:true, message:'스토리 삽입 성공!',Story:results[0]});
             }
         });
 
