@@ -7,7 +7,9 @@ const fs=require('fs');
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
-    db.query('select * from story where Member_No=?', req.user.Member_No, (error, results) => {
+    db.query('select story.Book_No,Book_Name,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
+        'from story,book ' +
+        'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -63,16 +65,14 @@ exports.username=(req,res)=>{
 };
 
 exports.update_book_title=(req,res)=>{
-    // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
+    // 수정하려는 북의 넘버와 북타이틀을 불러온다
     console.log(req.body);
     let booktitle={
         Book_Name:req.body.Book_Name,
     };
     let sql='update into book set ? where Book_No=? and Member_No=?';
     db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
-        if(error) {
-            console.log(error);
-        }
+        if(error) console.log(error);
         if(results.affectedRows===0){
             // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
             res.json({result:false,message:'잘못된 접근입니다.'});
@@ -84,6 +84,7 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
+
 exports.list_page=(req,res)=>{
     let page=null;
     let list_page=[];
@@ -122,13 +123,15 @@ exports.list_page=(req,res)=>{
         }
     });
 };
+
 exports.insert_book=(req,res)=>{
     // TODO: Book_Public들어가야함!
     console.log('북삽입',req.body);
     const new_book={
         Member_No:req.user.Member_No,
         Book_Name:req.body.Book_Name,
-        Book_Author:req.user.Member_Name
+        Book_Author:req.user.Member_Name,
+        // Book_Public : req.body.Book_Public ? 1 : 0,
     };
     db.query('insert into book set ? ',new_book,(error,results)=>{
         if(error) console.log(error);
@@ -152,7 +155,7 @@ exports.insert_story=(req,res)=>{
         }
         else{
             console.log('스토리 삽입 성공!');
-            res.json({result:false, message:'스토리 삽입 성공!'});
+            res.json({result:true, message:'스토리 삽입 성공!'});
         }
     });
 };

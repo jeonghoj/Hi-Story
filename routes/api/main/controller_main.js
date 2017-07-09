@@ -82,7 +82,7 @@ exports.list_story=(req,res)=>{
 };
 
 exports.update_book_title=(req,res)=>{
-    // 수정하려는 북의 넘버와 수정하려는 북타이틀을 불러온다
+    // 수정하려는 북의 넘버와 북타이틀을 불러온다
     console.log(req.body);
     let booktitle={
         Book_Name:req.body.Book_Name,
@@ -101,6 +101,7 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
+//작업중
 exports.update_book_public=(req,res)=>{
     console.log(req.body.Book_No);
     console.log(req.body.Book_Public);
@@ -133,14 +134,12 @@ exports.insert_book=(req,res)=>{
     });
 };
 exports.insert_story=(req,res)=>{
-    console.log(req.body);
     const new_story={
         Book_No : req.body.Book_No,
         Member_No : req.user.Member_No,
         Story_Title : req.body.Story_Title,
         Story_Owner : req.user.Member_Name,
     };
-    console.log('뉴스토리',new_story);
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
             console.log(error);
