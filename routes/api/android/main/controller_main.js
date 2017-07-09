@@ -87,7 +87,7 @@ exports.update_book_title=(req,res)=>{
 
 exports.delete_story=(req,res)=>{
     console.log(req.body);
-    db.query('delete from story where Member_No=? and Story_No=?',req.user.Member_No,parseInt(req.body.Story_No),(error,results)=>{
+    db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
