@@ -160,14 +160,20 @@ exports.insert_story=(req,res)=>{
         Story_Owner : req.user.Member_Name,
     };
     db.query('insert into story set ? ',new_story, (error,results)=>{
-        if(error){
-            console.log(error);
-            res.json({result:false, message:'스토리 삽입 실패!'});
-        }
-        else{
-            console.log('스토리 삽입 성공!');
-            res.json({result:true, message:'스토리 삽입 성공!',Story_No:results.insertId});
-        }
+        console.log(results);
+        db.query('select Story_No,Story_DateStart,Story_Citation,Story_Follow,Story_View ' +
+            'from story ' +
+            'where Story_No=?',results.insertId,(error,results)=>{
+            if(error){
+                console.log(error);
+                res.json({result:false, message:'스토리 삽입 실패!'});
+            }
+            else{
+                console.log('스토리 삽입 성공!');
+                res.json({result:true, message:'스토리 삽입 성공!',Story_No:results[0]});
+            }
+        });
+
     });
 };
 exports.insert_page=(req,res)=>{
