@@ -342,7 +342,7 @@ exports.list_page=(req,res)=>{
             // TODO :작업중
             db.query('select image.* ' +
                 'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',req.user.Member_No,'Page_Image',(error,results)=>{
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
                 if(error) console.log(error);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
