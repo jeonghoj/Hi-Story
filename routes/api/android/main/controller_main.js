@@ -180,10 +180,11 @@ exports.list_page=(req,res)=>{
                             'where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
                             if(error) console.log(error);
                             return res.json({
-                                Story_Citation:results.Story_Citation,
-                                Story_Follow:results.Story_Follow,
-                                Story_View:results.Story_View,
-                                Page_Data:page});
+                                Story_Citation:results[0].Story_Citation,
+                                Story_Follow:results[0].Story_Follow,
+                                Story_View:results[0].Story_View,
+                                Page_Data:page
+                            });
                         });
                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
 
