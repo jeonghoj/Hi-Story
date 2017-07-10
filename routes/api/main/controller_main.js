@@ -152,15 +152,20 @@ exports.insert_story=(req,res)=>{
     });
 };
 exports.insert_page=(req,res)=>{
-    console.log(req.body);
+    // 1.전에꺼 pagelast를 0 으로 업데이트. 첫글이면 undefined가 나올테니 if문으로 조건검사
+    // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
+    // 3.page를 수정할때는 pagelast가 1인지 확인
     console.log('업로드된 파일',req.files);
+    const Story_No=req.body.Story_No;
+    const Page_Content=req.body.Page_Content;
+    const Page_Link=req.body.Page_Link;
     const sql = 'insert into page set ?';
     const page = {
-        Story_No:req.body.Story_No,
+        Story_No:Story_No,
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
-        Page_Content:req.body.Page_Content,
-        Page_Link:req.body.Page_Link,
+        Page_Content:Page_Content,
+        Page_Link:Page_Link,
     };
     db.beginTransaction((error)=>{
         if(error) throw error;
@@ -170,7 +175,6 @@ exports.insert_page=(req,res)=>{
             }
             const page_no = results.insertId;
             // if(!(req.files.Page_File)){
-            //     // TODO : 확장자 검사
             //     let filedata = {
             //         Page_No:page_no,
             //         File_Fieldname:req.files.Page_File[0].fieldname,
@@ -184,6 +188,8 @@ exports.insert_page=(req,res)=>{
             //     });
             //     console.log('파일넣는데이터',filedata);
             // }
+
+            // 파일이 있으면
             if(req.files){
                 for(let i=0;i<req.files.length;i++){
                     let imgdata={};

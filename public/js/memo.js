@@ -27,6 +27,7 @@ $('.edit').click(function () {
         $(this).next().css({
             'height': $(this).next().next().prop('scrollHeight')
         });
+
     }
 });
 

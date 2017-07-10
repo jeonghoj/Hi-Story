@@ -78,21 +78,6 @@
                         <a href="#" class="edit f-sub">Edit</a>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
                         <div class="story-memo"><%=data[i].Story_Memo[j].Story_Memo_Text%></div>
-                        <button>전송</button>
-                        <script>
-                            $('.edit.f-sub').click(function (event) {
-                                console.log(event.target);
-                                var Story_Memo=$(event.target).parent().children('.story-memo');
-                                var Story_Memo_Text=Story_Memo.html();
-                                console.log(Story_Memo_Text);
-                                Story_Memo.empty();
-                                Story_Memo.append("<input type='text' value="+ Story_Memo_Text+">");
-                            })
-                            $('.story-memo').click(function (event) {
-                                console.log('되나되나?');
-
-                            })
-                        </script>
                     </div>
                     <%}%>
                 </div>
