@@ -67,7 +67,7 @@
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
                     <div class="story-header">
-                        <div class="book-no" style="display: none"><%=data[i].Book_Name%></div>
+                        <div class="book-no" style="display: none"><%=data[i].Book_Title%></div>
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
@@ -75,9 +75,9 @@
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
-                        <a href="#" class="edit f-sub">Edit</a>
+                        <button class="edit f-sub">Edit</button>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
-                        <div class="story-memo"><%=data[i].Story_Memo[j].Story_Memo_Text%></div>
+                        <textarea class="story-memo" rows="1" cols="74"><%=data[i].Story_Memo[j].Story_Memo_Text%></textarea>
                     </div>
                     <%}%>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="infor">
                     <!--TODO: 첫화면에는 가장 나중에 작성한 스토리를 표시?-->
                     <div class="story-no-infor" style='display:none'></div>
-                    <div class="book-name f-subSmall"><%=(data === false) ? null : data[0].Book_Name%></div>
+                    <div class="book-name f-subSmall"><%=(data === false) ? null : data[0].Book_Title%></div>
                     <div class="story-name f-empha"><%=(data === false) ? null : data[0].Story_Title%></div>
                     <div class="date f-subSmall"><%=(data === false) ? null : data[0].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                     <hr class="hr-infor">
@@ -206,7 +206,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Name+"<br>");
+                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"<br>");
                     }
                 }
             });
@@ -214,7 +214,7 @@
 
         $("#insert-new-book").click(function () {
             var newbook = {
-                Book_Name : $('#new-book-title').val(),
+                Book_Title : $('#new-book-title').val(),
             }
             $.ajax({
                 url:"/insert_book",
@@ -227,23 +227,32 @@
         });
 
 //      TODO: submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
+
+//        ajax 예시
         $("#insert-new-story").click(function () {
+//            보낼 데이터 변수 작성
             var newstory = {
                 Story_Title : $("#new-story-title").val(),
                 Book_No : $(":input:radio[name=Book_No]:checked").val(),
                 Story_Public : !(!!$("#public").is(":checked"))
             };
             //true 는 공개 false는 비공개
-            $.ajax({
+
+//            ajax함수
+            $.ajax(
+                {
                 url:"/insert_story",
                 type:"post",
                 data:newstory,
                 success:function (data) {
                     if(data.result === true){
                         alert('success');
+//                        서버에서 보내준 url로 이동 새로고침을 이런식으로 해주도록
+//                        만약에 form submit을 하게되면 url이 insert_story로 가버려서 이렇게해줌
                         location.replace(data.url);
                     }else{
                         alert('일시적으로 문제가 발생했습니다. 다시 요청해주세요');
+//                        서버에서 보내준 url로 이동
                         location.replace(data.url);
                     }
                 }

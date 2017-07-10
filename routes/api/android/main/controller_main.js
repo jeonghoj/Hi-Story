@@ -7,7 +7,7 @@ const fs=require('fs');
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
-    db.query('select story.Book_No,Book_Name,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
+    db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
         'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
@@ -40,10 +40,10 @@ exports.action= (req,res)=> {
 };
 exports.history=(req,res)=>{
     let historydata=null;
-    let sql = 'select book.Book_No,Book_Name,Book_Public ' +
+    let sql = 'select book.Book_No,Book_Title,Book_Public ' +
         'from book' +
         'where Member_No=?';
-    db.query('select book.Book_No,Book_Name,Book_Public from book where Member_No=?',req.user.Member_No,(error,results)=>{
+    db.query(sql,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
         historydata=results;
         for(let i=0;i<historydata.length;i++){
@@ -68,7 +68,7 @@ exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 북타이틀을 불러온다
     console.log(req.body);
     let booktitle={
-        Book_Name:req.body.Book_Name,
+        Book_Title:req.body.Book_Title,
     };
     let sql='update into book set ? where Book_No=? and Member_No=?';
     db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
@@ -100,14 +100,14 @@ exports.delete_story=(req,res)=>{
 // exports.list_page=(req,res)=>{
 //     let page=null;
 //     let list_page=[];
-//     const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
+//     const sql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
 //         "from book,story,page " +
 //         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
 //     db.query(sql,req.params.id,(error,results)=>{
 //         // 페이지가 없을경우
 //         if(results.length===0)
 //         {
-//             db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
+//             db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
 //                 'from book,story ' +
 //                 'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
 //                 if(error) console.log(error);
@@ -145,7 +145,7 @@ exports.list_page=(req,res)=>{
         // 페이지가 없을경우
         if(!results)
         {
-            db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
+            db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
                 'from book,story ' +
                 'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
                 if(error) console.log(error);
@@ -220,13 +220,13 @@ exports.insert_book=(req,res)=>{
     console.log('북삽입',req.body);
     const new_book={
         Member_No:req.user.Member_No,
-        Book_Name:req.body.Book_Name,
+        Book_Title:req.body.Book_Title,
         Book_Author:req.user.Member_Name,
         // Book_Public : req.body.Book_Public ? 1 : 0,
     };
     db.query('insert into book set ? ',new_book,(error,results)=>{
         if(error) console.log(error);
-        db.query('select Book_No,Book_Name,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
+        db.query('select Book_No,Book_Title,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
             res.json(results);
         });
     });
@@ -302,7 +302,7 @@ exports.insert_page=(req,res)=>{
 //TODO 값이 없을때 서버, 웹에서의 처리
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
+    let sql = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
         'Order By page.Page_UpdateDate DESC';

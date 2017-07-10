@@ -24,7 +24,7 @@ $('.edit').click(function () {
             "opacity": "1"
         });
         // box가 작아졌을 때 크기를 줄인다.
-        $(this).next().css({
+        $(this).next().next().css({
             'height': $(this).next().next().prop('scrollHeight')
         });
 
