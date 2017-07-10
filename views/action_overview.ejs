@@ -71,13 +71,28 @@
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
-                        <a href="#" class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
+                        <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
                     <div class="memo">
-                        <button class="edit f-sub">Edit</button>
+                        <a href="#" class="edit f-sub">Edit</a>
                         <div class='story-memo-no' style='display: none'><%=data[i].Story_Memo[j].Story_Memo_No%></div>
-                        <textarea class="story-memo" rows="1" cols="74"><%=data[i].Story_Memo[j].Story_Memo_Text%></textarea>
+                        <div class="story-memo"><%=data[i].Story_Memo[j].Story_Memo_Text%></div>
+                        <button>전송</button>
+                        <script>
+                            $('.edit.f-sub').click(function (event) {
+                                console.log(event.target);
+                                var Story_Memo=$(event.target).parent().children('.story-memo');
+                                var Story_Memo_Text=Story_Memo.html();
+                                console.log(Story_Memo_Text);
+                                Story_Memo.empty();
+                                Story_Memo.append("<input type='text' value="+ Story_Memo_Text+">");
+                            })
+                            $('.story-memo').click(function (event) {
+                                console.log('되나되나?');
+
+                            })
+                        </script>
                     </div>
                     <%}%>
                 </div>
@@ -139,6 +154,7 @@
     <!--스토리 추가하는 팝업부분-->
     <!--TODO: Action에서 스토리 추가하는 부분 구현, 가운데에는 북리스트가 떠서 선택한 북으로 저장, 이부분은 select로 구현 가능할듯-->
     <div class="closeup">
+
         <!--TODO 북 공개 여부가 스토리 전부의 공개 여부를 결정하므로 대폭 수정해야함-->
         <div class="new-story">
             <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
@@ -161,15 +177,26 @@
                 <button id="insert-new-story" class="f-empha">SUBMIT</button>
             </div>
         </div>
+
         <!--스토리를 끝내는 부분-->
         <div class='story-done'>
-            
+            <div class="f-menu">The Last Page</div>
+            <a href='#' id='story-done-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <!--에디터-->
+            <div class="textarea"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="footer">
+                <div class="attachment">첨부</div>
+                <input type="submit" id="submit" style="display: none;">
+                <label for="submit">제출</label>
+                <span id = "status"></span>
+            </div>
         </div>
+
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
-            <p class="del-nav">type "<span class="f-empha">story name을 삭제합니다.</span>"</p>
+            <p class="del-nav">type "<span class="f-empha del-name">story name을 삭제합니다.</span>"</p>
             <input type="text" id="confirm" placeholder="confirm massage">
             <input type="submit">
         </div>
@@ -183,6 +210,7 @@
     <script src="/js/slide.js"></script>
     <script src="/js/memo.js"></script>
     <script src="/js/aside.js"></script>
+    <script src="/js/arg.js"></script>
     <script>
         //TODO: 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
         $(".aside-btn").click(function () {

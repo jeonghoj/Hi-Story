@@ -1,4 +1,4 @@
-// Typed라는 플러그인을 사용하여 타자로 글을 치는 듯한 느낌을 준다.
+// Typing animation 구현
 $(function () {
     $("#typed1").typed({
         // ^300은 300ms 대기를 의미
@@ -26,12 +26,22 @@ $(function () {
     });
 });
 
+
 // sign up에서 pw 확인
 $('.sign-up input[type="submit"]').click(function () {
     if($('.sign-up input[type="text"]').val() != ""
     && $('.sign-up input[type="password"]').val() != "") {
         if($('#make-user-password').val() != $('#check-user-password').val()) {
             event.preventDefault();
+            $('.sign-up .prevent-nav #nav02').fadeIn("slow").delay(3000).fadeOut("slow");
         }
     }
 });
+
+// intro page에서 비밀번호 null 처리
+$('#sign-in').click(function () {
+    if($('#user-id').val() == "" || $('#user-password').val() == "") {
+        event.preventDefault();
+        alert("아이디 혹은 비밀번호를 확인해 주세요.");
+    }
+})

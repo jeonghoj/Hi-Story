@@ -1,4 +1,4 @@
-// New story 창 열기
+// New story 열기
 $('.right .aside .aside-btn #new-story-btn').click(function () {
     $('.closeup').css({
         "visibility": "visible"
@@ -11,7 +11,7 @@ $('.right .aside .aside-btn #new-story-btn').click(function () {
 //    });
 });
 
-// New story 창 닫기
+// New story 닫기
 $('.closeup .new-story #new-story-close').click(function () {
     $('.closeup').css({
         "visibility": "hidden"
@@ -20,7 +20,7 @@ $('.closeup .new-story #new-story-close').click(function () {
         "visibility": "hidden"
     });
 //    $('body').css({
-//        "overflow": "scroll" 
+//        "overflow": "scroll"
 //    });
 });
 
@@ -48,6 +48,29 @@ $('.closeup .story-delete #story-delete-close').click(function () {
     });
 //    $('body').css({
 //        "overflow": "scroll" 
+//    });
+});
+
+// Done 열기
+$('#done-btn').click(function () {
+    $('.closeup').css({
+        "visibility": "visible"
+    });
+    $('.closeup .story-done').css({
+        "visibility": "visible"
+    });
+});
+
+// Done 닫기
+$('.closeup .story-done #story-done-close').click(function () {
+    $('.closeup').css({
+        "visibility": "hidden"
+    });
+    $('.closeup .story-done').css({
+        "visibility": "hidden"
+    });
+//    $('body').css({
+//        "overflow": "scroll"
 //    });
 });
 
