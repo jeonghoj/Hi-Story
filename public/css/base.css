@@ -16,6 +16,9 @@ button {
     background: none;
     outline: none;
 }
+input {
+    outline: none;
+}
 
 /* font ================================================== :) */
 .f-logo {
