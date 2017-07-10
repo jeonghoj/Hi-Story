@@ -302,19 +302,6 @@ input {
     transition: all .35s ease;
     opacity: .9;
 }
-.webui-popover-content .story-set-popover {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-}
-.webui-popover-content .story-set-popover button {
-    border: none;
-    background: none;
-}
-.webui-popover-content .story-set-popover button:hover {
-    border: 1px dotted red;
-}
 .left .story-list .story .memo{
     text-align: justify;   
     vertical-align: middle;

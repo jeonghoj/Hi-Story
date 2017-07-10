@@ -59,16 +59,15 @@ $(document).ready(function () {
                 story_ary.sort(function (a, b) {
                     return a.name > b.name ? -1 : a.name < b.name ? 1 : 0;
                 });
-                console.log(story_ary);
                 break;
             case '2':
                 story_ary.sort(function (a, b) {
-                    return a.date < b.date ? -1 : a.name > b.name ? 1 : 0;
+                    return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
                 });
                 break;
             case '3':
                 story_ary.sort(function (a, b) {
-                    return a.date > b.date ? -1 : a.name < b.name ? 1 : 0;
+                    return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
                 });
                 break;
         }
