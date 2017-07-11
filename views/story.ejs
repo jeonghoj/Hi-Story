@@ -42,29 +42,33 @@
                 <!--<hr class="hr-page">-->
                 <!--본문-->
                 <% if(page[0].Page_No !== undefined){%>
-                <% for(var i=0; i<page.length-1;i++){%>
-                            <% if(page[i].Page_Last==1) {%>
-                        <div class="page-list"><%}%>
-                <div class="date f-subSmall"><%= page[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div>
-                <div class="page">
-                    <% if(page[i].Imgdata[0] !== undefined) { %>
-                    <div class="img-box">
-                        <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
-                        <% for(var j=0; j<page[i].Imgdata.length;j++){%>
-                        <% if(j===0){%>
-                        <img class="active" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].Image_Path %>">
-                        <%}else{%>
-                        <img class="hidden" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].Image_Path %>">
+                    <% for(var i=0; i<page.length-1;i++){%>
+                        <% if(page[i].Page_Last==1) {%>
+                        <div class="page-list">
                         <%}%>
-                        <%}%>
-                        <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
-                    </div>
-                    <%}%>
-                    <%- page[i].Page_Content%></div>
-                <hr class="hr-page">
-                            <% if(page[i].Page_Last==1) {%>
-                        </div>
+                        <div class="date f-subSmall"><%= page[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div>
+                        <div class="page">
+                        <% if(page[i].Imgdata[0] !== undefined) { %>
+                            <div class="img-box">
+                            <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                            <% for(var j=0; j<page[i].Imgdata.length;j++){%>
+                                <% if(j===0){%>
+                                    <img class="active" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].Image_Path %>">
+                                <%}else{%>
+                                    <img class="hidden" style="max-height:100%;max-width: 100%" src="/imageload/<%=page[i].Imgdata[j].Image_Path %>">
+                                <%}%>
                             <%}%>
+                            <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                            </div>
+                        <%}%>
+                        <%- page[i].Page_Content%>
+                        </div>
+
+                        <% if(page[i].Page_Last==1) {%>
+                        </div>
+                        <%}else{%>
+                            <hr class="hr-page">
+                        <%}%>
                 <%}%>
                 <%}%>
             </div>
@@ -103,7 +107,7 @@
             <div class="aside">
                 <div class="infor">
                     <%if(page !== null) {%>
-                    <div class="book-name f-subSmall"><%=page[0].Book_Name%></div>
+                    <div class="book-name f-subSmall"><%=page[0].Book_Title%></div>
                     <div class="story-name f-empha" ><%=page[0].Story_Title%></div>
                     <div class="date f-subSmall"><%=page[0].Story_DateStart.toISOString().slice(0, 19).replace('T', ' ')%></div>
                     <hr class="hr-infor">

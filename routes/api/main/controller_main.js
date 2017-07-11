@@ -6,7 +6,7 @@ const cwd = process.cwd();
 const db=require(cwd+'/config/db');
 const fs=require('fs');
 const passport=require(cwd+'/config/passport');
-
+// 인트로
 exports.intro=(req,res,next)=>{
     // FIXME 추후 문제 발생 소지
     passport.authenticate('jwtc', {session: false}, function(err, user, info) {
@@ -20,14 +20,17 @@ exports.intro=(req,res,next)=>{
         }
     })(req, res, next);
 };
+// 회원가입
 exports.signup=(req,res)=>{
     fs.readFile('views/sign-up.html','utf8',(error,data)=>{
         res.send(data);
     });
 };
+// 로그아웃
 exports.logout=(req,res)=>{
     res.clearCookie('jwt').redirect('/');
 };
+// 아이디중복확인
 exports.check_idOverlap=(req,res)=>{
     const sql = 'select count(*) as overlap from member where Member_ID=?';
     db.query(sql,req.body.userid,(error,results)=>{
@@ -38,6 +41,7 @@ exports.check_idOverlap=(req,res)=>{
         }
     });
 };
+// 이미지 로드
 exports.imageload=(req,res)=>{
     console.log(req.params.name);
     fs.readFile(cwd+'/userfile/'+req.params.name,function (error,data) {
@@ -47,17 +51,19 @@ exports.imageload=(req,res)=>{
     });
 };
 
+// 북 리스트(new-story 버튼)
 exports.list_book=(req,res)=>{
     db.query('select * from book where Member_No=?',req.user.Member_No,function (error,results) {
         if(error) console.log(error);
         res.json(results);
     });
 };
+// 스토리 리스트 현재는 안드로이드 때문에 만듬
 exports.list_story=(req,res)=>{
     let story = null;
     let story_list=[];
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select book.Book_Name,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
+    db.query('select book.Book_Title,story.* from book,story where story.Member_No=? group by story.Story_No' ,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -81,14 +87,13 @@ exports.list_story=(req,res)=>{
     });
 };
 
+// 북 타이틀 수정
 exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 북타이틀을 불러온다
-    console.log(req.body);
-    let booktitle={
-        Book_Name:req.body.Book_Name,
-    };
+    const Book_No=req.body.Book_No;
+    const Book_Title=req.body.Book_Title;
     let sql='update into book set ? where Book_No=? and Member_No=?';
-    db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
+    db.query(sql,[Book_No,Book_Title,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
             // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
@@ -101,14 +106,30 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
-//작업중
+// 북 공개 여부 수정
 exports.update_book_public=(req,res)=>{
-    console.log(req.body.Book_No);
-    console.log(req.body.Book_Public);
+    const Book_No=req.body.Book_No;
+    // 북 공개 여부를 토글로 설정 가능
+    const sql = 'update book set Book_Public=!Book_Public where Member_No=? and Book_No=?';
+    db.query(sql,[req.user.Member_No,Book_No],(error,results)=>{
+        if(error) console.log(error);
+        if(results.affectedRows===0){
+            // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
+            res.json({result:false,message:'잘못된 접근입니다.'});
+        }else if(results.changedRows===0){
+            res.json({result:false,message:'같은 내용입니다'});
+        }else{
+            console.log('book변경');
+            res.json({result:true,message:'변경되었습니다.'})
+        }
+    });
 };
 
-exports.delete_story=(req,res)=>{
-    db.query('delete from story where Story_No=?',req.body.Story_No,(error,results)=>{
+// 북 삭제
+exports.delete_book=(req,res)=>{
+    const Book_No = req.body.Book_No;
+    const sql='delete from book where Member_No=? and Book_No=?';
+    db.query(sql,[req.user.Member_No,Book_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
@@ -116,14 +137,30 @@ exports.delete_story=(req,res)=>{
         }else{
             res.json({message:'성공적으로 삭제되었습니다.',result:true});
         }
-    })
+    });
 };
+// 스토리 삭제
+exports.delete_story=(req,res)=>{
+    const Story_No = req.body.Story_No;
+    const sql = 'delete from story where Member_No=? and Story_No=?';
+    db.query(sql,[req.user.Member_No,Story_No],(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
+        }else{
+            res.json({message:'성공적으로 삭제되었습니다.',result:true});
+        }
+    });
+};
+// 페이지 삭제는 기본적으로 안됨
+exports.delete_page=(req,res)=>{};
 
-// TODO book_public버튼 구현
+// 북 삽입
 exports.insert_book=(req,res)=>{
     const new_book={
         Member_No:req.user.Member_No,
-        Book_Name:req.body.Book_Name,
+        Book_Title:req.body.Book_Title,
         Book_Author:req.user.Member_Name,
         // Book_Public : req.body.Book_Public ? 1 : 0,
     };
@@ -133,6 +170,7 @@ exports.insert_book=(req,res)=>{
         res.json(results.insertId);
     });
 };
+// 스토리 삽입
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -151,93 +189,89 @@ exports.insert_story=(req,res)=>{
         }
     });
 };
+// 페이지 삽입
 exports.insert_page=(req,res)=>{
-    console.log(req.body);
+    // 1.전에꺼 pagelast를 0 으로 업데이트. 첫글이면 undefined가 나올테니 if문으로 조건검사
+    // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
+    // 3.page를 수정할때는 pagelast가 1인지 확인
+    // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
     console.log('업로드된 파일',req.files);
+    const Story_No=req.body.Story_No;
+    const Page_Content=req.body.Page_Content;
+    const Page_Link=req.body.Page_Link;
     const sql = 'insert into page set ?';
     const page = {
-        Story_No:req.body.Story_No,
+        Story_No:Story_No,
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
-        Page_Content:req.body.Page_Content,
-        Page_Link:req.body.Page_Link,
+        Page_Content:Page_Content,
+        Page_Link:Page_Link,
+        Page_Last:1
     };
     db.beginTransaction((error)=>{
         if(error) throw error;
-        db.query(sql,page,(error,results)=>{
-            if(error){
-                return db.rollback(()=>{throw error;});
-            }
-            const page_no = results.insertId;
-            // if(!(req.files.Page_File)){
-            //     // TODO : 확장자 검사
-            //     let filedata = {
-            //         Page_No:page_no,
-            //         File_Fieldname:req.files.Page_File[0].fieldname,
-            //         File_Path:req.files.Page_File[0].path,
-            //         File_Originalname:req.files.Page_File[0].originalname,
-            //     };
-            //     db.query('insert into file set ?',filedata,(error)=>{
-            //         if(error){
-            //             return db.rollback(()=>{throw error;});
-            //         }
-            //     });
-            //     console.log('파일넣는데이터',filedata);
-            // }
-            if(req.files){
-                for(let i=0;i<req.files.length;i++){
-                    let imgdata={};
-                    imgdata={
-                        No:page_no,
-                        Image_Fieldname:req.files[i].fieldname,
-                        Image_Path:req.files[i].path,
-                        Image_Originalname:req.files[i].originalname
-                    };
-                    db.query('insert into image set ?',imgdata,(error)=>{
-                        if(error){
-                            return db.rollback(()=>{throw error;});
-                        }
-                    });
-                }
-            }
-            db.commit((error)=>{
+        //전에 쓴 글 page last를 0으로 바꿈
+        db.query('update page ' +
+            'set Page_Last=0 ' +
+            'where Story_No=? and Member_No=? order by Page_No desc limit 1',[Story_No,req.user.Member_No],(error,results)=>{
+            if(error) console.log(error);
+            // 첫글이어도 상관없다 없으면 없는대로
+            console.log(results);
+            db.query(sql,page,(error,results)=>{
                 if(error){
-                    return db.rollback(()=>{throw error});
+                    return db.rollback(()=>{throw error;});
                 }
-                console.log('Transaction Complete.');
-                res.json({result:true, url:'/story/'+req.body.Story_No});
+                const page_no = results.insertId;
+                // if(!(req.files.Page_File)){
+                //     let filedata = {
+                //         Page_No:page_no,
+                //         File_Fieldname:req.files.Page_File[0].fieldname,
+                //         File_Path:req.files.Page_File[0].path,
+                //         File_Originalname:req.files.Page_File[0].originalname,
+                //     };
+                //     db.query('insert into file set ?',filedata,(error)=>{
+                //         if(error){
+                //             return db.rollback(()=>{throw error;});
+                //         }
+                //     });
+                //     console.log('파일넣는데이터',filedata);
+                // }
+
+                // 파일이 있으면
+                if(req.files){
+                    for(let i=0;i<req.files.length;i++){
+                        let imgdata={};
+                        imgdata={
+                            No:page_no,
+                            Image_Fieldname:req.files[i].fieldname,
+                            Image_Path:req.files[i].path,
+                            Image_Originalname:req.files[i].originalname
+                        };
+                        db.query('insert into image set ?',imgdata,(error)=>{
+                            if(error){
+                                return db.rollback(()=>{throw error;});
+                            }
+                        });
+                    }
+                }
+                db.commit((error)=>{
+                    if(error){
+                        return db.rollback(()=>{throw error});
+                    }
+                    console.log('Transaction Complete.');
+                    res.json({result:true, url:'/story/'+req.body.Story_No});
+                });
+
+                // db엔드콜 하면 문제가 생긴다 connection pool에 대해서 알아보라는데?
+                // db.end();
+
             });
-
-            // db엔드콜 하면 문제가 생긴다 connection pool에 대해서 알아보라는데?
-            // db.end();
-
         });
+
     })
-    // db.query(sql,page,(error,results)=>{
-    //     if(error) console.log(error);
-    //     const page_no=results.insertId;
-    //     if(req.files[0]!==undefined){
-    //         for(let i =0; i<req.files.length;i++){
-    //             let imgdata = {
-    //                 Page_No:page_no,
-    //                 Image_Fieldname:req.files[i].fieldname,
-    //                 Image_Path:req.files[i].path,
-    //                 Image_Originalname:req.files[i].originalname
-    //             };
-    //             db.query('insert into image set ?',imgdata,(error)=>{
-    //                 if(error) console.log(error);
-    //                 if(i===req.files.length-1){
-    //                     console.log('완료');
-    //                     res.status(200).json({message:'complete'});
-    //                 }
-    //             })
-    //         }
-    //     }else{
-    //         res.status(200).json({message:'complete(noimg)'});
-    //     }
-    // });
 };
 
+// 액션 overview
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
@@ -270,10 +304,12 @@ exports.action= (req,res)=> {
         }
     });
 };
+// 히스토리
 exports.history=(req,res)=>{
+    // res.render('history');
     // TODO 널값처리 해줘야
     let historydata = null;
-    db.query('select book.Book_No,Book_Name,Book_Public ' +
+    db.query('select book.Book_No,Book_Title,Book_Public ' +
         'from book ' +
         'where Member_No=?',req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
@@ -285,24 +321,24 @@ exports.history=(req,res)=>{
             'from story ' +
             'where Member_No=?',req.user.Member_No,(error,results)=>{
             if(error) console.log(error);
-            for(let i=0;historydata.length;i++){
-                for(let j=0;results.length;j++){
+            for(let i=0;i<historydata.length;i++){
+                for(let j=0;j<results.length;j++){
                     if(historydata[i].Book_No === results[j].Book_No){
                         historydata[i].Story.push(results[j]);
                     }
                 }
-                if(i===story.length-1){
-                    res.json(historydata);
+                if(i===historydata.length-1){
+                    console.log(historydata);
+                    res.render('history',{historydata:historydata});
                 }
             }
         });
     });
-
-
 };
+// 액션 timeline
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select book.Book_Name,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
+    let sql = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
         'Order By page.Page_UpdateDate DESC';
@@ -317,32 +353,37 @@ exports.timeline=(req,res)=>{
     })
 
 };
+// story.ejs
 exports.list_page=(req,res)=>{
     let page=null;
-    const sql = "select book.Book_Name,story.Story_Title, story.Story_DateStart, page.* " +
+    const Story_No = req.params.id;
+    const storysql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
         "from book,story,page " +
         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
-    db.query(sql,req.params.id,(error,results)=>{
+    db.query(storysql,Story_No,(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
         {
-            db.query('select book.Book_Name,story.Story_Title,story.Story_DateStart ' +
+            const nopagesql=
+                'select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
                 'from book,story ' +
-                'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
+                'where story.Story_No=? and story.Book_No=book.Book_No';
+            db.query(nopagesql,req.params.id,(error,results)=>{
                 if(error) console.log(error);
                 res.render('story',
                     {   page:results,
-                        Story_No: req.params.id});
+                        Story_No: Story_No});
             });
         }else{
             page=results;
             for(let i=0;i<page.length;i++){
                 page[i].Imgdata=[];
             }
-            // TODO :작업중
-            db.query('select image.* ' +
+            const imagesql=
+                'select image.* ' +
                 'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
+            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
                 if(error) console.log(error);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<page.length;i++){
@@ -352,14 +393,13 @@ exports.list_page=(req,res)=>{
                         }
                     }
                     if(i===page.length-1){
-                        page.push({Story_No : req.params.id});
+                        page.push({Story_No : Story_No});
                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
                         return res.render('story',{page:page});
                     }
                 }
 
             });
-
             // for(let i=0;i<page.length;i++){
             //     let Page_No = page[i].Page_No;
             //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
@@ -375,13 +415,11 @@ exports.list_page=(req,res)=>{
             //     })
             //
             // }
-
         }
-        // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
-
     });
 };
 
+// 파일다운
 // exports.filedown=(req,res)=>{
 //     fs.readFile(cwd+'/userfile/'+req.params.name,(error,data)=>{
 //         if(error) console.log(error);

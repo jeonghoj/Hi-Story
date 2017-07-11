@@ -20,15 +20,13 @@ exports.register = (req,res) => {
     console.log(req.body);
     const {userid, password, realname} = req.body;
     let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
-    // let verifycode=randomString();
     hasher({password: password}, (error, pass, salt, hash) => {
         const user = {
-            authID: 'jwt:' + userid,
+            authID: 'jwt:' + randomString(),
             Member_ID: userid,
             Member_PW: hash,
             Member_salt: salt,
             Member_Name: realname,
-            Member_VerifyCode:verifycode,
             Member_EmailVerified:0,
         };
         const sql = 'insert into member set ?';
@@ -42,7 +40,7 @@ exports.register = (req,res) => {
                     to:'jjhh3079@gmail.com',
                     // to:user.Member_ID,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?token='+emailtoken,
+                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
                 };
                 transporter.sendMail(mailoptions,function (err,info) {
                     if(err) console.log(err);
@@ -73,7 +71,7 @@ exports.login = (req,res) => {
                     console.log('아직 이메일 인증이 되지 않은 회원입니다');
                 }else {
                     // id로 사람 구분
-                    const payload = {authID: 'jwt:'+user.Member_ID};
+                    const payload = {authID: user.authID};
                     const token = jwt.sign(payload, config.secret,{expiresIn: '9000m'});
                     console.log('login',token);
                     res.cookie('jwt',token);
@@ -88,14 +86,14 @@ exports.login = (req,res) => {
     });
 };
 exports.verifyemail=(req,res)=>{
-    console.log(req.params.code);
-    jwt.verify(req.params.token,config.secret,(error,decoded)=>{
+    const emailtoken=req.query.emailtoken;
+    const sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
+    jwt.verify(emailtoken,config.secret,(error,decoded)=>{
+        if(error) console.log(error);
         if(decoded===undefined){
             res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
         }else{
-            let sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
             db.query(sql,decoded.Member_ID,(error,result)=>{
-                console.log(result);
                 if(error) console.log(error);
                 if(result.affectedRows===0){
                     console.log('데이터없거나 잘못된 접근');
@@ -129,12 +127,14 @@ exports.find_PW=(req,res)=>{
 };
 exports.init_PW=(req,res)=>{
     // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
-    jwt.verify(req.body.token,config.secret,(error,decoded)=>{
+    const token=req.body.token;
+    const newpassword=req.body.Member_PW;
+    jwt.verify(token,config.secret,(error,decoded)=>{
         if(error) console.log(error);
         if(decoded===undefined){
             res.json({message:'잘못된 토큰입니다. 비밀번호 초기화를 다시 진행해주세요',result:false});
         }else{
-            hasher({password: req.body.Member_PW}, (error, pass, salt, hash) => {
+            hasher({password: newpassword}, (error, pass, salt, hash) => {
                 if (error) console.log(error);
                 const init_PW = {
                     Member_PW: hash,

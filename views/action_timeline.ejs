@@ -38,7 +38,7 @@
             <% for(var i=0 ; i<tldata.length ; i++){%>
             <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
             <div class="page-list"><%}%>
-                <div class="book-title" style="display: none"><%=tldata[i].Book_Name%></div>
+                <div class="book-title" style="display: none"><%=tldata[i].Book_Title%></div>
                 <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
                 <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
                 <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
