@@ -168,7 +168,7 @@ exports.list_page=(req,res)=>{
                         if(page[i].Page_No===results[j].No){
                             let Imgdata = {
                                 Image_No:results[j].Image_No,
-                                Image_Path:results[j].Image_Path,
+                                Image_Path:'https://45.32.48.181/imageload'+results[j].Image_Path,
                                 Image_Originalname:results[j].Image_Originalname
                             };
                             page[i].Page_Imgdata.push(Imgdata);
