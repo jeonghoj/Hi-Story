@@ -9,7 +9,8 @@ exports.action= (req,res)=> {
     //FIXME : promise로 이중쿼리 구현
     db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
-        'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
+        'where story.Member_No=? and story.Book_No=book.Book_No ' +
+        'order by Story_No asc', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -19,7 +20,8 @@ exports.action= (req,res)=> {
             for(let i=0;i<story.length;i++) {
                 story[i].Story_Memo = [];
             }
-            db.query('select story_memo.* ' +
+            db.query(
+                'select story_memo.Story_Memo_No,story_memo.Story_No,story_memo.Story_Memo_Text ' +
                 'from story,story_memo ' +
                 'where story.Story_No=story_memo.Story_No and story.Member_No=?',req.user.Member_No, (error, results) => {
                 if(error) console.log(error);
@@ -40,10 +42,10 @@ exports.action= (req,res)=> {
 };
 exports.history=(req,res)=>{
     let historydata=null;
-    let sql = 'select book.Book_No,Book_Title,Book_Public ' +
-        'from book' +
+    const select_book_query = 'select book.Book_No,Book_Title,Book_Public ' +
+        'from book ' +
         'where Member_No=?';
-    db.query(sql,req.user.Member_No,(error,results)=>{
+    db.query(select_book_query,req.user.Member_No,(error,results)=>{
         if(error) console.log(error);
         historydata=results;
         for(let i=0;i<historydata.length;i++){
@@ -60,8 +62,19 @@ exports.history=(req,res)=>{
 
     });
 };
-exports.username=(req,res)=>{
-    res.json({Member_Name:req.user.Member_Name});
+exports.memberprofile=(req,res)=>{
+    let Member_Name,Member_Profile,Member_Thumbnail_Path;
+    const select_member_info_query='select Member_Name,Member_Profile from member where Member_No=?';
+    db.query(select_member_info_query,req.user.Member_No,(error,results)=>{
+        Member_Name=results[0].Member_Name;
+        Member_Profile=results[0].Member_Profile;
+        const select_thumbnail_query='select Image_Path from image where No=? and Image_Fieldname=Member_Thumbnail';
+        db.query(select_thumbnail_query,req.user.Member_No,(error,results)=>{
+            Member_Thumbnail_Path='https://45.32.48.181/imageload'+results[0].Image_Path;
+            res.json({Member_Name:Member_Name,Member_Profile:Member_Profile,Member_Thumbnail_Path:Member_Thumbnail_Path});
+        })
+    });
+
 };
 
 exports.update_book_title=(req,res)=>{
@@ -84,9 +97,7 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
-
 exports.delete_story=(req,res)=>{
-    console.log(req.body);
     db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
@@ -97,45 +108,6 @@ exports.delete_story=(req,res)=>{
         }
     })
 };
-// exports.list_page=(req,res)=>{
-//     let page=null;
-//     let list_page=[];
-//     const sql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
-//         "from book,story,page " +
-//         "where book.Book_No=story.Book_No and story.Story_No = page.Story_No=?";
-//     db.query(sql,req.params.id,(error,results)=>{
-//         // 페이지가 없을경우
-//         if(results.length===0)
-//         {
-//             db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
-//                 'from book,story ' +
-//                 'where story.Story_No=1 and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
-//                 if(error) console.log(error);
-//                 res.render('story',
-//                     {   page:results,
-//                         Story_No: req.params.id});
-//             });
-//
-//         }
-//         // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
-//         page=results;
-//         for(let i=0;i<page.length;i++){
-//             let Page_No = page[i].Page_No;
-//             db.query('select * from image where Image_Fieldname=? and No=?','Page_Image',Page_No,(error,results)=>{
-//                 if(error) console.log(error);
-//                 page[i].Imgdata=results;
-//                 list_page.push(page[i]);
-//                 if(list_page.length===page.length){
-//                     list_page.push({Story_No : req.params.id});
-//                     JSON.stringify(list_page);
-//                     res.render('story',{page:list_page});
-//                 }
-//             })
-//
-//         }
-//     });
-// };
-
 exports.list_page=(req,res)=>{
     let page=null;
     const sql = "select Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
@@ -168,7 +140,7 @@ exports.list_page=(req,res)=>{
                         if(page[i].Page_No===results[j].No){
                             let Imgdata = {
                                 Image_No:results[j].Image_No,
-                                Image_Path:results[j].Image_Path,
+                                Image_Path:'https://45.32.48.181/imageload'+results[j].Image_Path,
                                 Image_Originalname:results[j].Image_Originalname
                             };
                             page[i].Page_Imgdata.push(Imgdata);
@@ -255,6 +227,94 @@ exports.insert_story=(req,res)=>{
 
     });
 };
+exports.insert_story_memo=(req,res)=>{
+    const Story_No = req.body.Story_No;
+    const Story_Memo_Text = req.body.Story_Memo_Text;
+    const new_story_memo_data={
+        Story_No:Story_No,
+        Member_No:req.user.Member_No,
+        Story_Memo_Text:Story_Memo_Text
+    };
+    const insert_story_memo_query='insert into story_memo set ?';
+    db.query(insert_story_memo_query,[new_story_memo_data],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query=
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query,[req.user.Member_No,Story_No],(error,results)=>{
+                if(error) console.log(error);
+                return res.json({message:'success', Story_Memo:results});
+            });
+            // const story_memo=fn_story_memo(req.user.Member_No,Story_No);
+        }
+    });
+};
+exports.update_story_memo=(req,res)=>{
+    const Story_Memo_No=req.body.Story_Memo_No;
+    const Story_No=req.body.Story_No;
+    const update_Story_Memo_Text=req.body.Story_Memo_Text;
+    const update_story_memo_query=
+        'update story_memo ' +
+        'set Story_Memo_Text=? ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?';
+    db.query(update_story_memo_query,[update_Story_Memo_Text,Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query =
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+                if (error) console.log(error);
+                return res.json({message: 'success', Story_Memo: results});
+            });
+        }
+    });
+};
+exports.delete_story_memo=(req,res)=>{
+    const Story_Memo_No = req.body.Story_Memo_No;
+    const Story_No= req.body.Story_No;
+    const delete_story_memo_query=
+        'delete from story_memo ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?';
+    db.query(delete_story_memo_query,[Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query =
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+                if (error) console.log(error);
+                console.log(results);
+                return res.json({message: 'success', Story_Memo: results});
+            });
+        }
+    });
+
+};
+// function fn_story_memo(userno,story_no) {
+//     const select_story_memo_query=
+//         'select Story_Memo_No,Story_Memo_Text ' +
+//         'from story_memo ' +
+//         'where Member_No=? and Story_No=?';
+//     db.query(select_story_memo_query,[userno,story_no],(error,results)=>{
+//         if(error) console.log(error);
+//         return results;
+//     });
+// }
+
+
+
+
 exports.insert_page=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);

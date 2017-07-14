@@ -37,6 +37,12 @@ router.post('/list_story', passport.authenticate('jwtc',{session:false}),control
 
 router.post('/update_book_title',passport.authenticate('jwtc',{session:false}),controller.update_book_title);
 router.post('/update_book_public',passport.authenticate('jwtc',{session:false}),controller.update_book_public);
+router.post('/update_book_thumbnail',passport.authenticate('jwtc',{session:false}),controller.update_book_thumbnail);
+
+router.post('/update_story_title',passport.authenticate('jwtc',{session:false}),controller.update_story_title);
+router.post('/update_story_done',passport.authenticate('jwtc',{session:false}),upload.array('Page_Image',6),controller.update_story_done);
+
+router.post('/update_page',passport.authenticate('jwtc',{session:false}),upload.array('Page_Image',6),controller.update_page);
 
 router.post('/delete_book',passport.authenticate('jwtc',{session:false}),controller.delete_book);
 router.post('/delete_story',passport.authenticate('jwtc',{session:false}),controller.delete_story);
