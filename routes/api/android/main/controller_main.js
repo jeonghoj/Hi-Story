@@ -317,62 +317,85 @@ exports.delete_story_memo=(req,res)=>{
 exports.list_page=(req,res)=>{
     let page=null;
     const Story_No = req.body.Story_No;
-    const storysql = "select Page_No,page.Member_No,Page_Author," +
-        "Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done " +
-        "from story,page " +
-        "where story.Story_No = page.Story_No and page.Story_No=?";
-    db.query(storysql,Story_No,(error,results)=>{
-        // 페이지가 없을경우
-        if(results.length===0)
-        {
-            // 이게맞나?
-            res.json(null);
-        }else{
-            page=results;
-            for(let i=0;i<page.length;i++){
-                page[i].Imgdata=[];
-            }
-            const imagesql=
-                'select image.* ' +
-                'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
-            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
-                if(error) console.log(error);
-                const filecount = results ? results.length : 0;
+    let Story_Citation,Story_Follow,Story_View;
+    const story_data_query=
+        'select Story_Citation,Story_Follow,Story_View ' +
+        'from story ' +
+        'where Story_No=?';
+    db.query(story_data_query,[Story_No],(error,results)=>{
+        if(error) console.log(error);
+        Story_Citation=results[0].Story_Citation;
+        Story_Follow=results[0].Story_Follow;
+        Story_View=results[0].Story_View;
+
+        const story_query = "select Page_No,page.Member_No,Page_Author," +
+            "Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done " +
+            "from story,page " +
+            "where story.Story_No = page.Story_No and page.Story_No=?";
+        db.query(story_query,Story_No,(error,results)=>{
+            // 페이지가 없을경우
+            if(results.length===0)
+            {
+                res.json({
+                    Story_Citation:Story_Citation,
+                    Story_Follow:Story_Follow,
+                    Story_View:Story_View,
+                    Page_Data:null
+                });
+            }else{
+                page=results;
                 for(let i=0;i<page.length;i++){
-                    for(let j=0; j<filecount;j++){
-                        if(page[i].Page_No===results[j].No){
-                            page[i].Imgdata.push({
-                                Image_No:results[j].Image_No,
-                                No:results[j].No,
-                                Image_Path:'http://45.32.48.181/imageload/'+results[j].Image_Path
+                    page[i].Imgdata=[];
+                }
+                const imagesql=
+                    'select image.* ' +
+                    'from image,page ' +
+                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
+                db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+                    if(error) console.log(error);
+                    const filecount = results ? results.length : 0;
+                    for(let i=0;i<page.length;i++){
+                        for(let j=0; j<filecount;j++){
+                            if(page[i].Page_No===results[j].No){
+                                page[i].Imgdata.push({
+                                    Image_No:results[j].Image_No,
+                                    Page_No:results[j].No,
+                                    Image_Path:'http://45.32.48.181/imageload/'+results[j].Image_Path
+                                });
+                            }
+                        }
+                        if(i===page.length-1){
+                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                            return res.json({
+                                Story_Citation:Story_Citation,
+                                Story_Follow:Story_Follow,
+                                Story_View:Story_View,
+                                Page_Data:page
                             });
                         }
                     }
-                    if(i===page.length-1){
-                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                        return res.json(page);
-                    }
-                }
 
-            });
-            // for(let i=0;i<page.length;i++){
-            //     let Page_No = page[i].Page_No;
-            //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
-            //         if(error) console.log(error);
-            //         page[i].Imgdata=results;
-            //         list_page.push(page[i]);
-            //         if(list_page.length===page.length){
-            //             list_page.push({Story_No : req.params.id});
-            //             JSON.stringify(list_page);
-            //             // console.log(list_page);
-            //             res.render('story',{page:list_page});
-            //         }
-            //     })
-            //
-            // }
-        }
+                });
+                // for(let i=0;i<page.length;i++){
+                //     let Page_No = page[i].Page_No;
+                //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
+                //         if(error) console.log(error);
+                //         page[i].Imgdata=results;
+                //         list_page.push(page[i]);
+                //         if(list_page.length===page.length){
+                //             list_page.push({Story_No : req.params.id});
+                //             JSON.stringify(list_page);
+                //             // console.log(list_page);
+                //             res.render('story',{page:list_page});
+                //         }
+                //     })
+                //
+                // }
+            }
+        });
     });
+
+
 };
 exports.insert_page=(req,res)=>{
 
