@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css">
+    <script src="https://cdn.ckeditor.com/4.7.0/basic/ckeditor.js"></script>
 </head>
 
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
@@ -175,7 +176,11 @@
                 <label for="submit">제출</label>
                 <span id = "status"></span>
             </div>
+            <script>
+                CKEDITOR.replace('editor2');
+            </script>
         </div>
+
 
         <!--스토리를 지우는 부분-->
         <div class='story-delete'>
