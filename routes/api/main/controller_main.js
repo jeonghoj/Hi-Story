@@ -594,8 +594,32 @@ exports.timeline=(req,res)=>{
             res.render('action_timeline',{tldata:null});
         }else{
             tldata=results;
-            JSON.stringify(tldata);
-            res.render('action_timeline',{tldata:tldata});
+            for(let i=0;i<tldata.length;i++){
+                tldata[i].Imgdata=[];
+            }
+            const imagesql=
+                'select image.* ' +
+                'from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
+            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+                if(error) console.log(error);
+                const filecount = results ? results.length : 0;
+                for(let i=0;i<tldata.length;i++){
+                    for(let j=0; j<filecount;j++){
+                        if(tldata[i].Page_No===results[j].No){
+                            tldata[i].Imgdata.push({
+                                Image_No:results[j].Image_No,
+                                No:results[j].No,
+                                Image_Path:'/imageload/'+results[j].Image_Path
+                            });
+                        }
+                    }
+                    if(i===tldata.length-1){
+                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                        return res.render('action_timeline',{tldata:tldata});
+                    }
+                }
+            });
         }
     });
 };
@@ -625,31 +649,31 @@ exports.list_page=(req,res)=>{
             for(let i=0;i<page.length;i++){
                 page[i].Imgdata=[];
             }
+            //이렇게하면 그 회원의 모든 이미지를 불러오게된다 그 스토리에 딸린 page만 불러올순 없을까 ㅠㅠ
             const imagesql=
-                'select image.* ' +
-                'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
-            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
-                if(error) console.log(error);
-                const filecount = results ? results.length : 0;
-                for(let i=0;i<page.length;i++){
-                    for(let j=0; j<filecount;j++){
-                        if(page[i].Page_No===results[j].No){
-                            page[i].Imgdata.push({
-                                Image_No:results[j].Image_No,
-                                No:results[j].No,
-                                Image_Path:'/imageload/'+results[j].Image_Path
-                            });
+                    'select image.* ' +
+                    'from image,page ' +
+                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
+                db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+                    if(error) console.log(error);
+                    const filecount = results ? results.length : 0;
+                    for(let i=0;i<page.length;i++){
+                        for(let j=0; j<filecount;j++){
+                            if(page[i].Page_No===results[j].No){
+                                page[i].Imgdata.push({
+                                    Image_No:results[j].Image_No,
+                                    No:results[j].No,
+                                    Image_Path:'/imageload/'+results[j].Image_Path
+                                });
+                            }
+                        }
+                        if(i===page.length-1){
+                            page.push({Story_No : Story_No});
+                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                            return res.render('story',{page:page});
                         }
                     }
-                    if(i===page.length-1){
-                        page.push({Story_No : Story_No});
-                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                        return res.render('story',{page:page});
-                    }
-                }
-
-            });
+                });
             // for(let i=0;i<page.length;i++){
             //     let Page_No = page[i].Page_No;
             //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{

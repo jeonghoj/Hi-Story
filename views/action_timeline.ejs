@@ -42,10 +42,24 @@
                 <div class='story-memo-no' style='display: none'><%=tldata[i].Story_No%></div>
                 <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
                 <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
-                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate%></div><%}%>
+                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div><%}%>
                 <div class="page">
                     <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
-                    <br>
+                    <br><br>
+                    <% if(tldata[i].Imgdata[0] !== undefined) { %>
+                    <div class="img-box">
+                        <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                        <!--추후에 페이지 수정시 이미지의 Image_No, No가 필요한 상황이 올수도 있다 그때 추가해줄것-->
+                        <% for(var j=0; j<tldata[i].Imgdata.length;j++){%>
+                        <% if(j===0){%>
+                        <img class="active" style="max-height:100%;max-width: 100%" src="<%=tldata[i].Imgdata[j].Image_Path %>">
+                        <%}else{%>
+                        <img class="hidden" style="max-height:100%;max-width: 100%" src="<%=tldata[i].Imgdata[j].Image_Path %>">
+                        <%}%>
+                        <%}%>
+                        <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                    </div>
+                    <%}%>
                     <%-tldata[i].Page_Content%>
                 </div>
             <% if(tldata[i+1]==null ? true : tldata[i+1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
