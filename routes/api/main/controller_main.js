@@ -179,7 +179,8 @@ exports.update_story_done=(req,res)=>{
         Page_Author:req.user.Member_Name,
         Page_Content:Page_Content,
         Page_Link:Page_Link,
-        Page_Last:1
+        Page_Last:1,
+        Page_Done:1
     };
     const check_story_done_query='select Story_Done from story where Member_No=? and Story_No=?';
     db.query(check_story_done_query,[req.user.Member_No,Story_No],(error,results)=>{
@@ -668,9 +669,9 @@ exports.list_page=(req,res)=>{
                             }
                         }
                         if(i===page.length-1){
-                            page.push({Story_No : Story_No});
+                            // page.push({Story_No : Story_No});
                             // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                            return res.render('story',{page:page});
+                            return res.render('story',{page:page,Story_No : Story_No});
                         }
                     }
                 });
