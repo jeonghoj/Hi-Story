@@ -58,11 +58,16 @@ $(document).ready(function () {
         if(event.keyCode == 13) {
             event.preventDefault();
             $(this).prev().prev().trigger('click');
+            if($(this).val() == "") {
+                $(this).parent().remove();
+            }
         }
         $(this).css({
            'height': $(this).prop('scrollHeight')
         });
     });
+
+    
 });
 
 
