@@ -229,9 +229,92 @@ exports.insert_story=(req,res)=>{
 };
 exports.insert_story_memo=(req,res)=>{
     const Story_No = req.body.Story_No;
-    const insert_story_memo_query='insert story set Story_Memo_Text=? where ';
+    const Story_Memo_Text = req.body.Story_Memo_Text;
+    const new_story_memo_data={
+        Story_No:Story_No,
+        Member_No:req.user.Member_No,
+        Story_Memo_Text:Story_Memo_Text
+    };
+    const insert_story_memo_query='insert into story_memo set ?';
+    db.query(insert_story_memo_query,[new_story_memo_data],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query=
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query,[req.user.Member_No,Story_No],(error,results)=>{
+                if(error) console.log(error);
+                return res.json({message:'success', story_memo:results});
+            });
+            // const story_memo=fn_story_memo(req.user.Member_No,Story_No);
+        }
+    });
+};
+exports.update_story_memo=(req,res)=>{
+    const Story_Memo_No=req.body.Story_Memo_No;
+    const Story_No=req.body.Story_No;
+    const update_Story_Memo_Text=req.body.Story_Memo_Text;
+    const update_story_memo_query=
+        'update story_memo ' +
+        'set Story_Memo_Text=? ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?';
+    db.query(update_story_memo_query,[update_Story_Memo_Text,Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query =
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+                if (error) console.log(error);
+                return res.json({message: 'success', story_memo: results});
+            });
+        }
+    });
+};
+exports.delete_story_memo=(req,res)=>{
+    const Story_Memo_No = req.body.Story_Memo_No;
+    const Story_No= req.body.Story_No;
+    const delete_story_memo_query=
+        'delete from story_memo ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?';
+    db.query(delete_story_memo_query,[Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json({message:'fail'});
+        }else{
+            const select_story_memo_query =
+                'select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo ' +
+                'where Member_No=? and Story_No=?';
+            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+                if (error) console.log(error);
+                console.log(results);
+                return res.json({message: 'success', story_memo: results});
+            });
+        }
+    });
 
 };
+// function fn_story_memo(userno,story_no) {
+//     const select_story_memo_query=
+//         'select Story_Memo_No,Story_Memo_Text ' +
+//         'from story_memo ' +
+//         'where Member_No=? and Story_No=?';
+//     db.query(select_story_memo_query,[userno,story_no],(error,results)=>{
+//         if(error) console.log(error);
+//         return results;
+//     });
+// }
+
+
+
+
 exports.insert_page=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
