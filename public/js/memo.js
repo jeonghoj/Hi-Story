@@ -8,7 +8,6 @@ $(document).ready(function () {
         });
     });
 
-
     // 기본 값 설정
     $('.story-no-infor').append('1');
 
@@ -54,12 +53,15 @@ $(document).ready(function () {
     });
 
 
-    // textarea에서 엔터 시 바로 저장
+    // textarea에서 엔터 시 바로 저장 및 실시간 높이 조정
     $(document).on('keydown', '.story-memo', function () {
         if(event.keyCode == 13) {
             event.preventDefault();
             $(this).prev().prev().trigger('click');
         }
+        $(this).css({
+           'height': $(this).prop('scrollHeight')
+        });
     });
 });
 
