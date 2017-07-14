@@ -9,7 +9,8 @@ exports.action= (req,res)=> {
     //FIXME : promise로 이중쿼리 구현
     db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
-        'where story.Member_No=? and story.Book_No=book.Book_No', req.user.Member_No, (error, results) => {
+        'where story.Member_No=? and story.Book_No=book.Book_No ' +
+        'order by Story_No asc', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -19,7 +20,8 @@ exports.action= (req,res)=> {
             for(let i=0;i<story.length;i++) {
                 story[i].Story_Memo = [];
             }
-            db.query('select story_memo.* ' +
+            db.query(
+                'select story_memo.Story_Memo_No,story_memo.Story_No,story_memo.Story_Memo_Text ' +
                 'from story,story_memo ' +
                 'where story.Story_No=story_memo.Story_No and story.Member_No=?',req.user.Member_No, (error, results) => {
                 if(error) console.log(error);
