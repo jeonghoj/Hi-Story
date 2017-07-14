@@ -77,6 +77,22 @@ exports.memberprofile=(req,res)=>{
 
 };
 
+exports.insert_book=(req,res)=>{
+    // TODO: Book_Public들어가야함!
+    console.log('북삽입',req.body);
+    const new_book={
+        Member_No:req.user.Member_No,
+        Book_Title:req.body.Book_Title,
+        Book_Author:req.user.Member_Name,
+        // Book_Public : req.body.Book_Public ? 1 : 0,
+    };
+    db.query('insert into book set ? ',new_book,(error,results)=>{
+        if(error) console.log(error);
+        db.query('select Book_No,Book_Title,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
+            res.json(results);
+        });
+    });
+};
 exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 북타이틀을 불러온다
     console.log(req.body);
@@ -97,112 +113,7 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
-exports.delete_story=(req,res)=>{
-    db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
-        if(error) console.log(error);
-        console.log(results);
-        if(results.affectedRows===0){
-            res.json({message:'error',result:false});
-        }else{
-            res.json({message:'success',result:true});
-        }
-    })
-};
-exports.list_page=(req,res)=>{
-    let page=null;
-    const sql = "select Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
-        "from page " +
-        "where page.Member_No=? and page.Story_No=?";
-    db.query(sql,[req.user.Member_No,req.body.Story_No],(error,results)=>{
-        // 페이지가 없을경우
-        if(!results)
-        {
-            db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
-                'from book,story ' +
-                'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
-                if(error) console.log(error);
-                res.render('story',
-                    {   page:results,
-                        Story_No: req.params.id});
-            });
-        }else{
-            page=results;
-            for(let i=0;i<page.length;i++){
-                page[i].Page_Imgdata=[];
-            }
-            db.query('select image.* ' +
-                'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
-                if(error) console.log(error);
-                const filecount = results ? results.length : 0;
-                for(let i=0;i<page.length;i++){
-                    for(let j=0; j<filecount;j++){
-                        if(page[i].Page_No===results[j].No){
-                            let Imgdata = {
-                                Image_No:results[j].Image_No,
-                                Image_Path:'https://45.32.48.181/imageload'+results[j].Image_Path,
-                                Image_Originalname:results[j].Image_Originalname
-                            };
-                            page[i].Page_Imgdata.push(Imgdata);
-                        }
-                    }
-                    if(i===page.length-1){
-                        db.query('select Story_Citation,Story_Follow,Story_View ' +
-                            'from story ' +
-                            'where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
-                            if(error) console.log(error);
-                            return res.json({
-                                Story_Citation:results[0].Story_Citation,
-                                Story_Follow:results[0].Story_Follow,
-                                Story_View:results[0].Story_View,
-                                Page_Data:page
-                            });
-                        });
-                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
 
-                    }
-                }
-
-            });
-
-            // for(let i=0;i<page.length;i++){
-            //     let Page_No = page[i].Page_No;
-            //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
-            //         if(error) console.log(error);
-            //         page[i].Imgdata=results;
-            //         list_page.push(page[i]);
-            //         if(list_page.length===page.length){
-            //             list_page.push({Story_No : req.params.id});
-            //             JSON.stringify(list_page);
-            //             // console.log(list_page);
-            //             res.render('story',{page:list_page});
-            //         }
-            //     })
-            //
-            // }
-
-        }
-        // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
-
-    });
-};
-
-exports.insert_book=(req,res)=>{
-    // TODO: Book_Public들어가야함!
-    console.log('북삽입',req.body);
-    const new_book={
-        Member_No:req.user.Member_No,
-        Book_Title:req.body.Book_Title,
-        Book_Author:req.user.Member_Name,
-        // Book_Public : req.body.Book_Public ? 1 : 0,
-    };
-    db.query('insert into book set ? ',new_book,(error,results)=>{
-        if(error) console.log(error);
-        db.query('select Book_No,Book_Title,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
-            res.json(results);
-        });
-    });
-};
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -227,6 +138,97 @@ exports.insert_story=(req,res)=>{
 
     });
 };
+
+exports.delete_story=(req,res)=>{
+    db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'error',result:false});
+        }else{
+            res.json({message:'success',result:true});
+        }
+    })
+};
+// exports.list_page=(req,res)=>{
+//     let page=null;
+//     const sql = "select Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
+//         "from page " +
+//         "where page.Member_No=? and page.Story_No=?";
+//     db.query(sql,[req.user.Member_No,req.body.Story_No],(error,results)=>{
+//         // 페이지가 없을경우
+//         if(!results)
+//         {
+//             db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
+//                 'from book,story ' +
+//                 'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
+//                 if(error) console.log(error);
+//                 res.render('story',
+//                     {   page:results,
+//                         Story_No: req.params.id});
+//             });
+//         }else{
+//             page=results;
+//             for(let i=0;i<page.length;i++){
+//                 page[i].Page_Imgdata=[];
+//             }
+//             db.query('select image.* ' +
+//                 'from image,page ' +
+//                 'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
+//                 if(error) console.log(error);
+//                 const filecount = results ? results.length : 0;
+//                 for(let i=0;i<page.length;i++){
+//                     for(let j=0; j<filecount;j++){
+//                         if(page[i].Page_No===results[j].No){
+//                             let Imgdata = {
+//                                 Image_No:results[j].Image_No,
+//                                 Image_Path:'https://45.32.48.181/imageload'+results[j].Image_Path,
+//                                 Image_Originalname:results[j].Image_Originalname
+//                             };
+//                             page[i].Page_Imgdata.push(Imgdata);
+//                         }
+//                     }
+//                     if(i===page.length-1){
+//                         db.query('select Story_Citation,Story_Follow,Story_View ' +
+//                             'from story ' +
+//                             'where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
+//                             if(error) console.log(error);
+//                             return res.json({
+//                                 Story_Citation:results[0].Story_Citation,
+//                                 Story_Follow:results[0].Story_Follow,
+//                                 Story_View:results[0].Story_View,
+//                                 Page_Data:page
+//                             });
+//                         });
+//                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+//
+//                     }
+//                 }
+//
+//             });
+//
+//             // for(let i=0;i<page.length;i++){
+//             //     let Page_No = page[i].Page_No;
+//             //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
+//             //         if(error) console.log(error);
+//             //         page[i].Imgdata=results;
+//             //         list_page.push(page[i]);
+//             //         if(list_page.length===page.length){
+//             //             list_page.push({Story_No : req.params.id});
+//             //             JSON.stringify(list_page);
+//             //             // console.log(list_page);
+//             //             res.render('story',{page:list_page});
+//             //         }
+//             //     })
+//             //
+//             // }
+//
+//         }
+//         // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
+//
+//     });
+// };
+
 exports.insert_story_memo=(req,res)=>{
     const Story_No = req.body.Story_No;
     const Story_Memo_Text = req.body.Story_Memo_Text;
@@ -312,10 +314,162 @@ exports.delete_story_memo=(req,res)=>{
 //     });
 // }
 
+exports.list_page=(req,res)=>{
+    let page=null;
+    const Story_No = req.body.Story_No;
+    const storysql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
+        "from book,story,page " +
+        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
+    db.query(storysql,Story_No,(error,results)=>{
+        // 페이지가 없을경우
+        if(results.length===0)
+        {
+            // 이게맞나?
+            res.json(null);
+        }else{
+            page=results;
+            for(let i=0;i<page.length;i++){
+                page[i].Imgdata=[];
+            }
+            const imagesql=
+                'select image.* ' +
+                'from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
+            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+                if(error) console.log(error);
+                const filecount = results ? results.length : 0;
+                for(let i=0;i<page.length;i++){
+                    for(let j=0; j<filecount;j++){
+                        if(page[i].Page_No===results[j].No){
+                            page[i].Imgdata.push({
+                                Image_No:results[j].Image_No,
+                                No:results[j].No,
+                                Image_Path:'/imageload/'+results[j].Image_Path
+                            });
+                        }
+                    }
+                    if(i===page.length-1){
+                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                        return res.json(page);
+                    }
+                }
 
-
-
+            });
+            // for(let i=0;i<page.length;i++){
+            //     let Page_No = page[i].Page_No;
+            //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
+            //         if(error) console.log(error);
+            //         page[i].Imgdata=results;
+            //         list_page.push(page[i]);
+            //         if(list_page.length===page.length){
+            //             list_page.push({Story_No : req.params.id});
+            //             JSON.stringify(list_page);
+            //             // console.log(list_page);
+            //             res.render('story',{page:list_page});
+            //         }
+            //     })
+            //
+            // }
+        }
+    });
+};
 exports.insert_page=(req,res)=>{
+
+    // 1.전에 쓴 페이지의 page_last를 0 으로 업데이트. 첫글이면 undefined가 나올테니 if문으로 조건검사
+    // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
+    // 3.page를 수정할때는 pagelast가 1인지 확인
+    // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
+
+    console.log('업로드된 파일',req.files);
+    const Story_No=parseInt((req.body.Story_No).slice(2));
+    const Page_Content=(req.body.Page_Content).slice(2);
+    const Page_Link=(req.body.Page_Link).slice(2);
+
+    const pagedata = {
+        Story_No:Story_No,
+        Member_No:req.user.Member_No,
+        Page_Author:req.user.Member_Name,
+        Page_Content:Page_Content,
+        Page_Link:Page_Link,
+        Page_Last:1
+    };
+    const check_story_done_query='select Story_Done from story where Member_No=? and Story_No=?';
+    db.query(check_story_done_query,[req.user.Member_No,Story_No],(error,results)=>{
+        if(error) console.log(error);
+        if(results[0].Story_Done===1){
+            res.json({result:false,message:'이미 완료한 스토리에 더이상 페이지를 작성할수 없습니다.'});
+        }else {
+            db.beginTransaction((error)=>{
+                if(error) throw error;
+                const update_page_lastpage_query=
+                    'update page ' +
+                    'set Page_Last=0 ' +
+                    'where Story_No=? and Member_No=? order by Page_No desc limit 1';
+                //전에 쓴 글 page last를 0으로 바꿈
+                db.query(update_page_lastpage_query,[Story_No,req.user.Member_No],(error,results)=>{
+                    if(error) console.log(error);
+                    // 첫글이어도 상관없다 없으면 없는대로
+                    console.log(results);
+                    const insert_page_query = 'insert into page set ?';
+                    db.query(insert_page_query,pagedata,(error,results)=>{
+                        if(error){
+                            return db.rollback(()=>{throw error;});
+                        }
+                        const page_no = results.insertId;
+                        // if(!(req.files.Page_File)){
+                        //     let filedata = {
+                        //         Page_No:page_no,
+                        //         File_Fieldname:req.files.Page_File[0].fieldname,
+                        //         File_Path:req.files.Page_File[0].path,
+                        //         File_Originalname:req.files.Page_File[0].originalname,
+                        //     };
+                        //     db.query('insert into file set ?',filedata,(error)=>{
+                        //         if(error){
+                        //             return db.rollback(()=>{throw error;});
+                        //         }
+                        //     });
+                        //     console.log('파일넣는데이터',filedata);
+                        // }
+
+                        // 파일이 있으면
+                        if(req.files){
+                            const insert_image_query=
+                                'insert into image ' +
+                                'set ?';
+                            for(let i=0;i<req.files.length;i++){
+                                //변수 초기화
+                                let imgdata={};
+                                imgdata={
+                                    No:page_no,
+                                    Image_Fieldname:req.files[i].fieldname,
+                                    Image_Path:req.files[i].path,
+                                    Image_Originalname:req.files[i].originalname
+                                };
+                                db.query(insert_image_query,imgdata,(error)=>{
+                                    if(error){
+                                        return db.rollback(()=>{throw error;});
+                                    }
+                                });
+                            }
+                        }
+                        db.commit((error)=>{
+                            if(error){
+                                return db.rollback(()=>{throw error});
+                            }
+                            console.log('Transaction Complete.');
+                            res.json({result:true, url:'/story/'+req.body.Story_No});
+                        });
+                        // db엔드콜 하면 문제가 생긴다 connection pool에 대해서 알아보라는데?
+                        // db.end();
+                    });
+                });
+            })
+        }
+    });
+};
+
+//구버전
+exports.insert_page1=(req,res)=>{
     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
     console.log(req.body);
     console.log('업로드된 파일',req.files);
@@ -362,18 +516,15 @@ exports.insert_page=(req,res)=>{
 //TODO 값이 없을때 서버, 웹에서의 처리
 exports.timeline=(req,res)=>{
     let tldata=[];
-    let sql = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
+    const select_tl_query = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
-        'where book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
+        'where book.Book_No=story.Book_No and page.Story_No=story.Story_No and Member_No=? ' +
         'Order By page.Page_UpdateDate DESC';
-
-    db.query(sql,(error,results)=>{
-        if(results.length===0) res.render('action_timeline',{tldata:null});
+    db.query(select_tl_query,[req.user.Member_No],(error,results)=>{
+        if(results.length===0) res.json({tldata:null});
         if(error) console.log(error);
         tldata=results;
-        JSON.stringify(tldata);
-        console.log(tldata);
-        res.render('action_timeline',{tldata:tldata});
+        res.json({tldata:tldata});
     })
 
 };

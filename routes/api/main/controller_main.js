@@ -423,6 +423,7 @@ exports.insert_page=(req,res)=>{
     // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
     // 3.page를 수정할때는 pagelast가 1인지 확인
     // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
+
     console.log('업로드된 파일',req.files);
 
     const Story_No=req.body.Story_No;
@@ -509,10 +510,7 @@ exports.insert_page=(req,res)=>{
                 });
             })
         }
-
     });
-
-
 };
 
 // 액션 overview
