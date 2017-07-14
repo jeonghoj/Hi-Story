@@ -321,8 +321,8 @@ exports.list_page=(req,res)=>{
     const story_data_query=
         'select Story_Citation,Story_Follow,Story_View ' +
         'from story ' +
-        'where Story_No=?';
-    db.query(story_data_query,[Story_No],(error,results)=>{
+        'where Member_No=? and Story_No=?';
+    db.query(story_data_query,[req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
         Story_Citation=results[0].Story_Citation;
         Story_Follow=results[0].Story_Follow;
