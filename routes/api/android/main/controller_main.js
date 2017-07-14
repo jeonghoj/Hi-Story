@@ -247,7 +247,7 @@ exports.insert_story_memo=(req,res)=>{
                 'where Member_No=? and Story_No=?';
             db.query(select_story_memo_query,[req.user.Member_No,Story_No],(error,results)=>{
                 if(error) console.log(error);
-                return res.json({message:'success', story_memo:results});
+                return res.json({message:'success', Story_Memo:results});
             });
             // const story_memo=fn_story_memo(req.user.Member_No,Story_No);
         }
@@ -272,7 +272,7 @@ exports.update_story_memo=(req,res)=>{
                 'where Member_No=? and Story_No=?';
             db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
                 if (error) console.log(error);
-                return res.json({message: 'success', story_memo: results});
+                return res.json({message: 'success', Story_Memo: results});
             });
         }
     });
@@ -295,7 +295,7 @@ exports.delete_story_memo=(req,res)=>{
             db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
                 if (error) console.log(error);
                 console.log(results);
-                return res.json({message: 'success', story_memo: results});
+                return res.json({message: 'success', Story_Memo: results});
             });
         }
     });
