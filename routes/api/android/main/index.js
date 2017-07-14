@@ -28,7 +28,7 @@ const passport = require(cwd+'/config/passport');
 // 헤더에 JWT 토큰  삽입
 router.post('/action',passport.authenticate('jwth',{session:false}),controller.action);
 router.post('/history',passport.authenticate('jwth',{session:false}),controller.history);
-router.post('/username',passport.authenticate('jwth',{session:false}),controller.username);
+router.post('/memberprofile',passport.authenticate('jwth',{session:false}),controller.memberprofile);
 
 router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
 router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book_title);
