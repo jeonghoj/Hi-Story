@@ -26,7 +26,7 @@ const port2 = 443;
 // 웹페이지 아이콘 설정
 app.use(favicon(path.join(__dirname, 'public/img/logo', 'favicon.ico')));
 //데이터 로그찍기
-app.use(morgan('common'));
+app.use(morgan('dev'));
 //정적 파일 셋팅 -> 이걸해줘야 css js 파일 읽을수 있음
 app.use(express.static(__dirname+'/public'));
 // parse JSON and url-encoded query and cookie

@@ -340,7 +340,7 @@ exports.list_page=(req,res)=>{
                     Story_Citation:Story_Citation,
                     Story_Follow:Story_Follow,
                     Story_View:Story_View,
-                    Page_Data:null
+                    Page_Data:[]
                 });
             }else{
                 page=results;
