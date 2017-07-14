@@ -317,9 +317,10 @@ exports.delete_story_memo=(req,res)=>{
 exports.list_page=(req,res)=>{
     let page=null;
     const Story_No = req.body.Story_No;
-    const storysql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
-        "from book,story,page " +
-        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
+    const storysql = "select Page_No,page.Member_No,Page_Author," +
+        "Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done " +
+        "from story,page " +
+        "where story.Story_No = page.Story_No and page.Story_No=?";
     db.query(storysql,Story_No,(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
@@ -344,7 +345,7 @@ exports.list_page=(req,res)=>{
                             page[i].Imgdata.push({
                                 Image_No:results[j].Image_No,
                                 No:results[j].No,
-                                Image_Path:'/imageload/'+results[j].Image_Path
+                                Image_Path:'http://45.32.48.181/imageload/'+results[j].Image_Path
                             });
                         }
                     }
