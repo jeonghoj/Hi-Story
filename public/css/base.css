@@ -16,7 +16,7 @@ button {
     background: none;
     outline: none;
 }
-input {
+input, textarea {
     outline: none;
 }
 
