@@ -614,7 +614,7 @@ mark {
     top: 50%;
     left: 50%;
     width: 560px;
-    height: 390px;
+    height: 380px;
     padding: 25px 20px 25px 20px;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 1);
@@ -635,17 +635,20 @@ mark {
 .closeup .new-story .new-book #new-book-title:focus {
     background-color: rgba(210, 210, 210, 1);
 }
-.closeup .new-story .new-book {
+.closeup .new-story .make-new-book {
     width: 520px;
     border: none;
     border-bottom: 1px solid rgb(80, 80, 80);
     margin-bottom: 5px;
 }
-.closeup .new-story .new-book #new-book-title {
+.closeup .new-story .make-new-book label {
+    float: right;
+}
+.closeup .new-story .make-new-book #new-book-title {
     border: none;
     background-color: rgba(245, 245, 245, 1);
     padding: 3px;
-    width: 400px;
+    width: 470px;
 }
 .closeup .new-story #new-story-close {
     position: absolute;
@@ -684,12 +687,8 @@ mark {
     border: none;
     background: none;
 }
-.closeup .new-story .new-story-footer #public {
+label .inactive {
     display: none;
-}
-.closeup .new-story .new-story-footer #public:checked + label{
-    text-decoration: line-through;
-    opacity: .7;
 }
 
 /* Story Del @ action ================================================== :) */

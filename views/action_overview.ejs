@@ -145,20 +145,26 @@
             <input type="text" id="new-story-title" name="Story_Title" placeholder="Story title">
             <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
             <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
-            <div class="new-book">
+            <div class="make-new-book">
                 <input type="text" id="new-book-title" placeholder="New book title">
-                <input type="checkbox" id="new-book-public" style="">
-                <label for="new-book-public" class="f-subSmall">공개</label>
-                <button id="insert-new-book">새북 추가</button>
+                <input type="checkbox" id="new-book-public" style="display: none;">
+                <label for="new-book-public" class="pub-label f-sub">
+                    <span class="pub">공개</span>
+                    <span class="notpub inactive">비공개</span>
+                </label>
+                <!--<button id="insert-new-book">새북 추가</button>-->
             </div>
+
             <!--여기에 북리스트 추가됨-->
             <div class="new-story-book">
             </div>
 
             <div class="new-story-footer">
-                <!--TODO: 깜빡이는 애니메이션으로 비공개로 변경-->
-                <input type="checkbox" id="public" name="Story_Public">
-                <label for="public" class="f-subSmall">공개</label>
+                <input type="checkbox" id="public" name="Story_Public" style="display: none;">
+                <label for="public" class="pub-label f-sub">
+                    <span class="pub">공개</span>
+                    <span class="notpub inactive">비공개</span>
+                </label>
                 <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
                 <button id="insert-new-story" class="f-empha">CREATE</button>
             </div>
@@ -207,7 +213,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"<br>");
+                            .append("<label><input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"</label><br>");
                     }
                 }
             });
@@ -222,7 +228,7 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
+                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"</label><br>");
                 }
             });
         });
@@ -259,12 +265,29 @@
                 }
             });
         });
-    </script>
 
-    <script>
-        $('.edit').click(function () {
-            alert("!");
-        })
+        // 공개 비공개 체크
+        $('.pub-label').click(function () {
+            $(this).find('.pub').toggleClass('inactive');
+            $(this).find('.notpub').toggleClass('inactive');
+        });
+
+        // book check label
+        $(document).on('click', 'label:has(.new-book)', function () {
+            for(var i=0; i<$('label:has(.new-book)').length; i++) {
+//                if($('label:has(.new-book):eq(i)').find('input').is(':checked')) {
+//                    $('label:has(.new-book):eq(i)').css({
+//                        'font-weight': '800'
+//                    });
+//                }else {
+//                    $('label:has(.new-book):eq(i)').css({
+//                        'font-weight': '300'
+//                    });
+//                }
+            }
+            alert(i);
+        });
+
     </script>
 
 </body>
