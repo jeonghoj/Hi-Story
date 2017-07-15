@@ -18,7 +18,7 @@
         <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
         <ul class="menu">
             <li><a href="/action" class="f-menu">Action</a></li>
-            <li><a href="history.ejs" class="f-menu">History</a></li>
+            <li><a href="/history" class="f-menu">History</a></li>
             <li><a href="explore.ejs" class="f-menu">Explore</a></li>
             <li><a href="setting.ejs" class="f-menu">Setting</a></li>
         </ul>
@@ -42,8 +42,9 @@
                 <!--<hr class="hr-page">-->
                 <!--본문-->
                 <% if(page[0].Page_No !== undefined){%>
-                    <% for(var i=0; i<page.length-1;i++){%>
-                <div class="date f-subSmall"><%= page[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div>
+                    <!--페이지의 마지막 값 Page_Done이 1일때 즉 Story가 Done되었을때 마지막-1 까지만 반복한다-->
+                    <% for(var i=0; i< ((page[page.length-1].Page_Done===1) ? (page.length-1) : (page.length));i++){%>
+                <div class="date f-subSmall"><%=page[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ') %></div>
                 <div class="page">
                         <% if(page[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
@@ -61,13 +62,43 @@
                         <%}%>
                         <%- page[i].Page_Content%>
                 </div>
-                        <% if(page[i].Page_Last==1) {%>
+                        <% if(page[i].Page_Last==1 || page[page.length-2].Page_Done===1){%>
                         <%}else{%>
                             <hr class="hr-page">
                         <%}%>
-                <%}%>
+                    <%}%>
+                    <%if(page[page.length-1].Page_Done===1){%>
+
+                    <%}%>
+
                 <%}%>
             </div>
+
+            <!--done을 했을 경우 보여지는 곳-->
+            <%if(page[0].Page_No){%>
+                <%if(page[page.length-1].Page_Done===1){%>
+                <div class="page-list">
+                    <div class="date f-subSmall"><%=page[page.length-1].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ') %></div>
+                    <div class="last-page">
+                        <% if(page[page.length-1].Imgdata[0] !== undefined) { %>
+                        <div class="img-box">
+                            <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
+                            <!--추후에 페이지 수정시 이미지의 Image_No, No가 필요한 상황이 올수도 있다 그때 추가해줄것-->
+                            <% for(var j=0; j<page[page.length-1].Imgdata.length;j++){%>
+                            <% if(j===0){%>
+                            <img class="active" style="max-height:100%;max-width: 100%" src="<%=page[page.length-1].Imgdata[j].Image_Path %>">
+                            <%}else{%>
+                            <img class="hidden" style="max-height:100%;max-width: 100%" src="<%=page[page.length-1].Imgdata[j].Image_Path %>">
+                            <%}%>
+                            <%}%>
+                            <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                        </div>
+                        <%}%>
+                        <%- page[page.length-1].Page_Content%>
+                    </div>
+                </div>
+                <%}%>
+            <%}%>
             <!--TODO 마지막 페이지 구현은 Story_Done이 있다면 length-1 없다면 length 로 돌리는 삼항연산자를 이용해보도록하자-->
 
             <!--마지막페이지 예시-->
@@ -77,7 +108,6 @@
             <!--</div>-->
             <!--글쓰기-->
             <div class="page-list page-write">
-
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
                     <!--파일첨부-->
                     <!--파일(파일은 한개만 가능)-->
@@ -86,7 +116,7 @@
                     <input type="file" name="Page_Image" multiple>
                     <!--에디터-->
                     <input type="hidden" name="Story_No"
-                           value="<%= (page[0].Page_No === undefined) ? Story_No : page[page.length-1].Story_No%>">
+                           value="<%=Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->

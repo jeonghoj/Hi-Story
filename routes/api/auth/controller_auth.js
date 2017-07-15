@@ -37,7 +37,7 @@ exports.register = (req,res) => {
             } else {
                 let mailoptions={
                     from:'historygdrive@gmail.com',
-                    to:'jjhh3079@gmail.com',
+                    to:userid,
                     // to:user.Member_ID,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
                     text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
@@ -55,8 +55,7 @@ exports.register = (req,res) => {
 exports.login = (req,res) => {
     console.log('로그인',req.body);
     const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
-    const sql='select * from member where Member_ID=?';
-    db.query(sql,[userid],(error,results) => {
+    db.query('select * from member where Member_ID=?',[userid],(error,results) => {
         if(error){
             console.log(error);
         }
@@ -87,6 +86,7 @@ exports.login = (req,res) => {
 };
 exports.verifyemail=(req,res)=>{
     const emailtoken=req.query.emailtoken;
+    console.log(emailtoken);
     const sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
     jwt.verify(emailtoken,config.secret,(error,decoded)=>{
         if(error) console.log(error);
