@@ -142,13 +142,13 @@
 
         <!--TODO 북 공개 여부가 스토리 전부의 공개 여부를 결정하므로 대폭 수정해야함-->
         <div class="new-story">
-            <input type="text" id="new-story-title" name="Story_Title" placeholder="insert TITLE">
+            <input type="text" id="new-story-title" name="Story_Title" placeholder="Story title">
             <!--TODO: ESC나 fade out된 배경을 클릭해도 나가지도록 -->
             <a id="new-story-close"><img src="/img/icon/ic_clear_black_24px.svg"></a>
-            <!--FIXME 북 추가하는 부분 만듬으로써 디자인이 틀어짐 수정해주시면 감사 ㅠㅠ-->
             <div class="new-book">
-                <input type="text" id="new-book-title" placeholder="insert book">
-                <input type="checkbox" id="new-book-public">공개여부
+                <input type="text" id="new-book-title" placeholder="New book title">
+                <input type="checkbox" id="new-book-public" style="">
+                <label for="new-book-public" class="f-subSmall">공개</label>
                 <button id="insert-new-book">새북 추가</button>
             </div>
             <!--여기에 북리스트 추가됨-->
@@ -156,10 +156,11 @@
             </div>
 
             <div class="new-story-footer">
-                <label for="public" class="f-subSmall">PUBLIC</label>
+                <!--TODO: 깜빡이는 애니메이션으로 비공개로 변경-->
                 <input type="checkbox" id="public" name="Story_Public">
+                <label for="public" class="f-subSmall">공개</label>
                 <!--TODO 기본 버튼 이미지 수정 -> 제출 버튼을 꾸밈없이 설정 하게끔-->
-                <button id="insert-new-story" class="f-empha">SUBMIT</button>
+                <button id="insert-new-story" class="f-empha">CREATE</button>
             </div>
         </div>
 
@@ -206,7 +207,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"ㅋ+data[i].Book_Title+"<br>");
+                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"<br>");
                     }
                 }
             });

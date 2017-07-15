@@ -605,7 +605,7 @@ mark {
     left: 0;
     background-color: rgba(50, 50, 50, .8);
     z-index: 100;
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
 
 /* New story @ action ================================================== :) */
@@ -614,14 +614,14 @@ mark {
     top: 50%;
     left: 50%;
     width: 560px;
-    height: 365px;
-    padding: 20px;
+    height: 390px;
+    padding: 25px 20px 25px 20px;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 1);
     border: none;
     border-radius: 5px;
     z-index: 200;
-    visibility: hidden;    
+    /*visibility: hidden;    */
 }
 .closeup .new-story #new-story-title {
     width: 520px;
@@ -631,17 +631,28 @@ mark {
     margin-bottom: 5px;
     background-color: rgba(240, 240 ,240, 1);
 }
-.closeup .new-story #new-story-title:hover,
-.closeup .new-story #new-story-title:focus {
+.closeup .new-story #new-story-title:focus,
+.closeup .new-story .new-book #new-book-title:focus {
     background-color: rgba(210, 210, 210, 1);
 }
-
+.closeup .new-story .new-book {
+    width: 520px;
+    border: none;
+    border-bottom: 1px solid rgb(80, 80, 80);
+    margin-bottom: 5px;
+}
+.closeup .new-story .new-book #new-book-title {
+    border: none;
+    background-color: rgba(245, 245, 245, 1);
+    padding: 3px;
+    width: 400px;
+}
 .closeup .new-story #new-story-close {
     position: absolute;
     top: 0px;
     right: 0px;
-    opacity: .7;
-    padding: 3px;
+    opacity: .5;
+    padding: 1px;
 }
 .closeup .new-story .new-story-book {
     width: 520px;
