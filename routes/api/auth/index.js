@@ -9,7 +9,7 @@ const controller = require('./controller_auth');
 
 router.post('/register',controller.register);
 router.post('/login',controller.login);
-router.get('/verifyemail/:code',controller.verifyemail);
+router.get('/verifyemail',controller.verifyemail);
 router.post('/find_PW',controller.find_PW);
 router.post('/init_PW',controller.init_PW);
 
