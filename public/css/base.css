@@ -489,7 +489,7 @@ mark {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 14px;
+    padding: 10px 0px 0px 14px;
 }
 .book-list .a-book {
     overflow: hidden;
@@ -523,7 +523,7 @@ mark {
 }
 
 .book-list .a-book .book-slide .book-inside .story-title {
-    height: 40px;
+    height: 28px;
     display: flex;
     justify-content: center;
     align-items: center;
