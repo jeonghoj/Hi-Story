@@ -206,7 +206,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"<br>");
+                            .append("<input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"ㅋ+data[i].Book_Title+"<br>");
                     }
                 }
             });
