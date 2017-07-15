@@ -218,7 +218,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<label><input class='new-book' name='Book_No' type='radio' value="+data[i].Book_No+">"+data[i].Book_Title+"</label><br>");
+                            .append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data[i].Book_No+">"+data[i].Book_Title+"</label><br>");
                     }
                 }
             });
@@ -233,7 +233,7 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"</label><br>");
+                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data.Book_No+">"+$('#new-book-title').val()+"</label><br>");
                 }
             });
         });
@@ -279,18 +279,17 @@
 
         // book check label
         $(document).on('click', 'label:has(.new-book)', function () {
-            for(var i=0; i<$('label:has(.new-book)').length; i++) {
-//                if($('label:has(.new-book):eq(i)').find('input').is(':checked')) {
-//                    $('label:has(.new-book):eq(i)').css({
-//                        'font-weight': '800'
-//                    });
-//                }else {
-//                    $('label:has(.new-book):eq(i)').css({
-//                        'font-weight': '300'
-//                    });
-//                }
+            for(var i=0; i<$('.new-story-book label').length; i++) {
+                if($('.new-story-book label').eq(i).find('.new-book').is(':checked')) {
+                    $('.new-story-book label').eq(i).css({
+                        'font-weight': '800'
+                    });
+                }else {
+                    $('.new-story-book label').eq(i).css({
+                        'font-weight': '400'
+                    });
+                }
             }
-            alert(i);
         });
 
     </script>
