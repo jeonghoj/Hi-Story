@@ -17,9 +17,7 @@ const morgan = require('morgan');
 
 const ssloptions = {
     key: fs.readFileSync('CSR.key'),
-    cert: fs.readFileSync('2_history-dcy.com.crt'),
-    ca:[fs.readFileSync('root.crt'),
-        fs.readFileSync('1_Intermediate(ca).crt')]
+    cert: fs.readFileSync('history-dcy.com.pem'),
 };
 const port1 = 80;
 const port2 = 443;
