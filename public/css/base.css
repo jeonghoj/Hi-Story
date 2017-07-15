@@ -530,6 +530,11 @@ mark {
 }
 .book-list .a-book .book-slide .book-inside .btn {
     height: 20px;
+    opacity: .01;
+}
+.book-list .a-book:hover .book-slide .book-inside .btn {
+    opacity: 1;
+    background: rgba(250, 250, 250, 1);
 }
 /* book card ================================================== :) */
 .book-list .a-book .book-item {

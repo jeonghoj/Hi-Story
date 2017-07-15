@@ -12,19 +12,39 @@ $('.go-inside').click(function () {
 // Story의 갯수가 정해져있지 않아서 범용적인 코드를 사용하기 위해 이렇게 구현
 // if 문 안에 든 계산식은 현제 위치를 계산해서 슬라이드를 제한
 $('.up-btn').click(function () {
-    if($(event.target).parent().parent().parent().find('.book-story-slide').position().top < -209) {
-        $(event.target).parent().parent().parent().find('.book-story-slide').animate({ 
-            top: '+=280px'
-        }, 300);
+    var slide = $(event.target).parent().parent().parent().find('.book-story-slide');
+    var top = slide.position().top;
+    var top_ = slide.parent().position().top;
+    if (top < top_) {
+
+        if(!(slide.is(':animated'))) {
+            slide.animate({
+                top: '+=280px'
+            }, 300);
+        }
+    } else {
+        event.preventDefault();
     }
 });
 $('.down-btn').click(function () {
-    if($(event.target).parent().parent().parent().find('.book-story-slide').position().top
-    > 69 - (parseInt($(event.target).parent().parent().parent().find('.story-title').length / 7) - 1) * 280) {
-        $(event.target).parent().parent().parent().find('.book-story-slide').animate({
-            top: '-=280px'
-        }, 300);
+    var slide = $(event.target).parent().parent().parent().find('.book-story-slide');
+    var bottom = slide.position().top + slide.outerHeight(true);
+    var bottom_ = slide.parent().position().top + slide.parent().outerHeight(true);
+    if(bottom > bottom_) {
+        if(!(slide.is(':animated'))) {
+            slide.animate({
+                top: '-=280px'
+            }, 300);
+        }
+    } else {
+        event.preventDefault();
     }
+
 });
 
+$('.btn').click(function () {
+    // alert("test");
+    $(this).find('.up-btn').trigger('click');
+    $(this).find('.down-btn').trigger('click');
+})
 
