@@ -440,10 +440,12 @@ exports.insert_page=(req,res)=>{
     // 3.page를 수정할때는 pagelast가 1인지 확인
     // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
     console.log('업로드된 파일',req.files);
-    console.log('받은 데이터',req.body);
     const Story_No=parseInt((req.body.Story_No).slice(2));
     const Page_Content=(req.body.Page_Content).slice(2);
-    const Page_Link=(req.body.Page_Link).slice(2);
+    let Page_Link=null;
+    if(!req.body.Page_Link){
+        Page_Link=(req.body.Page_Link).slice(2);
+    }
     const pagedata = {
         Story_No:Story_No,
         Member_No:req.user.Member_No,
@@ -452,7 +454,6 @@ exports.insert_page=(req,res)=>{
         Page_Link:Page_Link,
         Page_Last:1
     };
-    console.log('들어간데이터',pagedata);
     // 완성된 스토리인지 확인
     db.query('select Story_Done from story where Member_No=? and Story_No=?',
         [req.user.Member_No,Story_No],(error,results)=>{
