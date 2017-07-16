@@ -367,7 +367,6 @@ exports.insert_book=(req,res)=>{
     };
     db.query('insert into book set ? ',new_book,(error,results)=>{
         if(error) console.log(error);
-        console.log(results);
         res.json(results.insertId);
     });
 };

@@ -226,7 +226,7 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data.Book_No+">"+$('#new-book-title').val()+"<br>");
+                    $('.new-story-book').append("<input class='new-book' name='Book_No' type='radio' value="+data+">"+$('#new-book-title').val()+"<br>");
                 }
             });
         });

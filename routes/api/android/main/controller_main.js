@@ -77,24 +77,28 @@ exports.member_profile=(req,res)=>{
 
 };
 
-exports.insert_profileimg=(req,res)=>{
+exports.update_member_profile=(req,res)=>{
+    console.log(req.body);
     console.log(req.file);
+    const Member_Profile={Member_Profile:req.body.Member_Profile};
     const profileimgdata={
         Image_Fieldname:req.file.fieldname,
         Image_Path:req.file.path,
         Image_Originalname:req.file.originalname
     };
-    db.query('update image set ? where No=? and Image_Fieldname=?',
-        [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+    db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        if(results.affectedRows===0){
-            res.json({result:false,message:'잘못된 접근입니다.'});
-        }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
-        }else{
-            console.log('profileimg');
-            res.json({result:true,message:'변경되었습니다.'})
-        }
+        db.query('update image set ? where No=? and Image_Fieldname=?',
+            [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+                if(error) console.log(error);
+                if(results.affectedRows===0){
+                    res.json({result:false,message:'잘못된 접근입니다.'});
+                }else if(results.changedRows===0){
+                    res.json({result:false,message:'같은 내용입니다'});
+                }else{
+                    res.json({result:true,message:'success.'})
+                }
+            });
     });
 };
 
@@ -171,7 +175,6 @@ exports.insert_story=(req,res)=>{
 
     });
 };
-
 
 exports.delete_story=(req,res)=>{
     db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
