@@ -62,16 +62,16 @@ exports.history=(req,res)=>{
 
     });
 };
-exports.memberprofile=(req,res)=>{
-    let Member_Name,Member_Profile,Member_Thumbnail_Path;
+exports.member_profile=(req,res)=>{
+    let Member_Name,Member_Profile,Member_Profileimg;
     db.query('select Member_Name,Member_Profile from member where Member_No=?',
         [req.user.Member_No],(error,results)=>{
         Member_Name=results[0].Member_Name;
         Member_Profile=results[0].Member_Profile;
-        const select_thumbnail_query='select Image_Path from image where No=? and Image_Fieldname=Member_Thumbnail';
-        db.query(select_thumbnail_query,req.user.Member_No,(error,results)=>{
-            Member_Thumbnail_Path='https://45.32.48.181/imageload'+results[0].Image_Path;
-            res.json({Member_Name:Member_Name,Member_Profile:Member_Profile,Member_Thumbnail_Path:Member_Thumbnail_Path});
+        db.query('select Image_Path from image where No=? and Image_Fieldname=?',
+            [req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+            Member_Profileimg='https://history-dcy/imageload/'+results[0].Image_Path;
+            res.json({Member_Name:Member_Name,Member_Profile:Member_Profile,Member_Profileimg:Member_Profileimg});
         })
     });
 
