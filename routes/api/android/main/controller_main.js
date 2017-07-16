@@ -42,23 +42,26 @@ exports.action= (req,res)=> {
 };
 exports.history=(req,res)=>{
     let historydata=null;
-    const select_book_query = 'select book.Book_No,Book_Title,Book_Public ' +
-        'from book ' +
-        'where Member_No=?';
-    db.query(select_book_query,req.user.Member_No,(error,results)=>{
+    db.query('select book.Book_No,Book_Title,Book_Public from book where Member_No=?',
+        [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        historydata=results;
-        for(let i=0;i<historydata.length;i++){
-            db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
-                'from story ' +
-                'where Book_No=?',historydata[i].Book_No,(error,results)=>{
-                if(error) console.log(error);
-                historydata[i].Story=results;
-                if(i===historydata.length-1){
-                    res.json(historydata);
-                }
-            });
+        if(!results){
+            res.json([{message:'NoData'}]);
+        }else{
+            historydata=results;
+            for(let i=0;i<historydata.length;i++){
+                db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
+                    'from story where Book_No=?',
+                    [historydata[i].Book_No],(error,results)=>{
+                    if(error) console.log(error);
+                    historydata[i].Story=results;
+                    if(i===historydata.length-1){
+                        res.json(historydata);
+                    }
+                });
+            }
         }
+
 
     });
 };
