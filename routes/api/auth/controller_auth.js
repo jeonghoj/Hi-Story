@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const config = require(cwd+"/config/config.js");
 const emailaccount=require(cwd+'/config/emailaccount');
 const nodemailer=require('nodemailer');
+const fs=require('fs');
 let transporter=nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -108,6 +109,16 @@ exports.verifyemail=(req,res)=>{
         }
     });
 };
+exports.find_PW_page=(req,res)=>{
+    fs.readFile('views/find-PW.html','utf8',(error,data)=>{
+        res.send(data);
+    });
+};
+exports.new_PW_page=(req,res)=>{
+    fs.readFile('views/new-PW.html','utf8',(error,data)=>{
+        res.send(data);
+    });
+};
 exports.find_PW=(req,res)=>{
     const payload = {Member_ID: req.body.userid};
     const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
@@ -116,7 +127,7 @@ exports.find_PW=(req,res)=>{
         from:'historygdrive@gmail.com',
         to:'jjhh3079@gmail.com',
         subject:'비밀번호 초기화',
-        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. http://127.0.0.1/auth/init_PW?memberinfo='+token,
+        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. http://127.0.0.1/auth/new_PW?memberinfo='+token,
     };
     transporter.sendMail(mailoptions,(err,info) => {
         if(err) console.log(err);
@@ -125,7 +136,7 @@ exports.find_PW=(req,res)=>{
         res.status(200).json({message : '비밀번호 초기화 이메일을 발송했습니다!'});
     });
 };
-exports.init_PW=(req,res)=>{
+exports.new_PW=(req,res)=>{
     // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
     const token=req.body.token;
     const newpassword=req.body.Member_PW;
@@ -136,11 +147,11 @@ exports.init_PW=(req,res)=>{
         }else{
             hasher({password: newpassword}, (error, pass, salt, hash) => {
                 if (error) console.log(error);
-                const init_PW = {
+                const new_PW = {
                     Member_PW: hash,
                     Member_salt: salt,
                 };
-                db.query('update into member set ? where Member_ID=?', init_PW, decoded.Member_ID, (error, results) => {
+                db.query('update into member set ? where Member_ID=?', new_PW, decoded.Member_ID, (error, results) => {
                     if (error) console.log(error);
                     if (results.affectedRows === 1) {
                         res.json({message: '비밀번호가 성공적으로 변경되었습니다.', result: true});

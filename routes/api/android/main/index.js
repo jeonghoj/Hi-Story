@@ -9,13 +9,13 @@ const router =require('express').Router();
 const multer  = require('multer');
 const storage = multer.diskStorage({
     destination:function(req, file, cb) {
-        cb(null, './public/img')
+        cb(null, './../userfile')
     },
     // 파일네임문제
-    filename: function (req, file, cb) {
-        const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        cb(null,Date.now()+ '-' + file.fieldname + '-' + file.originalname +'-');
-    }
+    // filename: function (req, file, cb) {
+    //     const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    //     cb(null,Date.now()+ '-' + file.fieldname + '-' + file.originalname +'-');
+    // }
 });
 const upload = multer({
     storage:storage,
@@ -30,8 +30,8 @@ router.post('/action',passport.authenticate('jwth',{session:false}),controller.a
 router.post('/history',passport.authenticate('jwth',{session:false}),controller.history);
 
 router.get('/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
-router.post('/memberprofile',passport.authenticate('jwth',{session:false}),controller.memberprofile);
-
+router.post('/member_profile',passport.authenticate('jwth',{session:false}),controller.member_profile);
+router.post('/insert_profileimg',passport.authenticate('jwth',{session:false}),upload.single('Member_Profileimg'),controller.insert_profileimg);
 router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
 router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book_title);
 
