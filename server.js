@@ -3,7 +3,6 @@
  */
 const http=require('http');
 const https=require('https');
-
 const path = require('path');
 //웹페이지 아이콘 설정
 const favicon = require('serve-favicon');
@@ -16,9 +15,10 @@ const fs=require('fs');
 const app= express();
 const morgan = require('morgan');
 
-const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+const ssloptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/chain.pem')
 };
 const port1 = 80;
 const port2 = 443;
@@ -68,6 +68,6 @@ http.createServer(app).listen(port1, function(){
 });
 
 
-https.createServer(options, app).listen(port2, function(){
+https.createServer(ssloptions, app).listen(port2, function(){
     console.log("Https server listening on port " + port2);
 });

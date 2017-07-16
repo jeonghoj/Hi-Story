@@ -50,7 +50,7 @@ exports.check_idOverlap=(req,res)=>{
 // 이미지 로드
 exports.imageload=(req,res)=>{
     const imagepath = req.params.name;
-    fs.readFile(cwd+'/userfile/'+imagepath,function (error,data) {
+    fs.readFile(cwd+'/../userfile/'+imagepath,function (error,data) {
         if(error) console.log(error);
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
         res.end(data);
