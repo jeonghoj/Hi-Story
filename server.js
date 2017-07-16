@@ -58,17 +58,16 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-http.createServer(app).listen(port1, function(){
+// http.createServer(app).listen(port1, (req,res)=>{
+//     console.log("Http server listening on port " + port1);
+// });
+
+http.createServer(app).listen(port1, (req,res)=>{
     console.log("Http server listening on port " + port1);
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
 });
 
-//https redirect
-app.use(function(req, res, next) {
-    if(!req.secure) {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
-    }
-    next();
-});
 const ssloptions = {
     key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),

@@ -76,6 +76,7 @@ exports.member_profile=(req,res)=>{
     });
 
 };
+
 exports.insert_profileimg=(req,res)=>{
     console.log(req.file);
     const profileimgdata={
@@ -133,7 +134,6 @@ exports.update_book_title=(req,res)=>{
         }
     });
 };
-
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -159,6 +159,19 @@ exports.insert_story=(req,res)=>{
     });
 };
 
+exports.delete_book=(req,res)=>{
+    const Book_No = req.body.Book_No;
+    const delete_book_query='delete from book where Member_No=? and Book_No=?';
+    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'데이터가 잘못됬거나, 없습니다'});
+        }else{
+            res.json({message:'success'});
+        }
+    });
+};
 exports.delete_story=(req,res)=>{
     db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
         if(error) console.log(error);
