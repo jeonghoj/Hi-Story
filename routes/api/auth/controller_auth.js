@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const config = require(cwd+"/config/config.js");
 const emailaccount=require(cwd+'/config/emailaccount');
 const nodemailer=require('nodemailer');
+const fs=require('fs');
 let transporter=nodemailer.createTransport({
     service: 'Gmail',
     auth: {
