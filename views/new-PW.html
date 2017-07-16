@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Intro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/intro.css">
+
+</head>
+
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <form action="/auth/register" method="post">
+        <div class="sign-up">
+            <div>Sign Up</div>
+            <input id="make-user-id" type="text" placeholder="ID" name="userid" autocomplete="off">
+            <br>
+            <!--<input type="email" placeholder="Email">-->
+            <input id="make-user-password" type="password" placeholder="Password" name="password">
+            <br>
+            <input id="check-user-password" type="password" placeholder="Password check" name="password-check">
+            <br>            <!--<input type="password" placeholder="Password check">-->
+            <input id="make-user-name" type="text" placeholder="Name" name="realname" autocomplete="off">
+            <br>
+            <input type="submit">
+
+            <div class="prevent-nav">
+                <div id="nav01" style="display: none">이미 사용 중인 아이디입니다.</div>
+                <div id="nav02" style="display: none">비밀번호가 일치하지 않습니다. </div>
+                <div id="nav03" style="display: none"></div>
+            </div>
+        </div>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
+    <script src="/js/intro.js"></script>
+    <script src="/js/typed.js"></script>
+
+</body>
+
+</html>
