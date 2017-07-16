@@ -41,7 +41,7 @@ exports.register = (req,res) => {
                     to:userid,
                     // to:user.Member_ID,
                     subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
+                    text:'회원가입을 완료하려면 https://history-dcy.com/auth/verifyemail?emailtoken='+emailtoken,
                 };
                 transporter.sendMail(mailoptions,function (err,info) {
                     if(err) console.log(err);
@@ -127,7 +127,7 @@ exports.find_PW=(req,res)=>{
         from:'historygdrive@gmail.com',
         to:'jjhh3079@gmail.com',
         subject:'비밀번호 초기화',
-        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. http://127.0.0.1/auth/new_PW?memberinfo='+token,
+        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. https://history-dcy.com/auth/new_PW?memberinfo='+token,
     };
     transporter.sendMail(mailoptions,(err,info) => {
         if(err) console.log(err);
