@@ -115,13 +115,12 @@ exports.insert_book=(req,res)=>{
     });
 };
 exports.update_book=(req,res)=>{
-    console.log('updatebook',req.body);
     const updatebookdata={
         Book_No:req.body.Book_No,
         Book_Title:req.body.Book_Title,
         Book_Public:req.body.Book_Public
     };
-    db.query('update into book set ? where Book_No=? and Member_No=?',
+    db.query('update book set ? where Book_No=? and Member_No=?',
         [updatebookdata,req.body.Book_No,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
