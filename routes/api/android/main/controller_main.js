@@ -79,7 +79,7 @@ exports.member_profile=(req,res)=>{
 
 exports.update_member_profile=(req,res)=>{
     console.log(req.body);
-    console.log(req.file);
+    console.log('업로드한 파일',req.file);
     const Member_Profile={Member_Profile:req.body.Member_Profile};
     const profileimgdata={
         Image_Fieldname:req.file.fieldname,
@@ -88,8 +88,9 @@ exports.update_member_profile=(req,res)=>{
     };
     db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        db.query('update image set ? where No=? and Image_Fieldname=?',
-            [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+        if(req.file){
+            db.query('update image set ? where No=? and Image_Fieldname=?',
+                [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
                 if(error) console.log(error);
                 if(results.affectedRows===0){
                     res.json({result:false,message:'잘못된 접근입니다.'});
@@ -99,6 +100,8 @@ exports.update_member_profile=(req,res)=>{
                     res.json({result:true,message:'success.'})
                 }
             });
+        }
+
     });
 };
 
