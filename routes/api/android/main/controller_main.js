@@ -13,8 +13,8 @@ exports.action= (req,res)=> {
         'order by Story_No asc', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
-        if(results[0]===undefined){
-            res.render('action_overview',{data:false});
+        if(!results[0]){
+            res.json([{message:'NoData'}]);
         }else{
             story = results;
             for(let i=0;i<story.length;i++) {
@@ -45,7 +45,7 @@ exports.history=(req,res)=>{
     db.query('select book.Book_No,Book_Title,Book_Public from book where Member_No=?',
         [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        if(!results){
+        if(!results[0]){
             res.json([{message:'NoData'}]);
         }else{
             historydata=results;
