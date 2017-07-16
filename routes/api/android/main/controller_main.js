@@ -475,40 +475,54 @@ exports.insert_page=(req,res)=>{
                                 });
                             }
                         }
-                        db.commit((error)=>{
-                            if(error) return db.rollback(()=>{throw error});
-                            console.log('Transaction Complete.');
-                            db.query('select Page_No,page.Member_No,Page_Author,' +
-                                'Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done from page ' +
-                                'where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
-                                if(error) console.log(error);
-                                let res_pagedata=results;
-                                for(let i=0;i<res_pagedata.length;i++){
-                                    res_pagedata[i].Imgdata=[];
-                                }
-                                db.query('select image.* from image,page ' +
-                                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
-                                    [req.user.Member_No,'Page_Image'],(error,results)=> {
-                                    if (error) console.log(error);
-                                    const filecount = results ? results.length : 0;
-                                    for (let i = 0; i < res_pagedata.length; i++) {
-                                        for (let j = 0; j < filecount; j++) {
-                                            if (res_pagedata[i].Page_No === results[j].No) {
-                                                res_pagedata[i].Imgdata.push({
-                                                    Image_No: results[j].Image_No,
-                                                    Page_No: results[j].No,
-                                                    Image_Path: 'http://history-dcy.com/imageload/' + results[j].Image_Path
-                                                });
-                                            }
-                                        }
-                                        if (i === res_pagedata.length - 1) {
-                                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                                            return res.json({result:true, Page_Data:res_pagedata});
-                                        }
-                                    }
-                                });
+                        db.commit((error)=> {
+                            if (error) return db.rollback(() => {
+                                throw error
                             });
-                        });
+                            console.log('Transaction Complete.');
+                            db.query('select Story_Citation,Story_Follow,Story_View from story where Member_No=? and Story_No=?',
+                                [req.user.Member_No, Story_No], (error, results) => {
+                                    if (error) console.log(error);
+                                    let Story_Citation,Story_Follow,Story_View;
+                                    Story_Citation = results[0].Story_Citation;
+                                    Story_Follow = results[0].Story_Follow;
+                                    Story_View = results[0].Story_View;
+                                    db.query('select Page_No,page.Member_No,Page_Author,' +
+                                        'Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done from page ' +
+                                        'where Member_No=? and Story_No=?', [req.user.Member_No, Story_No], (error, results) => {
+                                        if (error) console.log(error);
+                                        let res_pagedata = results;
+                                        for (let i = 0; i < res_pagedata.length; i++) {
+                                            res_pagedata[i].Imgdata = [];
+                                        }
+                                        db.query('select image.* from image,page ' +
+                                            'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                                            [req.user.Member_No, 'Page_Image'], (error, results) => {
+                                                if (error) console.log(error);
+                                                const filecount = results ? results.length : 0;
+                                                for (let i = 0; i < res_pagedata.length; i++) {
+                                                    for (let j = 0; j < filecount; j++) {
+                                                        if (res_pagedata[i].Page_No === results[j].No) {
+                                                            res_pagedata[i].Imgdata.push({
+                                                                Image_No: results[j].Image_No,
+                                                                Page_No: results[j].No,
+                                                                Image_Path: 'http://history-dcy.com/imageload/' + results[j].Image_Path
+                                                            });
+                                                        }
+                                                    }
+                                                    if (i === res_pagedata.length - 1) {
+                                                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                                                        return res.json({
+                                                            Story_Citation:Story_Citation,
+                                                            Story_Follow:Story_Follow,
+                                                            Story_View:Story_View,
+                                                            Page_Data: res_pagedata});
+                                                    }
+                                                }
+                                            });
+                                    });
+                                });
+                        })
                         // db엔드콜 하면 문제가 생긴다 connection pool에 대해서 알아보라는데?
                         // db.end();
                     });
