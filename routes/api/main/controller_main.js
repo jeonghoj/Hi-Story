@@ -49,8 +49,8 @@ exports.check_idOverlap=(req,res)=>{
 };
 // 이미지 로드
 exports.imageload=(req,res)=>{
-    const imagepath = req.params.name;
-    fs.readFile(cwd+'/../userfile/'+imagepath,function (error,data) {
+    const imagepath = req.query.imagepath;
+    fs.readFile(cwd+'/'+imagepath,function (error,data) {
         if(error) console.log(error);
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
         res.end(data);
@@ -132,10 +132,6 @@ exports.update_book_public=(req,res)=>{
             res.json({result:true,message:'변경되었습니다.'})
         }
     });
-};
-// 북 썸네일 수정
-//작업중
-exports.update_book_thumbnail=(req,res)=>{
 };
 // 스토리 타이틀 수정
 exports.update_story_title=(req,res)=>{
@@ -395,7 +391,6 @@ exports.insert_story=(req,res)=>{
 };
 // 페이지 삽입 (로직에 대한 설명 필요)
 exports.insert_page=(req,res)=>{
-
     // 1.전에 쓴 페이지의 page_last를 0 으로 업데이트. 첫글이면 undefined가 나올테니 if문으로 조건검사
     // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
     // 3.page를 수정할때는 pagelast가 1인지 확인
@@ -587,7 +582,7 @@ exports.timeline=(req,res)=>{
                             tldata[i].Imgdata.push({
                                 Image_No:results[j].Image_No,
                                 No:results[j].No,
-                                Image_Path:'/imageload/'+results[j].Image_Path
+                                Image_Path:'/imageload?imagepath='+results[j].Image_Path
                             });
                         }
                     }
@@ -640,7 +635,7 @@ exports.list_page=(req,res)=>{
                                 page[i].Imgdata.push({
                                     Image_No:results[j].Image_No,
                                     No:results[j].No,
-                                    Image_Path:'/imageload/'+results[j].Image_Path
+                                    Image_Path:'/imageload?imagepath='+results[j].Image_Path
                                 });
                             }
                         }

@@ -70,7 +70,7 @@ exports.member_profile=(req,res)=>{
         Member_Profile=results[0].Member_Profile;
         db.query('select Image_Path from image where No=? and Image_Fieldname=?',
             [req.user.Member_No,'Member_Profileimg'],(error,results)=>{
-            Member_Profileimg='https://history-dcy/imageload/'+results[0].Image_Path;
+            Member_Profileimg='https://history-dcy/imageload?imagepath='+results[0].Image_Path;
             res.json({Member_Name:Member_Name,Member_Profile:Member_Profile,Member_Profileimg:Member_Profileimg});
         })
     });
@@ -377,7 +377,7 @@ exports.list_page=(req,res)=>{
                                 page[i].Imgdata.push({
                                     Image_No:results[j].Image_No,
                                     Page_No:results[j].No,
-                                    Image_Path:'http://history-dcy.com/imageload/'+results[j].Image_Path
+                                    Image_Path:'http://history-dcy.com/imageload?imagepath='+results[j].Image_Path
                                 });
                             }
                         }
@@ -507,7 +507,7 @@ exports.insert_page=(req,res)=>{
                                                             res_pagedata[i].Imgdata.push({
                                                                 Image_No: results[j].Image_No,
                                                                 Page_No: results[j].No,
-                                                                Image_Path: 'http://history-dcy.com/imageload/' + results[j].Image_Path
+                                                                Image_Path: 'http://history-dcy.com/imageload?imagepath=' + results[j].Image_Path
                                                             });
                                                         }
                                                     }

@@ -30,14 +30,13 @@ router.get('/logout',controller.logout);
 router.post('/check_idOverlap',controller.check_idOverlap);
 // TODO 그 사용자만 이미지 로드할수있게 수정
 
-router.get('/imageload/userfile/:name',controller.imageload);
+router.get('/imageload',controller.imageload);
 
 router.post('/list_book', passport.authenticate('jwtc',{session:false}),controller.list_book);
 router.post('/list_story', passport.authenticate('jwtc',{session:false}),controller.list_story);
 
 router.post('/update_book_title',passport.authenticate('jwtc',{session:false}),controller.update_book_title);
 router.post('/update_book_public',passport.authenticate('jwtc',{session:false}),controller.update_book_public);
-router.post('/update_book_thumbnail',passport.authenticate('jwtc',{session:false}),controller.update_book_thumbnail);
 
 router.post('/update_story_title',passport.authenticate('jwtc',{session:false}),controller.update_story_title);
 router.post('/update_story_done',passport.authenticate('jwtc',{session:false}),upload.array('Page_Image',6),controller.update_story_done);
