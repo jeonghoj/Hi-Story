@@ -443,7 +443,7 @@ exports.insert_page=(req,res)=>{
     const Story_No=parseInt((req.body.Story_No).slice(2));
     const Page_Content=(req.body.Page_Content).slice(2);
     let Page_Link=null;
-    if(!req.body.Page_Link){
+    if(req.body.Page_Link){
         Page_Link=(req.body.Page_Link).slice(2);
     }
     const pagedata = {
