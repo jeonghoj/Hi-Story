@@ -522,35 +522,36 @@ exports.action= (req,res)=> {
 exports.history=(req,res)=>{
     // TODO 널값처리 해줘야
     let historydata = null;
-    const book_select_query=
-        'select book.Book_No,Book_Title,Book_Public ' +
-        'from book ' +
-        'where Member_No=?';
-    db.query(book_select_query,req.user.Member_No,(error,results)=>{
+    db.query('select book.Book_No,Book_Title,Book_Public from book where Member_No=?',
+        [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        historydata=results;
-        // Story라는 JSON 키값을 추가해준다
-        for(let i =0; i<historydata.length;i++){
-            historydata[i].Story=[];
-        }
-        const story_select_query=
-            'select Book_No,Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
-            'from story ' +
-            'where Member_No=?';
-        db.query(story_select_query,req.user.Member_No,(error,results)=>{
-            if(error) console.log(error);
-            for(let i=0;i<historydata.length;i++){
-                for(let j=0;j<results.length;j++){
-                    if(historydata[i].Book_No === results[j].Book_No){
-                        historydata[i].Story.push(results[j]);
+        if(!results[0]){
+            res.render('history',{historydata:null});
+        }else{
+            historydata=results;
+            // Story라는 JSON 키값을 추가해준다
+            for(let i =0; i<historydata.length;i++){
+                historydata[i].Story=[];
+            }
+            const story_select_query=
+                'select Book_No,Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
+                'from story ' +
+                'where Member_No=?';
+            db.query(story_select_query,req.user.Member_No,(error,results)=>{
+                if(error) console.log(error);
+                for(let i=0;i<historydata.length;i++){
+                    for(let j=0;j<results.length;j++){
+                        if(historydata[i].Book_No === results[j].Book_No){
+                            historydata[i].Story.push(results[j]);
+                        }
+                    }
+                    if(i===historydata.length-1){
+                        console.log(historydata);
+                        res.render('history',{historydata:historydata});
                     }
                 }
-                if(i===historydata.length-1){
-                    console.log(historydata);
-                    res.render('history',{historydata:historydata});
-                }
-            }
-        });
+            });
+        }
     });
 };
 // 액션 timeline

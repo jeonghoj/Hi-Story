@@ -46,7 +46,7 @@ exports.history=(req,res)=>{
         [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(!results[0]){
-            res.json([{message:'NoData'}]);
+            res.json({message:'NoData'});
         }else{
             historydata=results;
             for(let i=0;i<historydata.length;i++){
