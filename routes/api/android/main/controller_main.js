@@ -118,7 +118,7 @@ exports.update_book=(req,res)=>{
     console.log('updatebook',req.body);
     const updatebookdata={
         Book_No:req.body.Book_No,
-        Book_Name:req.body.Book_Name,
+        Book_Title:req.body.Book_Title,
         Book_Public:req.body.Book_Public
     };
     db.query('update into book set ? where Book_No=? and Member_No=?',
