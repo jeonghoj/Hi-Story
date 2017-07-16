@@ -114,26 +114,40 @@ exports.insert_book=(req,res)=>{
         });
     });
 };
-exports.update_book_title=(req,res)=>{
-    // 수정하려는 북의 넘버와 북타이틀을 불러온다
-    console.log(req.body);
-    let booktitle={
-        Book_Title:req.body.Book_Title,
+exports.update_book=(req,res)=>{
+    console.log('updatebook',req.body);
+    const updatebookdata={
+        Book_No:req.body.Book_No,
+        Book_Name:req.body.Book_Name,
+        Book_Public:req.body.Book_Public
     };
-    let sql='update into book set ? where Book_No=? and Member_No=?';
-    db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
+    db.query('update into book set ? where Book_No=? and Member_No=?',
+        [updatebookdata,req.body.Book_No,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
             // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
-            res.json({result:false,message:'잘못된 접근입니다.'});
+            res.json({message:'잘못된 접근입니다.'});
         }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
+            res.json({message:'같은 내용입니다'});
         }else{
-            console.log('book변경');
-            res.json({result:true,message:'변경되었습니다.'})
+            res.json({message:'success'});
         }
     });
 };
+exports.delete_book=(req,res)=>{
+    const Book_No = req.body.Book_No;
+    const delete_book_query='delete from book where Member_No=? and Book_No=?';
+    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'데이터가 잘못됬거나, 없습니다'});
+        }else{
+            res.json({message:'success'});
+        }
+    });
+};
+
 exports.insert_story=(req,res)=>{
     const new_story={
         Book_No : req.body.Book_No,
@@ -159,19 +173,7 @@ exports.insert_story=(req,res)=>{
     });
 };
 
-exports.delete_book=(req,res)=>{
-    const Book_No = req.body.Book_No;
-    const delete_book_query='delete from book where Member_No=? and Book_No=?';
-    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
-        if(error) console.log(error);
-        console.log(results);
-        if(results.affectedRows===0){
-            res.json({message:'데이터가 잘못됬거나, 없습니다'});
-        }else{
-            res.json({message:'success'});
-        }
-    });
-};
+
 exports.delete_story=(req,res)=>{
     db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
         if(error) console.log(error);
