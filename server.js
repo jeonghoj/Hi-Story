@@ -58,14 +58,8 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-// http.createServer(app).listen(port1, (req,res)=>{
-//     console.log("Http server listening on port " + port1);
-// });
-
 http.createServer(app).listen(port1, (req,res)=>{
     console.log("Http server listening on port " + port1);
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
 });
 
 const ssloptions = {
