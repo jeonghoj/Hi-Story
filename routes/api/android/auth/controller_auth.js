@@ -36,11 +36,12 @@ exports.register = (req,res) => {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
             } else {
-                // TODO: 작업중
+                //결과값은 Member_No
                 const defaultimg={
                     No:results.insertId,
-                    Image_Fieldname:Member_Profileimg,
-                    Image_Path:'',
+                    Image_Fieldname:'Member_Profileimg',
+                    Image_Path:'userfile/logo.png',
+                    Image_Originalname:'defaultimg'
                 };
                 db.query('insert into image set ?',[defaultimg],(error,results)=>{
                     let mailoptions={

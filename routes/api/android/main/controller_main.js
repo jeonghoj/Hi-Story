@@ -64,8 +64,8 @@ exports.history=(req,res)=>{
 };
 exports.memberprofile=(req,res)=>{
     let Member_Name,Member_Profile,Member_Thumbnail_Path;
-    const select_member_info_query='select Member_Name,Member_Profile from member where Member_No=?';
-    db.query(select_member_info_query,req.user.Member_No,(error,results)=>{
+    db.query('select Member_Name,Member_Profile from member where Member_No=?',
+        [req.user.Member_No],(error,results)=>{
         Member_Name=results[0].Member_Name;
         Member_Profile=results[0].Member_Profile;
         const select_thumbnail_query='select Image_Path from image where No=? and Image_Fieldname=Member_Thumbnail';
@@ -83,7 +83,8 @@ exports.insert_profileimg=(req,res)=>{
         Image_Path:req.file.path,
         Image_Originalname:req.file.originalname
     };
-    db.query('update image set ? where No=?',[profileimgdata,req.user.Member_No],(error,results)=>{
+    db.query('update image set ? where No=? and Image_Fieldname=?',
+        [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
             res.json({result:false,message:'잘못된 접근입니다.'});
