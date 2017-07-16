@@ -34,7 +34,7 @@ router.post('/member_profile',passport.authenticate('jwth',{session:false}),cont
 router.post('/insert_profileimg',passport.authenticate('jwth',{session:false}),upload.single('Member_Profileimg'),controller.insert_profileimg);
 
 router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
-router.post('/update_book_title',passport.authenticate('jwth',{session:false}),controller.update_book_title);
+router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
 router.post('/delete_book',passport.authenticate('jwth',{session:false}),controller.delete_book);
 
 router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
