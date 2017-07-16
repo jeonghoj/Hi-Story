@@ -9,7 +9,7 @@ const router =require('express').Router();
 const multer  = require('multer');
 const storage = multer.diskStorage({
     destination:function(req, file, cb) {
-        cb(null, './userfile')
+        cb(null, './../userfile')
     },
     // 파일네임문제
     // filename: function (req, file, cb) {
