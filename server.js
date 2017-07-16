@@ -62,6 +62,13 @@ http.createServer(app).listen(port1, function(){
     console.log("Http server listening on port " + port1);
 });
 
+//https redirect
+app.use(function(req, res, next) {
+    if(!req.secure) {
+        return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    next();
+});
 const ssloptions = {
     key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),

@@ -151,6 +151,7 @@ exports.update_story_title=(req,res)=>{
         }
     });
 };
+
 exports.update_story_done=(req,res)=>{
     console.log('업로드된 파일',req.files);
     const Story_No=req.body.Story_No;
