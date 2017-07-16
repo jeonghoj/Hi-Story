@@ -31,22 +31,30 @@ exports.register = (req,res) => {
             Member_EmailVerified:0,
         };
         const sql = 'insert into member set ?';
-        db.query(sql, user, (error) => {
+        db.query(sql, user, (error,results) => {
             if (error) {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
             } else {
-                let mailoptions={
-                    from:'historygdrive@gmail.com',
-                    to:userid,
-                    subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
+                // TODO: 작업중
+                const defaultimg={
+                    No:results.insertId,
+                    Image_Fieldname:Member_Profileimg,
+                    Image_Path:'',
                 };
-                transporter.sendMail(mailoptions,function (err,info) {
-                    if(err) console.log(err);
-                    console.log('Mail send Success -',info.response);
-                    transporter.close();
-                    res.status(200).json({message : "success register! please verify your email"});
+                db.query('insert into image set ?',[defaultimg],(error,results)=>{
+                    let mailoptions={
+                        from:'historygdrive@gmail.com',
+                        to:userid,
+                        subject:'Hi-Story 이메일 인증을 완료해 주세요',
+                        text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
+                    };
+                    transporter.sendMail(mailoptions,function (err,info) {
+                        if(err) console.log(err);
+                        console.log('Mail send Success -',info.response);
+                        transporter.close();
+                        res.status(200).json({message : "success register! please verify your email"});
+                    });
                 });
             }
         });
