@@ -63,38 +63,6 @@ exports.list_book=(req,res)=>{
         res.json(results);
     });
 };
-// 스토리 리스트 현재는 안드로이드 때문에 만듬
-// 사용되지 않고 있는 url, 코드
-exports.list_story=(req,res)=>{
-    let story = null;
-    let story_list=[];
-    //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
-    db.query('select book.Book_Title,story.* from book,story ' +
-        'where story.Member_No=? group by story.Story_No',
-        [req.user.Member_No],(error,results)=>{
-        if(error) console.log(error);
-        // 데이터가 없다면
-        if(results[0]===undefined){
-            res.render('action_overview',{data:false});
-        }else {
-            story =results;
-            for(let i = 0 ; i<story.length; i++){
-                db.query('select * from story_memo where Story_No=?',
-                    [story[i].Story_No],(error,results)=>{
-                    if(error) console.log(error);
-                    story[i].Story_Memo=results;
-                    story_list.push(story[i]);
-                    if(story_list.length === story.length){
-                        JSON.stringify(story_list);
-                        // console.log('스토리 리스트',story_list);
-                        res.render('action_overview',{data:story_list});
-                    }
-                });
-            }
-        }
-
-    });
-};
 
 // 북 타이틀 수정
 exports.update_book_title=(req,res)=>{
@@ -641,6 +609,10 @@ exports.list_page=(req,res)=>{
             // }
         }
     });
+};
+
+exports.setting=(req,res)=>{
+    res.render('setting');
 };
 
 // 파일다운

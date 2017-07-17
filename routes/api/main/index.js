@@ -34,7 +34,6 @@ router.post('/check_idOverlap',controller.check_idOverlap);
 router.get('/imageload',controller.imageload);
 
 router.post('/list_book', passport.authenticate('jwtc',{session:false}),controller.list_book);
-router.post('/list_story', passport.authenticate('jwtc',{session:false}),controller.list_story);
 
 router.post('/update_book_title',passport.authenticate('jwtc',{session:false}),controller.update_book_title);
 router.post('/update_book_public',passport.authenticate('jwtc',{session:false}),controller.update_book_public);
@@ -55,6 +54,7 @@ router.get('/action',passport.authenticate('jwtc',{session:false}),controller.ac
 router.get('/history',passport.authenticate('jwtc',{session:false}),controller.history);
 router.get('/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
 router.get('/story/:id',passport.authenticate('jwtc',{session:false}),controller.list_page);
+router.get('/setting',passport.authenticate('jwtc',{session:false}),controller.setting);
 //TODO : done url은 insert page에 done true 추가 done은 상시 edit 가능
 
 // router.get('/filedown/:name',passport.authenticate('jwtc',{session:false}),controller.filedown);
