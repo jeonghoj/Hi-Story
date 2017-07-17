@@ -10,7 +10,7 @@ exports.action= (req,res)=> {
     db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
         'where story.Member_No=? and story.Book_No=book.Book_No ' +
-        'order by Story_No asc', req.user.Member_No, (error, results) => {
+        'order by Story_No asc',[req.user.Member_No], (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(!results[0]){
@@ -23,7 +23,7 @@ exports.action= (req,res)=> {
             db.query(
                 'select story_memo.Story_Memo_No,story_memo.Story_No,story_memo.Story_Memo_Text ' +
                 'from story,story_memo ' +
-                'where story.Story_No=story_memo.Story_No and story.Member_No=?',req.user.Member_No, (error, results) => {
+                'where story.Story_No=story_memo.Story_No and story.Member_No=?',[req.user.Member_No], (error, results) => {
                 if(error) console.log(error);
                 for(let i=0; i<story.length;i++) {
                     for (let j = 0; j < results.length; j++) {
@@ -169,9 +169,10 @@ exports.insert_book=(req,res)=>{
         Book_Author:req.user.Member_Name,
         // Book_Public : req.body.Book_Public ? 1 : 0,
     };
-    db.query('insert into book set ? ',new_book,(error,results)=>{
+    db.query('insert into book set ? ',[new_book],(error,results)=>{
         if(error) console.log(error);
-        db.query('select Book_No,Book_Title,Book_Date,Book_Public from book where Book_No=?',results.insertId,(error,results)=>{
+        db.query('select Book_No,Book_Title,Book_Date,Book_Public from book where Book_No=?',
+            [results.insertId],(error,results)=>{
             res.json(results);
         });
     });
@@ -197,8 +198,9 @@ exports.update_book=(req,res)=>{
 };
 exports.delete_book=(req,res)=>{
     const Book_No = req.body.Book_No;
-    const delete_book_query='delete from book where Member_No=? and Book_No=?';
-    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
+    // 북 삭제 쿼리
+    db.query('delete from book where Member_No=? and Book_No=?',
+        [req.user.Member_No,Book_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
@@ -216,11 +218,10 @@ exports.insert_story=(req,res)=>{
         Story_Title : req.body.Story_Title,
         Story_Owner : req.user.Member_Name,
     };
-    db.query('insert into story set ? ',new_story, (error,results)=>{
+    db.query('insert into story set ? ',[new_story], (error,results)=>{
         console.log(results);
         db.query('select Story_No,Story_DateStart,Story_Citation,Story_Follow,Story_View ' +
-            'from story ' +
-            'where Story_No=?',results.insertId,(error,results)=>{
+            'from story where Story_No=?',[results.insertId],(error,results)=>{
             if(error){
                 console.log(error);
                 res.json({result:false, message:'스토리 삽입 실패!'});
@@ -349,17 +350,16 @@ exports.insert_story_memo=(req,res)=>{
         Member_No:req.user.Member_No,
         Story_Memo_Text:Story_Memo_Text
     };
-    const insert_story_memo_query='insert into story_memo set ?';
-    db.query(insert_story_memo_query,[new_story_memo_data],(error,results)=>{
+    // 메모 넣기
+    db.query('insert into story_memo set ?',[new_story_memo_data],(error,results)=>{
         if(error){
             console.log(error);
             res.json({message:'fail'});
         }else{
-            const select_story_memo_query=
-                'select Story_Memo_No,Story_Memo_Text ' +
-                'from story_memo ' +
-                'where Member_No=? and Story_No=?';
-            db.query(select_story_memo_query,[req.user.Member_No,Story_No],(error,results)=>{
+            // 삽입 후 해당 스토리의 메모를 전부 다시 가져옴
+            db.query('select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo where Member_No=? and Story_No=?',
+                [req.user.Member_No,Story_No],(error,results)=>{
                 if(error) console.log(error);
                 return res.json({message:'success', Story_Memo:results});
             });
@@ -371,20 +371,18 @@ exports.update_story_memo=(req,res)=>{
     const Story_Memo_No=req.body.Story_Memo_No;
     const Story_No=req.body.Story_No;
     const update_Story_Memo_Text=req.body.Story_Memo_Text;
-    const update_story_memo_query=
-        'update story_memo ' +
-        'set Story_Memo_Text=? ' +
-        'where Story_Memo_No=? and Member_No=? and Story_No=?';
-    db.query(update_story_memo_query,[update_Story_Memo_Text,Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+    // 메모 수정
+    db.query('update story_memo set Story_Memo_Text=? ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?',
+        [update_Story_Memo_Text,Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
         if(error){
             console.log(error);
             res.json({message:'fail'});
         }else{
-            const select_story_memo_query =
-                'select Story_Memo_No,Story_Memo_Text ' +
-                'from story_memo ' +
-                'where Member_No=? and Story_No=?';
-            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+            // 수정 후 해당 스토리의 메모를 전부 다시 가져옴
+            db.query('select Story_Memo_No,Story_Memo_Text from story_memo ' +
+                'where Member_No=? and Story_No=?',
+                [req.user.Member_No, Story_No], (error, results) => {
                 if (error) console.log(error);
                 return res.json({message: 'success', Story_Memo: results});
             });
@@ -394,19 +392,18 @@ exports.update_story_memo=(req,res)=>{
 exports.delete_story_memo=(req,res)=>{
     const Story_Memo_No = req.body.Story_Memo_No;
     const Story_No= req.body.Story_No;
-    const delete_story_memo_query=
-        'delete from story_memo ' +
-        'where Story_Memo_No=? and Member_No=? and Story_No=?';
-    db.query(delete_story_memo_query,[Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+    // 메모 삭제
+    db.query('delete from story_memo ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?',
+        [Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
         if(error){
             console.log(error);
             res.json({message:'fail'});
         }else{
-            const select_story_memo_query =
-                'select Story_Memo_No,Story_Memo_Text ' +
-                'from story_memo ' +
-                'where Member_No=? and Story_No=?';
-            db.query(select_story_memo_query, [req.user.Member_No, Story_No], (error, results) => {
+            // 삭제 후 해당 스토리의 메모 다시 불러오기
+            db.query('select Story_Memo_No,Story_Memo_Text ' +
+                'from story_memo where Member_No=? and Story_No=?',
+                [req.user.Member_No, Story_No], (error, results) => {
                 if (error) console.log(error);
                 console.log(results);
                 return res.json({message: 'success', Story_Memo: results});
@@ -440,8 +437,8 @@ exports.list_page=(req,res)=>{
         // 페이지 데이터 가져오기
         db.query("select Page_No,page.Member_No,Page_Author," +
             "Page_Content,Page_UpdateDate,Page_Link,Page_Last,Page_Done " +
-            "from story,page " +
-            "where story.Story_No = page.Story_No and page.Story_No=?",[Story_No],(error,results)=>{
+            "from story,page where story.Story_No = page.Story_No and page.Story_No=?",
+            [Story_No],(error,results)=>{
             // 페이지가 없을경우
             if(results.length===0)
             {
@@ -456,11 +453,10 @@ exports.list_page=(req,res)=>{
                 for(let i=0;i<page.length;i++){
                     page[i].Imgdata=[];
                 }
-                const imagesql=
-                    'select image.* ' +
-                    'from image,page ' +
-                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
-                db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+                // 이미지 가져오기
+                db.query('select image.* from image,page ' +
+                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                    [req.user.Member_No,'Page_Image'],(error,results)=>{
                     if(error) console.log(error);
                     const filecount = results ? results.length : 0;
                     for(let i=0;i<page.length;i++){
@@ -672,7 +668,7 @@ exports.insert_page=(req,res)=>{
                                     Image_Path:req.files[i].path,
                                     Image_Originalname:req.files[i].originalname
                                 };
-                                db.query('insert into image set ?',imgdata,(error)=>{
+                                db.query('insert into image set ?',[imgdata],(error)=>{
                                     if(error) return db.rollback(()=>{throw error;});
                                 });
                             }

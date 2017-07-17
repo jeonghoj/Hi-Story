@@ -71,7 +71,7 @@ exports.list_story=(req,res)=>{
     //FIXME 이중쿼리를 promise로 제대로 구현하는 방법?
     db.query('select book.Book_Title,story.* from book,story ' +
         'where story.Member_No=? group by story.Story_No',
-        req.user.Member_No,(error,results)=>{
+        [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -79,7 +79,8 @@ exports.list_story=(req,res)=>{
         }else {
             story =results;
             for(let i = 0 ; i<story.length; i++){
-                db.query('select * from story_memo where Story_No=?',story[i].Story_No,(error,results)=>{
+                db.query('select * from story_memo where Story_No=?',
+                    [story[i].Story_No],(error,results)=>{
                     if(error) console.log(error);
                     story[i].Story_Memo=results;
                     story_list.push(story[i]);
@@ -250,8 +251,9 @@ exports.update_page=(req,res)=>{
             res.json({result:false,message:'마지막 페이지만 수정할 수 있습니다.'});
         }else {
             if (req.files) {
-                const check_imgcount = 'select Page_Imgcount from page where Member_No=? and Page_No=?';
-                db.query(check_imgcount, [req.user.Member_No, Page_No], (error, results) => {
+                // 이미지 갯수 가져오기
+                db.query('select Page_Imgcount from page where Member_No=? and Page_No=?',
+                    [req.user.Member_No, Page_No], (error, results) => {
                     if (error) console.log(error);
                     let updateimgcount = results[0].Page_Imgcount + req.files.length - delete_Images_count;
                     if (updateimgcount > 6) {
@@ -262,14 +264,11 @@ exports.update_page=(req,res)=>{
                         for(let i=0; i<delete_Images_count;i++) {
                             delete_Images_No[i]=parseInt(delete_Images_No[i]);
                             let delete_image_path='';
-                            db.query('select Image_Path from image where Image_No=?',delete_Images_No[i],(error,results)=>{
+                            db.query('select Image_Path from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
                                 if(error) console.log(error);
                                 delete_image_path=results[0].Image_Path;
-                                console.log(delete_image_path);
-                                const delete_image_query =
-                                    'delete from image ' +
-                                    'where Image_No=?';
-                                db.query(delete_image_query,delete_Images_No[i],(error,results)=>{
+                                db.query('delete from image where Image_No=?',
+                                    [delete_Images_No[i]],(error,results)=>{
                                     if(error) console.log(error);
                                     if(results.affectedRows===1){
                                         fs.unlink(cwd+'/'+delete_image_path,(error)=>{
@@ -285,9 +284,6 @@ exports.update_page=(req,res)=>{
                             });
 
                         }
-                        const update_new_image_query=
-                            'insert into image ' +
-                            'set ?';
                         for(let i=0;i<req.files.length;i++){
                             //변수 초기화
                             let imgdata={};
@@ -297,18 +293,16 @@ exports.update_page=(req,res)=>{
                                 Image_Path:req.files[i].path,
                                 Image_Originalname:req.files[i].originalname
                             };
-                            db.query(update_new_image_query,imgdata,(error)=>{
+                            db.query('insert into image set ?',[imgdata],(error)=>{
                                 console.log('이미지 넣었습니다');
                             });
                         }
                     }
                 });
             }
-            const update_page_query=
-                'update page ' +
-                'set ? ' +
-                'where Member_No=? and Page_No=?';
-            db.query(update_page_query,[updatepagedata,req.user.Member_No,Page_No],(error,results)=>{
+            // 페이지 수정 쿼리
+            db.query('update page set ? where Member_No=? and Page_No=?',
+                [updatepagedata,req.user.Member_No,Page_No],(error,results)=>{
                 if(error) console.log(error);
                 if(results.affectedRows===0){
                     // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
@@ -329,8 +323,9 @@ exports.update_page=(req,res)=>{
 // 북 삭제
 exports.delete_book=(req,res)=>{
     const Book_No = req.body.Book_No;
-    const delete_book_query='delete from book where Member_No=? and Book_No=?';
-    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
+    // 북 삭제
+    db.query('delete from book where Member_No=? and Book_No=?',
+        [req.user.Member_No,Book_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
@@ -343,8 +338,8 @@ exports.delete_book=(req,res)=>{
 // 스토리 삭제
 exports.delete_story=(req,res)=>{
     const Story_No = req.body.Story_No;
-    const delete_story_query = 'delete from story where Member_No=? and Story_No=?';
-    db.query(delete_story_query,[req.user.Member_No,Story_No],(error,results)=>{
+    // 스토리 삭제
+    db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
         console.log(results);
         if(results.affectedRows===0){
@@ -365,7 +360,7 @@ exports.insert_book=(req,res)=>{
         Book_Author:req.user.Member_Name,
         Book_Public : req.body.Book_Public ? 0 : 1,
     };
-    db.query('insert into book set ? ',new_book,(error,results)=>{
+    db.query('insert into book set ? ',[new_book],(error,results)=>{
         if(error) console.log(error);
         res.json(results.insertId);
     });
@@ -379,7 +374,7 @@ exports.insert_story=(req,res)=>{
         Story_Owner : req.user.Member_Name,
         Story_Public: req.body.Story_Public ? 1 : 0
     };
-    db.query('insert into story set ? ',new_story, (error)=>{
+    db.query('insert into story set ? ',[new_story], (error)=>{
         if(error){
             console.log(error);
             res.send({result:false,url:'/action'});
@@ -411,25 +406,21 @@ exports.insert_page=(req,res)=>{
         Page_Link:Page_Link,
         Page_Last:1
     };
-    const check_story_done_query='select Story_Done from story where Member_No=? and Story_No=?';
-    db.query(check_story_done_query,[req.user.Member_No,Story_No],(error,results)=>{
+    // 완료된 스토리인지 확인
+    db.query('select Story_Done from story where Member_No=? and Story_No=?',
+        [req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
         if(results[0].Story_Done===1){
             res.json({result:false,message:'이미 완료한 스토리에 더이상 페이지를 작성할수 없습니다.'});
         }else {
             db.beginTransaction((error)=>{
                 if(error) throw error;
-                const update_page_lastpage_query=
-                    'update page ' +
-                    'set Page_Last=0 ' +
-                    'where Story_No=? and Member_No=? order by Page_No desc limit 1';
                 //전에 쓴 글 page last를 0으로 바꿈
-                db.query(update_page_lastpage_query,[Story_No,req.user.Member_No],(error,results)=>{
+                db.query('update page set Page_Last=0 where Story_No=? and Member_No=? order by Page_No desc limit 1',
+                    [Story_No,req.user.Member_No],(error,results)=>{
                     if(error) console.log(error);
                     // 첫글이어도 상관없다 없으면 없는대로
-                    console.log(results);
-                    const insert_page_query = 'insert into page set ?';
-                    db.query(insert_page_query,pagedata,(error,results)=>{
+                    db.query('insert into page set ?',[pagedata],(error,results)=>{
                         if(error){
                             return db.rollback(()=>{throw error;});
                         }
@@ -451,9 +442,6 @@ exports.insert_page=(req,res)=>{
 
                         // 파일이 있으면
                         if(req.files){
-                            const insert_image_query=
-                                'insert into image ' +
-                                'set ?';
                             for(let i=0;i<req.files.length;i++){
                                 //변수 초기화
                                 let imgdata={};
@@ -463,7 +451,7 @@ exports.insert_page=(req,res)=>{
                                     Image_Path:req.files[i].path,
                                     Image_Originalname:req.files[i].originalname
                                 };
-                                db.query(insert_image_query,imgdata,(error)=>{
+                                db.query('insert into image set ?',[imgdata],(error)=>{
                                     if(error){
                                         return db.rollback(()=>{throw error;});
                                     }
@@ -490,7 +478,7 @@ exports.insert_page=(req,res)=>{
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
-    db.query('select * from story where Member_No=?', req.user.Member_No, (error, results) => {
+    db.query('select * from story where Member_No=?', [req.user.Member_No], (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
@@ -500,9 +488,9 @@ exports.action= (req,res)=> {
             for(let i=0;i<story.length;i++) {
                 story[i].Story_Memo = [];
             }
-            db.query('select story_memo.* ' +
-                'from story,story_memo ' +
-                'where story.Story_No=story_memo.Story_No and story.Member_No=?',req.user.Member_No, (error, results) => {
+            db.query('select story_memo.* from story,story_memo ' +
+                'where story.Story_No=story_memo.Story_No and story.Member_No=?',
+                [req.user.Member_No], (error, results) => {
                 if(error) console.log(error);
                 for(let i=0; i<story.length;i++) {
                     for (let j = 0; j < results.length; j++) {
@@ -534,11 +522,8 @@ exports.history=(req,res)=>{
             for(let i =0; i<historydata.length;i++){
                 historydata[i].Story=[];
             }
-            const story_select_query=
-                'select Book_No,Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
-                'from story ' +
-                'where Member_No=?';
-            db.query(story_select_query,req.user.Member_No,(error,results)=>{
+            db.query('select Book_No,Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
+                'from story where Member_No=?',[req.user.Member_No],(error,results)=>{
                 if(error) console.log(error);
                 for(let i=0;i<historydata.length;i++){
                     for(let j=0;j<results.length;j++){
@@ -558,11 +543,11 @@ exports.history=(req,res)=>{
 // 액션 timeline
 exports.timeline=(req,res)=>{
     let tldata=[];
-    const timeline_query = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
+    // 타임라인 데이터 쿼리 추후
+    db.query('select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
-        'Order By page.Page_UpdateDate DESC';
-    db.query(timeline_query,req.user.Member_No,(error,results)=>{
+        'Order By page.Page_UpdateDate DESC',[req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(results.length===0){
             res.render('action_timeline',{tldata:null});
@@ -571,11 +556,10 @@ exports.timeline=(req,res)=>{
             for(let i=0;i<tldata.length;i++){
                 tldata[i].Imgdata=[];
             }
-            const imagesql=
-                'select image.* ' +
-                'from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
-            db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
+            // 이미지 가져오기
+            db.query('select image.* from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                [req.user.Member_No,'Page_Image'],(error,results)=>{
                 if(error) console.log(error);
                 const filecount = results ? results.length : 0;
                 for(let i=0;i<tldata.length;i++){
@@ -601,22 +585,17 @@ exports.timeline=(req,res)=>{
 exports.list_page=(req,res)=>{
     let page=null;
     const Story_No = req.params.id;
-    const storysql = "select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
-        "from book,story,page " +
-        "where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?";
-    db.query(storysql,Story_No,(error,results)=>{
+    db.query("select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
+        "from book,story,page where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?",
+        [Story_No],(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
         {
-            const nopagesql=
-                'select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
-                'from book,story ' +
-                'where story.Story_No=? and story.Book_No=book.Book_No';
-            db.query(nopagesql,req.params.id,(error,results)=>{
+            db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
+                'from book,story where story.Story_No=? and story.Book_No=book.Book_No',
+                [req.params.id],(error,results)=>{
                 if(error) console.log(error);
-                res.render('story',
-                    {   page:results,
-                        Story_No: Story_No});
+                res.render('story',{page:results,Story_No: Story_No});
             });
         }else{
             page=results;
@@ -624,30 +603,27 @@ exports.list_page=(req,res)=>{
                 page[i].Imgdata=[];
             }
             //이렇게하면 그 회원의 모든 이미지를 불러오게된다 그 스토리에 딸린 page만 불러올순 없을까 ㅠㅠ
-            const imagesql=
-                    'select image.* ' +
-                    'from image,page ' +
-                    'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No';
-                db.query(imagesql,[req.user.Member_No,'Page_Image'],(error,results)=>{
-                    if(error) console.log(error);
-                    const filecount = results ? results.length : 0;
-                    for(let i=0;i<page.length;i++){
-                        for(let j=0; j<filecount;j++){
-                            if(page[i].Page_No===results[j].No){
-                                page[i].Imgdata.push({
-                                    Image_No:results[j].Image_No,
-                                    No:results[j].No,
-                                    Image_Path:'/imageload?imagepath='+results[j].Image_Path
-                                });
-                            }
-                        }
-                        if(i===page.length-1){
-                            // page.push({Story_No : Story_No});
-                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                            return res.render('story',{page:page,Story_No : Story_No});
+            db.query('select image.* from image,page where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                [req.user.Member_No,'Page_Image'],(error,results)=>{
+                if(error) console.log(error);
+                const filecount = results ? results.length : 0;
+                for(let i=0;i<page.length;i++){
+                    for(let j=0; j<filecount;j++){
+                        if(page[i].Page_No===results[j].No){
+                            page[i].Imgdata.push({
+                                Image_No:results[j].Image_No,
+                                No:results[j].No,
+                                Image_Path:'/imageload?imagepath='+results[j].Image_Path
+                            });
                         }
                     }
-                });
+                    if(i===page.length-1){
+                        // page.push({Story_No : Story_No});
+                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                        return res.render('story',{page:page,Story_No : Story_No});
+                    }
+                }
+            });
             // for(let i=0;i<page.length;i++){
             //     let Page_No = page[i].Page_No;
             //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
