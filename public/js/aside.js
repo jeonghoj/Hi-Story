@@ -24,7 +24,7 @@ $('.story').click(function () {
 
     var index = $(this).index();
 
-    if(!$(event.target).is('.edit, .f-title')) {
+    if(!$(event.target).is('.edit, .f-title') && !(event.keyCode == 13)) {
         if (!$('.right .aside .infor').is(':animated')) {
             $('.right .aside .infor').slideUp(300, function () {
                 $('.story-no-infor').empty();
@@ -42,7 +42,7 @@ $('.story').click(function () {
                 $('.story-no-infor').append(storyno);
                 $('.book-name').append(bookname);
                 $('.story-name').append(storyname);
-                $('.del-name').append(storyname + "을(를) 삭제합니다.");
+                $('.del-name').append(storyname);
                 $('.date').append(storydate);
             });
         }
