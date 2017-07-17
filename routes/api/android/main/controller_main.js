@@ -81,16 +81,14 @@ exports.member_profile=(req,res)=>{
 
 };
 exports.update_member_profile=(req,res)=>{
-    console.log('들어온 데이터',req.body);
-    console.log('업로드한 파일',req.file);
     // 변수
     let Member_Name,Member_Profile_text,Member_Profileimg_State,profileimgdata;
     // 안드로이드 2바이트 자르기
     if(req.body.Member_Name){
         Member_Name=(req.body.Member_Name).slice(2);
     }
-    if(req.body.Member_Profile){
-        Member_Profile_text=(req.body.Member_Profile).slice(2);
+    if(req.body.Member_Profile_text){
+        Member_Profile_text=(req.body.Member_Profile_text).slice(2);
     }
     Member_Profileimg_State=((req.body.Member_Profileimg_State).slice(2));
     // 이미지 데이터가 있을때
@@ -112,14 +110,16 @@ exports.update_member_profile=(req,res)=>{
     };
     switch (Member_Profileimg_State) {
         //사진이 변하지 않은 상태
-        case 0 :{
+        case '0' :{
+            console.log('실행중?');
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
                 if(error) console.log(error);
-                res.json({message:'success'});});
+                res.json({message:'success'});
+            });
             break;
         }
         // 사진이 변한 상태
-        case 1 :{
+        case '1' :{
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=> {
                 if (error) console.log(error);
                 db.query('update image set ? where No=? and Image_Fieldname=?',
@@ -137,7 +137,7 @@ exports.update_member_profile=(req,res)=>{
             break;
         }
         // 기본 이미지로 변경
-        case 2 :{
+        case '2' :{
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=> {
                 if (error) console.log(error);
                 db.query('update image set ? where No=? and Image_Fieldname=?',
@@ -155,7 +155,7 @@ exports.update_member_profile=(req,res)=>{
             break;
         }
         default:{
-            res.json({message:'success'});
+            res.json({message:'state잘못보냄'});
             break;
         }
     }
