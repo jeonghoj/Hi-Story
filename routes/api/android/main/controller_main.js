@@ -88,7 +88,7 @@ exports.update_member_profile=(req,res)=>{
         Member_Name=(req.body.Member_Name).slice(2);
     }
     if(req.body.Member_Profile_text){
-        Member_Profile_text=(req.body.Member_Profile_text).slice(2);
+        Member_Profile_text=(req.body.Member_Profile).slice(2);
     }
     Member_Profileimg_State=((req.body.Member_Profileimg_State).slice(2));
     // 이미지 데이터가 있을때
@@ -111,7 +111,6 @@ exports.update_member_profile=(req,res)=>{
     switch (Member_Profileimg_State) {
         //사진이 변하지 않은 상태
         case '0' :{
-            console.log('실행중?');
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
                 if(error) console.log(error);
                 res.json({message:'success'});
