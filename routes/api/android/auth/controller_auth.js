@@ -40,10 +40,11 @@ exports.register = (req,res) => {
                 const defaultimg={
                     No:results.insertId,
                     Image_Fieldname:'Member_Profileimg',
-                    Image_Path:'userfile/logo.png',
+                    Image_Path:'../userfile/logo.png',
                     Image_Originalname:'defaultimg'
                 };
                 db.query('insert into image set ?',[defaultimg],(error,results)=>{
+                    if(error) console.log(error);
                     let mailoptions={
                         from:'historygdrive@gmail.com',
                         to:userid,
