@@ -48,7 +48,7 @@ exports.register = (req,res) => {
                         from:'historygdrive@gmail.com',
                         to:userid,
                         subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                        text:'회원가입을 완료하려면 http://127.0.0.1/auth/verifyemail?emailtoken='+emailtoken,
+                        text:'회원가입을 완료하려면 https://history-dcy.com/auth/verifyemail?emailtoken='+emailtoken,
                     };
                     transporter.sendMail(mailoptions,function (err,info) {
                         if(err) console.log(err);
@@ -63,7 +63,6 @@ exports.register = (req,res) => {
 };
 
 exports.login = (req,res) => {
-    console.log('로그인',req.body);
     // TODO 웹에서 널값 못보내도록 막기처리 해줘야
     const { userid , password } = req.body;
     const sql='select * from member where Member_ID=?';

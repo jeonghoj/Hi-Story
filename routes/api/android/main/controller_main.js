@@ -13,8 +13,8 @@ exports.action= (req,res)=> {
         'order by Story_No asc', req.user.Member_No, (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
-        if(results[0]===undefined){
-            res.render('action_overview',{data:false});
+        if(!results[0]){
+            res.json([{message:'NoData'}]);
         }else{
             story = results;
             for(let i=0;i<story.length;i++) {
@@ -42,23 +42,26 @@ exports.action= (req,res)=> {
 };
 exports.history=(req,res)=>{
     let historydata=null;
-    const select_book_query = 'select book.Book_No,Book_Title,Book_Public ' +
-        'from book ' +
-        'where Member_No=?';
-    db.query(select_book_query,req.user.Member_No,(error,results)=>{
+    db.query('select book.Book_No,Book_Title,Book_Public from book where Member_No=?',
+        [req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        historydata=results;
-        for(let i=0;i<historydata.length;i++){
-            db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
-                'from story ' +
-                'where Book_No=?',historydata[i].Book_No,(error,results)=>{
-                if(error) console.log(error);
-                historydata[i].Story=results;
-                if(i===historydata.length-1){
-                    res.json(historydata);
-                }
-            });
+        if(!results[0]){
+            res.json({message:'NoData'});
+        }else{
+            historydata=results;
+            for(let i=0;i<historydata.length;i++){
+                db.query('select Story_No,Story_Title,Story_Owner,Story_DateStart,Story_DateEnd ' +
+                    'from story where Book_No=?',
+                    [historydata[i].Book_No],(error,results)=>{
+                    if(error) console.log(error);
+                    historydata[i].Story=results;
+                    if(i===historydata.length-1){
+                        res.json(historydata);
+                    }
+                });
+            }
         }
+
 
     });
 };
@@ -76,24 +79,32 @@ exports.member_profile=(req,res)=>{
     });
 
 };
-exports.insert_profileimg=(req,res)=>{
-    console.log(req.file);
+
+exports.update_member_profile=(req,res)=>{
+    console.log(req.body);
+    console.log('업로드한 파일',req.file);
+    const Member_Profile={Member_Profile:req.body.Member_Profile};
     const profileimgdata={
         Image_Fieldname:req.file.fieldname,
         Image_Path:req.file.path,
         Image_Originalname:req.file.originalname
     };
-    db.query('update image set ? where No=? and Image_Fieldname=?',
-        [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+    db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
-        if(results.affectedRows===0){
-            res.json({result:false,message:'잘못된 접근입니다.'});
-        }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
-        }else{
-            console.log('profileimg');
-            res.json({result:true,message:'변경되었습니다.'})
+        if(req.file){
+            db.query('update image set ? where No=? and Image_Fieldname=?',
+                [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
+                if(error) console.log(error);
+                if(results.affectedRows===0){
+                    res.json({result:false,message:'잘못된 접근입니다.'});
+                }else if(results.changedRows===0){
+                    res.json({result:false,message:'같은 내용입니다'});
+                }else{
+                    res.json({result:true,message:'success.'})
+                }
+            });
         }
+
     });
 };
 
@@ -113,23 +124,35 @@ exports.insert_book=(req,res)=>{
         });
     });
 };
-exports.update_book_title=(req,res)=>{
-    // 수정하려는 북의 넘버와 북타이틀을 불러온다
-    console.log(req.body);
-    let booktitle={
+exports.update_book=(req,res)=>{
+    const updatebookdata={
+        Book_No:req.body.Book_No,
         Book_Title:req.body.Book_Title,
+        Book_Public:req.body.Book_Public
     };
-    let sql='update into book set ? where Book_No=? and Member_No=?';
-    db.query(sql,booktitle,req.body.Book_No,req.user.Member_No,(error,results)=>{
+    db.query('update book set ? where Book_No=? and Member_No=?',
+        [updatebookdata,req.body.Book_No,req.user.Member_No],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
             // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
-            res.json({result:false,message:'잘못된 접근입니다.'});
+            res.json({message:'잘못된 접근입니다.'});
         }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
+            res.json({message:'같은 내용입니다'});
         }else{
-            console.log('book변경');
-            res.json({result:true,message:'변경되었습니다.'})
+            res.json({message:'success'});
+        }
+    });
+};
+exports.delete_book=(req,res)=>{
+    const Book_No = req.body.Book_No;
+    const delete_book_query='delete from book where Member_No=? and Book_No=?';
+    db.query(delete_book_query,[req.user.Member_No,Book_No],(error,results)=>{
+        if(error) console.log(error);
+        console.log(results);
+        if(results.affectedRows===0){
+            res.json({message:'데이터가 잘못됬거나, 없습니다'});
+        }else{
+            res.json({message:'success'});
         }
     });
 };
@@ -419,7 +442,10 @@ exports.insert_page=(req,res)=>{
     console.log('업로드된 파일',req.files);
     const Story_No=parseInt((req.body.Story_No).slice(2));
     const Page_Content=(req.body.Page_Content).slice(2);
-    const Page_Link=(req.body.Page_Link).slice(2);
+    let Page_Link=null;
+    if(req.body.Page_Link){
+        Page_Link=(req.body.Page_Link).slice(2);
+    }
     const pagedata = {
         Story_No:Story_No,
         Member_No:req.user.Member_No,
@@ -517,7 +543,8 @@ exports.insert_page=(req,res)=>{
                                                             Story_Citation:Story_Citation,
                                                             Story_Follow:Story_Follow,
                                                             Story_View:Story_View,
-                                                            Page_Data: res_pagedata});
+                                                            Page_Data: res_pagedata
+                                                        });
                                                     }
                                                 }
                                             });

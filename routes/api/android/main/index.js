@@ -31,11 +31,14 @@ router.post('/history',passport.authenticate('jwth',{session:false}),controller.
 
 router.get('/timeline',passport.authenticate('jwth',{session:false}),controller.timeline);
 router.post('/member_profile',passport.authenticate('jwth',{session:false}),controller.member_profile);
-router.post('/insert_profileimg',passport.authenticate('jwth',{session:false}),upload.single('Member_Profileimg'),controller.insert_profileimg);
+router.post('/update_member_profile',passport.authenticate('jwth',{session:false}),upload.single('Member_Profileimg'),controller.update_member_profile);
+
 router.post('/insert_book',passport.authenticate('jwth',{session:false}),controller.insert_book);
-router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book_title);
+router.post('/update_book',passport.authenticate('jwth',{session:false}),controller.update_book);
+router.post('/delete_book',passport.authenticate('jwth',{session:false}),controller.delete_book);
 
 router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
+
 router.post('/delete_story',passport.authenticate('jwth',{session:false}),controller.delete_story);
 
 router.post('/insert_story_memo',passport.authenticate('jwth',{session:false}),controller.insert_story_memo);
