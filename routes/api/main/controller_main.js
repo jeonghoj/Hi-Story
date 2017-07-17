@@ -365,14 +365,18 @@ exports.insert_page=(req,res)=>{
     const Story_No=req.body.Story_No;
     const Page_Content=req.body.Page_Content;
     const Page_Link=req.body.Page_Link;
-
+    let Page_Imgcount;
+    if(req.files){
+        Page_Imgcount=req.files.length;
+    }
     const pagedata = {
         Story_No:Story_No,
         Member_No:req.user.Member_No,
         Page_Author:req.user.Member_Name,
         Page_Content:Page_Content,
         Page_Link:Page_Link,
-        Page_Last:1
+        Page_Last:1,
+        Page_Imgcount:Page_Imgcount
     };
     // 완료된 스토리인지 확인
     db.query('select Story_Done from story where Member_No=? and Story_No=?',

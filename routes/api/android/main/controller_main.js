@@ -500,9 +500,12 @@ exports.insert_page=(req,res)=>{
     console.log('업로드된 파일',req.files);
     const Story_No=parseInt((req.body.Story_No).slice(2));
     const Page_Content=(req.body.Page_Content).slice(2);
-    let Page_Link=null;
+    let Page_Link,Page_Imgcount;
     if(req.body.Page_Link){
         Page_Link=(req.body.Page_Link).slice(2);
+    }
+    if(req.files){
+        Page_Imgcount=req.files.length;
     }
     const pagedata = {
         Story_No:Story_No,
@@ -510,7 +513,8 @@ exports.insert_page=(req,res)=>{
         Page_Author:req.user.Member_Name,
         Page_Content:Page_Content,
         Page_Link:Page_Link,
-        Page_Last:1
+        Page_Last:1,
+        Page_Imgcount:Page_Imgcount
     };
     // 완성된 스토리인지 확인
     db.query('select Story_Done from story where Member_No=? and Story_No=?',
