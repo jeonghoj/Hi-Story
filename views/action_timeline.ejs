@@ -45,7 +45,6 @@
                 <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toISOString().slice(0, 19).replace('T', ' ')%></div><%}%>
                 <div class="page">
                     <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
-                    <br><br>
                     <% if(tldata[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
                         <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
