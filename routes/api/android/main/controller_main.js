@@ -159,26 +159,6 @@ exports.update_member_profile=(req,res)=>{
             break;
         }
     }
-
-    db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
-        if(error) console.log(error);
-        if(req.file){
-            db.query('update image set ? where No=? and Image_Fieldname=?',
-                [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
-                if(error) console.log(error);
-                if(results.affectedRows===0){
-                    res.json({message:'잘못된 접근입니다.'});
-                }else if(results.changedRows===0){
-                    res.json({message:'같은 내용입니다'});
-                }else{
-                    res.json({message:'success'});
-                }
-            });
-        }else{
-            res.json({message:'success'});
-        }
-
-    });
 };
 
 exports.insert_book=(req,res)=>{
