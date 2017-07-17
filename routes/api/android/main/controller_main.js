@@ -65,6 +65,7 @@ exports.history=(req,res)=>{
 
     });
 };
+
 exports.member_profile=(req,res)=>{
     let Member_Name,Member_Profile,Member_Profileimg;
     db.query('select Member_Name,Member_Profile from member where Member_No=?',
@@ -79,11 +80,20 @@ exports.member_profile=(req,res)=>{
     });
 
 };
-
 exports.update_member_profile=(req,res)=>{
-    console.log(req.body);
+    console.log('들어온 데이터',req.body);
     console.log('업로드한 파일',req.file);
-    const Member_Profile={Member_Profile:req.body.Member_Profile};
+    let Member_Name,Member_Profile_text;
+    if(req.body.Member_Name){
+        Member_Name=(req.body.Member_Name).slice(2)
+    }
+    if(req.body.Member_Profile){
+        Member_Profile_text=(req.body.Member_Profile).slice(2)
+    }
+    const Member_Profile={
+        Member_Name:Member_Name,
+        Member_Profile_text:Member_Profile_text
+    };
     const profileimgdata={
         Image_Fieldname:req.file.fieldname,
         Image_Path:req.file.path,
@@ -96,13 +106,15 @@ exports.update_member_profile=(req,res)=>{
                 [profileimgdata,req.user.Member_No,'Member_Profileimg'],(error,results)=>{
                 if(error) console.log(error);
                 if(results.affectedRows===0){
-                    res.json({result:false,message:'잘못된 접근입니다.'});
+                    res.json({message:'잘못된 접근입니다.'});
                 }else if(results.changedRows===0){
-                    res.json({result:false,message:'같은 내용입니다'});
+                    res.json({message:'같은 내용입니다'});
                 }else{
-                    res.json({result:true,message:'success.'})
+                    res.json({message:'success'});
                 }
             });
+        }else{
+            res.json({message:'success'});
         }
 
     });
@@ -179,6 +191,23 @@ exports.insert_story=(req,res)=>{
             }
         });
 
+    });
+};
+exports.update_story_title=(req,res)=>{
+    const Story_No=req.body.Story_No;
+    const Story_Title=req.body.Story_Title;
+    db.query('update story set Story_Title=? where Member_No=? and Story_No=?',
+        [Story_Title,req.user.Member_No,Story_No],(error,results)=>{
+        if(error) console.log(error);
+        if(results.affectedRows===0){
+            // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
+            res.json({message:'잘못된 접근입니다.'});
+        }else if(results.changedRows===0){
+            res.json({message:'변경되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
+        }else{
+            console.log('book변경');
+            res.json({message:'변경되었습니다.'})
+        }
     });
 };
 
@@ -434,6 +463,108 @@ exports.list_page=(req,res)=>{
         });
     });
 };
+
+exports.update_page=(req,res)=>{
+    //널값 처리
+    //1. PageLast 확인
+    //2. 이미지가 있다면 -> 원래 있던 이미지 + 삽입할 이미지 - 제거할 이미지
+    // 지울 이미지의 번호를 delete_Image_No 변수에 push한다.
+    console.log('들어온 데이터',req.body);
+    const Page_No=parseInt((req.body.Page_No).slice(2));
+    const Page_Content=((req.body.Page_Content).slice(2));
+    let Page_Link;
+    if(req.body.Page_Link){
+        Page_Link=((req.body.Page_Link).slice(2));
+    }
+    // 지울 이미지는 array로 받는다. 만약 단일값이라면 array로 만들어서 담아준다
+    let delete_Images_No=[];
+    let delete_Images_count;
+    if(req.body.delete_Images_No){
+        if(Array.isArray(req.body.delete_Images_No)){
+            for(let i=0; i<delete_Images_No.length;i++){
+                delete_Images_No[i]=parseInt((req.body.delete_Images_No[i]).slice(2));
+            }
+        }else{
+            delete_Images_No.push(parseInt((req.body.delete_Images_No).slice(2)));
+        }
+        delete_Images_count=delete_Images_No.length;
+    }
+    const updatepagedata={
+        Page_Content:Page_Content,
+        Page_UpdateDate:new Date(),
+        Page_Link:Page_Link,
+    };
+    // Page_Last가 1인지 확인
+    db.query('select Page_Last from page where Member_No=? and Page_No=?',
+        [req.user.Member_No,Page_No],(error,results)=>{
+            if(error) console.log(error);
+            if(results[0].Page_Last===0){
+                res.json({result:false,message:'마지막 페이지만 수정할 수 있습니다.'});
+            }else {
+                if (req.files) {
+                    const check_imgcount = 'select Page_Imgcount from page where Member_No=? and Page_No=?';
+                    db.query(check_imgcount, [req.user.Member_No, Page_No], (error, results) => {
+                        if (error) console.log(error);
+                        let updateimgcount = results[0].Page_Imgcount + req.files.length - delete_Images_count;
+                        if (updateimgcount > 6) {
+                            res.json({result: false, message: '이미지 삽입 갯수 초과'});
+                        } else {
+                            //이미지 지우는작업 fs.unlink사용
+                            for(let i=0; i<delete_Images_count;i++) {
+                                delete_Images_No[i]=parseInt(delete_Images_No[i]);
+                                let delete_image_path='';
+                                db.query('select Image_Path from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
+                                    if(error) console.log(error);
+                                    delete_image_path=results[0].Image_Path;
+                                    db.query('delete from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
+                                        if(error) console.log(error);
+                                        if(results.affectedRows===1){
+                                            fs.unlink(cwd+'/'+delete_image_path,(error)=>{
+                                                if(error) console.log(error);
+                                                console.log('파일 삭제');
+                                            });
+                                        }else{
+                                            console.log('삭제 안되었습니다');
+                                        }
+                                    });
+                                });
+                            }
+                            for(let i=0;i<req.files.length;i++){
+                                //변수 초기화
+                                let imgdata={};
+                                imgdata={
+                                    No:Page_No,
+                                    Image_Fieldname:req.files[i].fieldname,
+                                    Image_Path:req.files[i].path,
+                                    Image_Originalname:req.files[i].originalname
+                                };
+                                db.query('insert into image set ?',imgdata,(error)=>{
+                                    console.log('이미지 넣었습니다');
+                                });
+                            }
+                        }
+                    });
+                }
+                const update_page_query=
+                    'update page ' +
+                    'set ? ' +
+                    'where Member_No=? and Page_No=?';
+                db.query(update_page_query,[updatepagedata,req.user.Member_No,Page_No],(error,results)=>{
+                    if(error) console.log(error);
+                    if(results.affectedRows===0){
+                        // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
+                        res.json({result:false,message:'잘못된 접근입니다.'});
+                    }else if(results.changedRows===0){
+                        res.json({result:false,message:'수정되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
+                    }else{
+                        console.log('page수정');
+                        res.json({result:true,message:'수정되었습니다.'});
+                    }
+                })
+            }
+        })
+};
+
 exports.insert_page=(req,res)=>{
     // 1.전에 쓴 페이지의 page_last를 0 으로 업데이트. 첫글이면 undefined가 나올테니 if문으로 조건검사
     // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력

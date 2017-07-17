@@ -377,6 +377,7 @@ exports.insert_story=(req,res)=>{
         Member_No : req.user.Member_No,
         Story_Title : req.body.Story_Title,
         Story_Owner : req.user.Member_Name,
+        Story_Public: req.body.Story_Public ? 1 : 0
     };
     db.query('insert into story set ? ',new_story, (error)=>{
         if(error){
