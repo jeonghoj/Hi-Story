@@ -83,22 +83,27 @@ exports.member_profile=(req,res)=>{
 exports.update_member_profile=(req,res)=>{
     console.log('들어온 데이터',req.body);
     console.log('업로드한 파일',req.file);
-    let Member_Name,Member_Profile_text,Member_Profileimg_State;
+    // 변수
+    let Member_Name,Member_Profile_text,Member_Profileimg_State,profileimgdata;
+    // 안드로이드 2바이트 자르기
     if(req.body.Member_Name){
-        Member_Name=(req.body.Member_Name).slice(2)
+        Member_Name=(req.body.Member_Name).slice(2);
     }
     if(req.body.Member_Profile){
-        Member_Profile_text=(req.body.Member_Profile).slice(2)
+        Member_Profile_text=(req.body.Member_Profile).slice(2);
     }
     Member_Profileimg_State=((req.body.Member_Profileimg_State).slice(2));
+    // 이미지 데이터가 있을때
+    if(req.file){
+        profileimgdata={
+            Image_Fieldname:req.file.fieldname,
+            Image_Path:req.file.path,
+            Image_Originalname:req.file.originalname
+        };
+    }
     const Member_Profile={
         Member_Name:Member_Name,
         Member_Profile_text:Member_Profile_text
-    };
-    const profileimgdata={
-        Image_Fieldname:req.file.fieldname,
-        Image_Path:req.file.path,
-        Image_Originalname:req.file.originalname
     };
     const defaultimg={
         Image_Fieldname:'Member_Profileimg',
