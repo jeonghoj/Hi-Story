@@ -644,11 +644,17 @@ mark {
 .closeup .new-story .make-new-book label {
     float: right;
 }
+.closeup .new-story .new-story-book label {
+    display: block;
+}
+.closeup .new-story .new-story-book label:hover {
+    background-color: rgba(245, 245, 245, 1);
+}
 .closeup .new-story .make-new-book #new-book-title {
     border: none;
     background-color: rgba(245, 245, 245, 1);
     padding: 3px;
-    width: 440px;
+    width: 430px;
 }
 .closeup .new-story #new-story-close {
     position: absolute;

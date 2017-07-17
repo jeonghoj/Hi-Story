@@ -218,7 +218,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data[i].Book_No+">"+data[i].Book_Title+"</label><br>");
+                            .append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data[i].Book_No+">"+data[i].Book_Title+"</label>");
                     }
                 }
             });
@@ -233,7 +233,7 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data+">"+$('#new-book-title').val()+"</label><br>");
+                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data+">"+$('#new-book-title').val()+"</label>");
 
                 }
             });
@@ -283,7 +283,7 @@
             for(var i=0; i<$('.new-story-book label').length; i++) {
                 if($('.new-story-book label').eq(i).find('.new-book').is(':checked')) {
                     $('.new-story-book label').eq(i).css({
-                        'font-weight': '800'
+                        'font-weight': '900'
                     });
                 }else {
                     $('.new-story-book label').eq(i).css({
@@ -292,7 +292,7 @@
                 }
             }
         });
-
+        
     </script>
 
 </body>
