@@ -103,7 +103,7 @@ exports.update_member_profile=(req,res)=>{
     }
     const Member_Profile={
         Member_Name:Member_Name,
-        Member_Profile_text:Member_Profile_text
+        Member_Profile:Member_Profile_text
     };
     const defaultimg={
         Image_Fieldname:'Member_Profileimg',
