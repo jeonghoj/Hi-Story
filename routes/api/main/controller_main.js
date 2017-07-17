@@ -446,6 +446,54 @@ exports.insert_page=(req,res)=>{
     });
 };
 
+exports.insert_story_memo=(req,res)=>{
+    const {Story_No, Story_Memo_Text} = req.body;
+    const new_story_memo_data={
+        Story_No:Story_No,
+        Member_No:req.user.Member_No,
+        Story_Memo_Text:Story_Memo_Text
+    };
+    // 메모 넣기
+    db.query('insert into story_memo set ?',[new_story_memo_data],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json(false);
+        }else{
+            // 삽입 후 해당 스토리의 메모를 전부 다시 가져옴
+            res.json(results.insertId);
+        }
+    });
+};
+exports.update_story_memo=(req,res)=>{
+    const {Story_No,Story_Memo_No,Story_Memo_Text}=req.body;
+    // 메모 수정
+    db.query('update story_memo set Story_Memo_Text=? ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?',
+        [Story_Memo_Text,Story_Memo_No,req.user.Member_No,Story_No],(error)=>{
+            if(error){
+                console.log(error);
+                res.json(false);
+            }else{
+                res.json(true);
+            }
+        });
+};
+exports.delete_story_memo=(req,res)=>{
+    const {Story_Memo_No,Story_No}=req.body;
+    // 메모 삭제
+    db.query('delete from story_memo ' +
+        'where Story_Memo_No=? and Member_No=? and Story_No=?',
+        [Story_Memo_No,req.user.Member_No,Story_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json(false);
+        }else{
+            res.json(true);
+        }
+        });
+
+};
+
 // 액션 overview
 exports.action= (req,res)=> {
     let story = null;

@@ -250,7 +250,6 @@ exports.update_story_title=(req,res)=>{
         }
     });
 };
-
 exports.delete_story=(req,res)=>{
     db.query('delete from story where Member_No=? and Story_No=?',
         [req.user.Member_No,req.body.Story_No],(error,results)=>{
