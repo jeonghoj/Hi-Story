@@ -105,7 +105,7 @@ exports.update_member_profile=(req,res)=>{
     };
     const defaultimg={
         Image_Fieldname:'Member_Profileimg',
-        Image_Path:'userfile/logo.png',
+        Image_Path:'public/img/logo/logo.png',
         Image_Originalname:'defaultimg',
     };
     switch (Member_Profileimg_State) {
