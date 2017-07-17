@@ -233,7 +233,7 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data.Book_No+">"+$('#new-book-title').val()+"</label><br>");
+                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data+">"+$('#new-book-title').val()+"</label><br>");
 
                 }
             });
