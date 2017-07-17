@@ -11,11 +11,6 @@ const storage = multer.diskStorage({
     destination:function(req, file, cb) {
         cb(null, './../userfile')
     },
-    // 파일네임문제
-    // filename: function (req, file, cb) {
-    //     const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    //     cb(null,Date.now()+ '-' + file.fieldname + '-' + file.originalname +'-');
-    // }
 });
 const upload = multer({
     storage:storage,
