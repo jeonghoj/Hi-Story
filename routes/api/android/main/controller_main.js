@@ -87,7 +87,7 @@ exports.update_member_profile=(req,res)=>{
     if(req.body.Member_Name){
         Member_Name=(req.body.Member_Name).slice(2);
     }
-    if(req.body.Member_Profile_text){
+    if(req.body.Member_Profile){
         Member_Profile_text=(req.body.Member_Profile).slice(2);
     }
     Member_Profileimg_State=((req.body.Member_Profileimg_State).slice(2));
