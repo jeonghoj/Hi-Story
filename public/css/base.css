@@ -16,7 +16,7 @@ button {
     background: none;
     outline: none;
 }
-input {
+input, textarea {
     outline: none;
 }
 
@@ -489,7 +489,7 @@ mark {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 14px;
+    padding: 10px 0px 0px 14px;
 }
 .book-list .a-book {
     overflow: hidden;
@@ -523,7 +523,7 @@ mark {
 }
 
 .book-list .a-book .book-slide .book-inside .story-title {
-    height: 40px;
+    height: 28px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -531,6 +531,13 @@ mark {
 .book-list .a-book .book-slide .book-inside .btn {
     height: 20px;
 }
+.book-list .a-book:hover .book-slide .book-inside .btn {
+    background: rgba(250, 250, 250, 1);
+}
+.book-list .a-book .book-slide .book-inside .btn * {
+    opacity: .4;
+}
+
 /* book card ================================================== :) */
 .book-list .a-book .book-item {
     width: 232px;
@@ -552,6 +559,9 @@ mark {
 }
 .book-list .a-book .book-inside .book-stories .book-story-slide {
     position: relative;
+}
+.book-list .a-book .book-inside .book-stories .book-story-slide a:hover{
+    background: rgba(245, 245, 245, 1);
 }
 .book-list .last-book .search .search-box {
     border: none;
@@ -604,14 +614,14 @@ mark {
     top: 50%;
     left: 50%;
     width: 560px;
-    height: 365px;
-    padding: 20px;
+    height: 380px;
+    padding: 25px 20px 25px 20px;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 1);
     border: none;
     border-radius: 5px;
     z-index: 200;
-    visibility: hidden;    
+    visibility: hidden;
 }
 .closeup .new-story #new-story-title {
     width: 520px;
@@ -621,17 +631,31 @@ mark {
     margin-bottom: 5px;
     background-color: rgba(240, 240 ,240, 1);
 }
-.closeup .new-story #new-story-title:hover,
-.closeup .new-story #new-story-title:focus {
+.closeup .new-story #new-story-title:focus,
+.closeup .new-story .new-book #new-book-title:focus {
     background-color: rgba(210, 210, 210, 1);
 }
-
+.closeup .new-story .make-new-book {
+    width: 520px;
+    border: none;
+    border-bottom: 1px solid rgb(80, 80, 80);
+    margin-bottom: 5px;
+}
+.closeup .new-story .make-new-book label {
+    float: right;
+}
+.closeup .new-story .make-new-book #new-book-title {
+    border: none;
+    background-color: rgba(245, 245, 245, 1);
+    padding: 3px;
+    width: 470px;
+}
 .closeup .new-story #new-story-close {
     position: absolute;
     top: 0px;
     right: 0px;
-    opacity: .7;
-    padding: 3px;
+    opacity: .5;
+    padding: 1px;
 }
 .closeup .new-story .new-story-book {
     width: 520px;
@@ -663,12 +687,8 @@ mark {
     border: none;
     background: none;
 }
-.closeup .new-story .new-story-footer #public {
+label .inactive {
     display: none;
-}
-.closeup .new-story .new-story-footer #public:checked + label{
-    text-decoration: line-through;
-    opacity: .7;
 }
 
 /* Story Del @ action ================================================== :) */

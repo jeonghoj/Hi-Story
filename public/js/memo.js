@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     // Web Road 시 memo의 높이를 고려해서 출력
     $('.story-memo').each(function () {
         $(this).css({
@@ -8,6 +10,7 @@ $(document).ready(function () {
 
     // 기본 값 설정
     $('.story-no-infor').append('1');
+
 
     // 새 메모 추가
     $("#new-memo-btn").click(function () {
@@ -21,6 +24,7 @@ $(document).ready(function () {
             }
         }
     });
+
 
     // memo 수정
     $(document).ready(function () {
@@ -47,6 +51,23 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    // textarea에서 엔터 시 바로 저장 및 실시간 높이 조정
+    $(document).on('keydown', '.story-memo', function () {
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            $(this).prev().prev().trigger('click');
+            if($(this).val() == "") {
+                $(this).parent().remove();
+            }
+        }
+        $(this).css({
+           'height': $(this).prop('scrollHeight')
+        });
+    });
+
+
 });
 
 

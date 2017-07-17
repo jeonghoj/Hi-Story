@@ -53,7 +53,6 @@ $('.story').click(function () {
 
 
 // TODO Timeline에서는 story를 클릭하면 보여줌
-
 $(document).ready(function () {
     $( '.page, .last-page' ).click(function(event) {
         if(!$(event.target).is('img, button')){
