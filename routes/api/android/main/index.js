@@ -47,6 +47,7 @@ router.post('/delete_story_memo',passport.authenticate('jwth',{session:false}),c
 
 router.post('/list_page',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.post('/insert_page',passport.authenticate('jwth',{session:false}),upload.array('Page_Image',6),controller.insert_page);
+router.post('/update_page',passport.authenticate('jwth',{session:false}),upload.array('Page_Image',6),controller.update_page);
 
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
 // router.post('/insert_page',passport.authenticate('jwth',{session:false}),
