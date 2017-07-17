@@ -357,6 +357,7 @@ mark {
     text-align: justify;
     margin-top: 15px;
 }
+
 .page:hover {
     background: rgba(240, 240, 240, 1);
 }
@@ -371,8 +372,8 @@ mark {
 }
 .left .page-list .page .img-box {
     background-color: rgba(245, 245, 245, 1);
-    margin-top: 14px;
     height: 400px;
+    padding:
 }
 .left .page-list .link-box {
     background-color: white;
@@ -398,7 +399,7 @@ mark {
 /* page img ================================================== :) */
 .left .page-list .page .img-box {
     width: 600px;
-    margin: auto;
+    margin: 0px 33px 10px 33px;
     text-align: center;
     position: relative;
 }
