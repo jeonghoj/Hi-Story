@@ -123,9 +123,9 @@
                         <button id="new-memo-btn" class="f-basic">Make new memo</button>
                         <hr class="hr-infor">
                         <!--story를 끝낸다.-->
-                        <button id="done-btn" class="f-basic">Done</button>
+                        <button id="done-btn" class="f-basic">Done this story</button>
                         <!--story를 지운다.-->
-                        <button id="delete-btn" class="f-basic">Delete</button>
+                        <button id="delete-btn" class="f-basic">Delete this story</button>
                     </div>
                 </div>
                 <!--새로운 story를 만든다.-->
@@ -153,7 +153,7 @@
                     <span class="pub">공개</span>
                     <span class="notpub inactive">비공개</span>
                 </label>
-                <!--<button id="insert-new-book">새북 추가</button>-->
+                <button id="insert-new-book" class="f-basic">추가</button>
             </div>
 
             <!--여기에 북리스트 추가됨-->
@@ -193,7 +193,7 @@
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
-            <p class="del-nav">type "<span class="f-empha del-name">story name을 삭제합니다.</span>"</p>
+            <p class="del-nav">"<span class="f-empha del-name">story name</span>"를 입력하세요.</p>
             <input type="text" id="confirm" placeholder="confirm massage">
             <input type="submit">
         </div>
@@ -218,7 +218,7 @@
                 success:function (data) {
                     for(var i=0; i<data.length;i++){
                         $(".new-story-book")
-                            .append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data[i].Book_No+">"+data[i].Book_Title+"</label><br>");
+                            .append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data[i].Book_No+">"+data[i].Book_Title+"</label>");
                     }
                 }
             });
@@ -233,7 +233,8 @@
                 type:"post",
                 data:newbook,
                 success: function (data) {
-                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data.Book_No+">"+$('#new-book-title').val()+"</label><br>");
+                    $('.new-story-book').append("<label><input class='new-book' name='Book_No' type='radio' style='display: none;' value="+data+">"+$('#new-book-title').val()+"</label>");
+
                 }
             });
         });
@@ -282,7 +283,7 @@
             for(var i=0; i<$('.new-story-book label').length; i++) {
                 if($('.new-story-book label').eq(i).find('.new-book').is(':checked')) {
                     $('.new-story-book label').eq(i).css({
-                        'font-weight': '800'
+                        'font-weight': '900'
                     });
                 }else {
                     $('.new-story-book label').eq(i).css({
@@ -291,7 +292,7 @@
                 }
             }
         });
-
+        
     </script>
 
 </body>

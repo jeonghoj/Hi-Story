@@ -109,19 +109,15 @@
             <!--글쓰기-->
             <div class="page-list page-write">
                 <form id="new-page" action="/insert_page" method="post" enctype="multipart/form-data">
-                    <!--파일첨부-->
-                    <!--파일(파일은 한개만 가능)-->
-                    <!--<input type="file" name="Page_File">-->
-                    <!--이미지-->
-                    <input type="file" name="Page_Image" multiple>
                     <!--에디터-->
                     <input type="hidden" name="Story_No"
                            value="<%=Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
-                        <div class="attachment">첨부</div>
-                        <input type="submit">
+                        <label class="f-sub"><input type="file" name="Page_Image" id="page-img" multiple style="display: none;">Image</label>
+                        <label class="f-sub"><input type="button" id="page-link" style="display: none;">Link</label>
+                        <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
                     </div>
                 </form>
                 <!--에디터 표시 스크립트-->
@@ -164,18 +160,13 @@
         </div>
     </div>
 
-    <div id="page-set">
-        <div class="cit f-subSmall">Citation</div>
-        <div class="imp f-subSmall">Important</div>
-        <div class="edit f-subSmall">Edit</div>
-    </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/attchment.js"></script>
     <script src="/js/aside.js"></script>
     <script>
+
         $("#new-page").submit(function () {
             event.preventDefault();
             for ( instance in CKEDITOR.instances )
@@ -204,6 +195,20 @@
 //            for ( instance in CKEDITOR.instances )
 //                CKEDITOR.instances[instance].updateElement();
 //        }
+
+// img의 경우 padding 주기
+        $(document).ready(function () {
+            for(var i=0; i<$('.page').length; i++) {
+                if($('.page').eq(i).has('img').length > 0) {
+                    $('.page').eq(i).css( 'padding-top', '28px' );
+                }
+            }
+        });
+
+        $(document).on('click', '.to-right', function () {
+           $(this).find('img').trigger('click');
+        });
+
     </script>
 
 </body>
