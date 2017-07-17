@@ -112,30 +112,32 @@ exports.update_member_profile=(req,res)=>{
     };
     switch (Member_Profileimg_State) {
         //사진이 변하지 않은 상태
-        case 0  :
+        case 0 :{
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
-            if(error) console.log(error);
-            res.json({message:'success'});});
+                if(error) console.log(error);
+                res.json({message:'success'});});
             break;
+        }
         // 사진이 변한 상태
-        case 1  :
+        case 1 :{
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=> {
                 if (error) console.log(error);
                 db.query('update image set ? where No=? and Image_Fieldname=?',
-                [profileimgdata, req.user.Member_No, 'Member_Profileimg'], (error, results) => {
-                    if (error) console.log(error);
-                    if (results.affectedRows === 0) {
-                        res.json({message: '잘못된 접근입니다.'});
-                    } else if (results.changedRows === 0) {
-                        res.json({message: '같은 내용입니다'});
-                    } else {
-                        res.json({message: 'success'});
-                    }
-                });
+                    [profileimgdata, req.user.Member_No, 'Member_Profileimg'], (error, results) => {
+                        if (error) console.log(error);
+                        if (results.affectedRows === 0) {
+                            res.json({message: '잘못된 접근입니다.'});
+                        } else if (results.changedRows === 0) {
+                            res.json({message: '같은 내용입니다'});
+                        } else {
+                            res.json({message: 'success'});
+                        }
+                    });
             });
             break;
+        }
         // 기본 이미지로 변경
-        case 2  :
+        case 2 :{
             db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=> {
                 if (error) console.log(error);
                 db.query('update image set ? where No=? and Image_Fieldname=?',
@@ -151,8 +153,11 @@ exports.update_member_profile=(req,res)=>{
                     });
             });
             break;
-        default   : res.json({message:'success'});
+        }
+        default:{
+            res.json({message:'success'});
             break;
+        }
     }
 
     db.query('update member set ? where Member_No=?',[Member_Profile,req.user.Member_No],(error,results)=>{
