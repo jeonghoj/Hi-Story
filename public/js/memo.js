@@ -19,7 +19,14 @@ $(document).ready(function () {
         for (var i=0; i<$('.story').length; i++) {
             var no_ = $('.story:eq('+i+')').find('.story-no').text();
             if(no == no_) {
-                $('.story:eq('+i+')').append("<div class='memo'> <a class='edit f-sub'>Edit</a> <div class='story-memo-no' style='display: none'> </div> <textarea class='story-memo' rows='1' cols='72' style='height: 28px;' placeholder='빈 MEMO는 삭제 됩니다.'></textarea> </div>" ).find('.story-memo').focus();
+                $('.story:eq('+i+')')
+                    .append(
+                        "<div class='memo'>" +
+                        "<a class='edit f-sub'>Edit</a>" +
+                        "<div class='story-memo-no' style='display: none'></div>" +
+                        "<textarea class='story-memo' rows='1' cols='72' style='height: 28px;' placeholder='빈 MEMO는 삭제 됩니다.'></textarea>" +
+                        "</div>" )
+                    .find('.story-memo').focus();
                 break;
             }
         }
@@ -47,6 +54,60 @@ $(document).ready(function () {
                 $(this).next().next().css({
                     'height': $(this).next().next().prop('scrollHeight')
                 });
+                var Story_No=$(this).parent().parent().find('.story-no').html();
+                var Story_Memo_Text=$(this).next().next().val();
+                var Story_Memo_No=$(this).next();
+                var new_memo={
+                    Story_No:Story_No,
+                    Story_Memo_Text:Story_Memo_Text
+                };
+                var update_memo={
+                    Story_No:Story_No,
+                    Story_Memo_No:Story_Memo_No.html(),
+                    Story_Memo_Text:Story_Memo_Text
+                };
+
+                if(Story_Memo_Text === "") {
+                    $(this).parent().remove();
+                    if(Story_Memo_No.html()){
+                        var delete_memo={
+                            Story_No:Story_No,
+                            Story_Memo_No:Story_Memo_No.html()
+                        };
+                        $.ajax({
+                            url:'/delete_story_memo',
+                            type:'post',
+                            data:delete_memo,
+                            success:function (data) {
+                                if(!data) alert('오류!');
+                            }
+                        })
+                    }
+                }else{
+                    if(Story_Memo_No.html()){
+                        $.ajax({
+                            url:'/update_story_memo',
+                            type:'post',
+                            data:update_memo,
+                            success:function (data) {
+                                if(!data) alert('오류!');
+                            }
+                        })
+                    }else{
+                        $.ajax({
+                            url:'/insert_story_memo',
+                            type:'post',
+                            data:new_memo,
+                            success:function (data) {
+                                if(!data) alert('오류!');
+                                Story_Memo_No.html(data);
+                            }
+                        });
+                    }
+                }
+
+
+
             }
         });
     });
@@ -54,12 +115,10 @@ $(document).ready(function () {
 
     // textarea에서 엔터 시 바로 저장 및 실시간 높이 조정
     $(document).on('keydown', '.story-memo', function () {
-        if(event.keyCode == 13) {
+        if(event.keyCode === 13) {
             event.preventDefault();
+            // 엔터를 쳤을때 에디트를 클릭한것과 동작이 같이야 하므로
             $(this).prev().prev().trigger('click');
-            if($(this).val() == "") {
-                $(this).parent().remove();
-            }
         }
         $(this).css({
            'height': $(this).prop('scrollHeight')

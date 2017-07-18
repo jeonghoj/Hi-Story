@@ -1,7 +1,6 @@
 /**
 * Created by Jeongho on 2017-05-11.
 */
-
 const db = require('./db');
 const config  = require('./config');
 const passport = require("passport");
@@ -50,9 +49,7 @@ passport.use('jwtc', new JwtStrategy(jwtOptionscookie, (jwt_payload, done) => {
     });
 }));
 // passport.use(Strategy);
-
 passport.serializeUser(function(user, done) {
-    console.log('serializeUser',user);
     done(null,user.authID);
 });
 //페이지가 실행 될 때 마다 deserializeUser가 실행 id에는 authid가 들어간다
@@ -67,5 +64,4 @@ passport.serializeUser(function(user, done) {
 //             done(null,results[0]);
 //         }});
 // });
-
 module.exports=passport;

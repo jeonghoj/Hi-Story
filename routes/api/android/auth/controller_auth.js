@@ -30,8 +30,7 @@ exports.register = (req,res) => {
             Member_Name: realname,
             Member_EmailVerified:0,
         };
-        const sql = 'insert into member set ?';
-        db.query(sql, user, (error,results) => {
+        db.query('insert into member set ?', [user], (error,results) => {
             if (error) {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
@@ -40,10 +39,11 @@ exports.register = (req,res) => {
                 const defaultimg={
                     No:results.insertId,
                     Image_Fieldname:'Member_Profileimg',
-                    Image_Path:'userfile/logo.png',
+                    Image_Path:'public/img/logo/logo.png',
                     Image_Originalname:'defaultimg'
                 };
                 db.query('insert into image set ?',[defaultimg],(error,results)=>{
+                    if(error) console.log(error);
                     let mailoptions={
                         from:'historygdrive@gmail.com',
                         to:userid,
@@ -65,8 +65,7 @@ exports.register = (req,res) => {
 exports.login = (req,res) => {
     // TODO 웹에서 널값 못보내도록 막기처리 해줘야
     const { userid , password } = req.body;
-    const sql='select * from member where Member_ID=?';
-    db.query(sql,[userid],(error,results) => {
+    db.query('select * from member where Member_ID=?',[userid],(error,results) => {
         if(error) console.log(error);
         const user = results[0];
         if(!user){

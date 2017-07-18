@@ -30,25 +30,34 @@ exports.register = (req,res) => {
             Member_Name: realname,
             Member_EmailVerified:0,
         };
-        const sql = 'insert into member set ?';
-        db.query(sql, user, (error) => {
+        db.query('insert into member set ?',[user],(error) => {
             if (error) {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
             } else {
-                let mailoptions={
-                    from:'historygdrive@gmail.com',
-                    to:userid,
-                    // to:user.Member_ID,
-                    subject:'Hi-Story 이메일 인증을 완료해 주세요',
-                    text:'회원가입을 완료하려면 https://history-dcy.com/auth/verifyemail?emailtoken='+emailtoken,
+                const defaultimg={
+                    No:results.insertId,
+                    Image_Fieldname:'Member_Profileimg',
+                    Image_Path:'public/img/logo/logo.png',
+                    Image_Originalname:'defaultimg'
                 };
-                transporter.sendMail(mailoptions,function (err,info) {
-                    if(err) console.log(err);
-                    console.log('Mail send Success -',info.response);
-                    transporter.close();
-                    res.status(200).json({message : "success register! please verify your email"});
+                db.query('insert into image set ?',[defaultimg],(error,results)=> {
+                    if(error) console.log(error);
+                    let mailoptions={
+                        from:'historygdrive@gmail.com',
+                        to:userid,
+                        // to:user.Member_ID,
+                        subject:'Hi-Story 이메일 인증을 완료해 주세요',
+                        text:'회원가입을 완료하려면 https://history-dcy.com/auth/verifyemail?emailtoken='+emailtoken,
+                    };
+                    transporter.sendMail(mailoptions,function (err,info) {
+                        if(err) console.log(err);
+                        console.log('Mail send Success -',info.response);
+                        transporter.close();
+                        res.status(200).json({message : "success register! please verify your email"});
+                    });
                 });
+
             }
         });
     });
@@ -87,14 +96,14 @@ exports.login = (req,res) => {
 };
 exports.verifyemail=(req,res)=>{
     const emailtoken=req.query.emailtoken;
-    console.log(emailtoken);
-    const sql = 'update member set Member_EmailVerified=1 where Member_ID=?';
     jwt.verify(emailtoken,config.secret,(error,decoded)=>{
         if(error) console.log(error);
         if(decoded===undefined){
             res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
         }else{
-            db.query(sql,decoded.Member_ID,(error,result)=>{
+            // 이메일 인증 true 값으로 설정
+            db.query('update member set Member_EmailVerified=1 where Member_ID=?',
+                [decoded.Member_ID],(error,result)=>{
                 if(error) console.log(error);
                 if(result.affectedRows===0){
                     console.log('데이터없거나 잘못된 접근');
@@ -151,7 +160,9 @@ exports.new_PW=(req,res)=>{
                     Member_PW: hash,
                     Member_salt: salt,
                 };
-                db.query('update into member set ? where Member_ID=?', new_PW, decoded.Member_ID, (error, results) => {
+                // 새로운 패스워드로 설정
+                db.query('update into member set ? where Member_ID=?',
+                    [new_PW, decoded.Member_ID],(error, results) => {
                     if (error) console.log(error);
                     if (results.affectedRows === 1) {
                         res.json({message: '비밀번호가 성공적으로 변경되었습니다.', result: true});

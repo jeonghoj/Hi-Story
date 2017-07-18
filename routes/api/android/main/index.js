@@ -11,11 +11,6 @@ const storage = multer.diskStorage({
     destination:function(req, file, cb) {
         cb(null, './../userfile')
     },
-    // 파일네임문제
-    // filename: function (req, file, cb) {
-    //     const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    //     cb(null,Date.now()+ '-' + file.fieldname + '-' + file.originalname +'-');
-    // }
 });
 const upload = multer({
     storage:storage,
@@ -38,7 +33,7 @@ router.post('/update_book',passport.authenticate('jwth',{session:false}),control
 router.post('/delete_book',passport.authenticate('jwth',{session:false}),controller.delete_book);
 
 router.post('/insert_story',passport.authenticate('jwth',{session:false}),controller.insert_story);
-
+router.post('/update_story_title,',passport.authenticate('jwth',{session:false}),controller.update_story_title);
 router.post('/delete_story',passport.authenticate('jwth',{session:false}),controller.delete_story);
 
 router.post('/insert_story_memo',passport.authenticate('jwth',{session:false}),controller.insert_story_memo);
@@ -47,6 +42,7 @@ router.post('/delete_story_memo',passport.authenticate('jwth',{session:false}),c
 
 router.post('/list_page',passport.authenticate('jwth',{session:false}),controller.list_page);
 router.post('/insert_page',passport.authenticate('jwth',{session:false}),upload.array('Page_Image',6),controller.insert_page);
+router.post('/update_page',passport.authenticate('jwth',{session:false}),upload.array('Page_Image',6),controller.update_page);
 
 // todo 그냥 인풋 파일 하나에 여러개 파일 올리고, 순서 바뀌어도 인식하게끔하기 근데 이게 사용자가 더 알기 쉬울거같다
 // router.post('/insert_page',passport.authenticate('jwth',{session:false}),
