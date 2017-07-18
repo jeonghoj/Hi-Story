@@ -15,7 +15,6 @@ exports.intro=(req,res,next)=>{
     passport.authenticate('jwtc', {session: false}, function(err, user, info) {
         if (err) return next(err);
         if (!user) {
-            console.log('유저없음');
             return fs.readFile('views/intro.html','utf8',(error,data)=>{
                 res.send(data);});
         }else {
@@ -79,7 +78,6 @@ exports.update_book_title=(req,res)=>{
         }else if(results.changedRows===0){
             res.json({result:false,message:'같은 내용입니다'});
         }else{
-            console.log('book변경');
             res.json({result:true,message:'변경되었습니다.'})
         }
     });
@@ -97,7 +95,6 @@ exports.update_book_public=(req,res)=>{
         }else if(results.changedRows===0){
             res.json({result:false,message:'같은 내용입니다'});
         }else{
-            console.log('book변경');
             res.json({result:true,message:'변경되었습니다.'})
         }
     });
@@ -115,7 +112,6 @@ exports.update_story_title=(req,res)=>{
         }else if(results.changedRows===0){
             res.json({result:false,message:'변경되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
         }else{
-            console.log('book변경');
             res.json({result:true,message:'변경되었습니다.'})
         }
     });

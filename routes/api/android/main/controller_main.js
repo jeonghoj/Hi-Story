@@ -162,7 +162,6 @@ exports.update_member_profile=(req,res)=>{
 
 exports.insert_book=(req,res)=>{
     // TODO: Book_Public들어가야함!
-    console.log('북삽입',req.body);
     const new_book={
         Member_No:req.user.Member_No,
         Book_Title:req.body.Book_Title,
@@ -202,7 +201,6 @@ exports.delete_book=(req,res)=>{
     db.query('delete from book where Member_No=? and Book_No=?',
         [req.user.Member_No,Book_No],(error,results)=>{
         if(error) console.log(error);
-        console.log(results);
         if(results.affectedRows===0){
             res.json({message:'데이터가 잘못됬거나, 없습니다'});
         }else{
@@ -227,7 +225,6 @@ exports.insert_story=(req,res)=>{
                 res.json({result:false, message:'스토리 삽입 실패!'});
             }
             else{
-                console.log('스토리 삽입 성공!');
                 res.json({result:true, message:'스토리 삽입 성공!',Story:results[0]});
             }
         });
@@ -245,7 +242,6 @@ exports.update_story_title=(req,res)=>{
         }else if(results.changedRows===0){
             res.json({message:'변경되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
         }else{
-            console.log('book변경');
             res.json({message:'변경되었습니다.'})
         }
     });
@@ -399,7 +395,6 @@ exports.delete_story_memo=(req,res)=>{
                 'from story_memo where Member_No=? and Story_No=?',
                 [req.user.Member_No, Story_No], (error, results) => {
                 if (error) console.log(error);
-                console.log(results);
                 return res.json({message: 'success', Story_Memo: results});
             });
         }
