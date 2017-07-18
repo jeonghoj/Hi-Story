@@ -18,7 +18,6 @@ let transporter=nodemailer.createTransport({
     }
 });
 exports.register = (req,res) => {
-    console.log(req.body);
     const {userid, password, realname} = req.body;
     let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
     hasher({password: password}, (error, pass, salt, hash) => {
@@ -63,7 +62,6 @@ exports.register = (req,res) => {
     });
 };
 exports.login = (req,res) => {
-    console.log('로그인',req.body);
     const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
     db.query('select * from member where Member_ID=?',[userid],(error,results) => {
         if(error){
@@ -131,7 +129,6 @@ exports.new_PW_page=(req,res)=>{
 exports.find_PW=(req,res)=>{
     const payload = {Member_ID: req.body.userid};
     const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
-    console.log(token);
     let mailoptions={
         from:'historygdrive@gmail.com',
         to:'jjhh3079@gmail.com',

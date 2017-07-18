@@ -6,7 +6,7 @@ const cwd = process.cwd();
 const db=require(cwd+'/config/db');
 const fs=require('fs');
 const passport=require(cwd+'/config/passport');
-
+const xss=require('xss');
 // 대부분의 URL에 사용자 인증 정보를 담은 토큰을 보내므로, 사용자인지 확인하는 query를 작성해야한다.
 
 // 인트로
@@ -66,8 +66,7 @@ exports.list_book=(req,res)=>{
 // 북 타이틀 수정
 exports.update_book_title=(req,res)=>{
     // 수정하려는 북의 넘버와 북타이틀을 불러온다
-    const Book_No=req.body.Book_No;
-    const Book_Title=req.body.Book_Title;
+    const {Book_No,Book_Title}=req.body;
     // 북 타이틀 업데이트
     db.query('update into book set Book_Title=? where Book_No=? and Member_No=?',
         [Book_No,Book_Title,req.user.Member_No],(error,results)=>{
@@ -101,8 +100,7 @@ exports.update_book_public=(req,res)=>{
 };
 // 스토리 타이틀 수정
 exports.update_story_title=(req,res)=>{
-    const Story_No=req.body.Story_No;
-    const Story_Title=req.body.Story_Title;
+    const {Story_No,Story_Title}=req.body;
     db.query('update story set Story_Title=? where Member_No=? and Story_No=?',
         [Story_Title,req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
@@ -119,9 +117,8 @@ exports.update_story_title=(req,res)=>{
 
 exports.update_story_done=(req,res)=>{
     console.log('업로드된 파일',req.files);
-    const Story_No=req.body.Story_No;
-    const Page_Content=req.body.Page_Content;
-    const Page_Link=req.body.Page_Link;
+    const {Story_No,Page_Link}=req.body;
+    const Page_Content=xss(req.body.Page_Content);
     // Page_Done을 1으로 하는 페이지를 삽입
     const pagedata = {
         Story_No:Story_No,
@@ -203,7 +200,7 @@ exports.update_page=(req,res)=>{
         delete_Images_count=delete_Images_No.length;
     }
     const updatepagedata={
-        Page_Content:req.body.Page_Content,
+        Page_Content:xss(req.body.Page_Content),
         Page_UpdateDate:new Date(),
         Page_Link:req.body.Page_Link,
     };
@@ -239,7 +236,6 @@ exports.update_page=(req,res)=>{
                                             if(error) console.log(error);
                                             console.log('파일 삭제');
                                         });
-                                        // console.log('잘 삭제되었습니다');
                                     }else{
                                         console.log('삭제 안되었습니다');
                                     }
@@ -359,7 +355,7 @@ exports.insert_page=(req,res)=>{
     console.log('업로드된 파일',req.files);
 
     const Story_No=req.body.Story_No;
-    const Page_Content=req.body.Page_Content;
+    const Page_Content=xss(req.body.Page_Content);
     const Page_Link=req.body.Page_Link;
     let Page_Imgcount;
     if(req.files){

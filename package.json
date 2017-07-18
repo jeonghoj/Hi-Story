@@ -15,6 +15,7 @@
     "passport-jwt": "^2.2.1",
     "pbkdf2-password": "latest",
     "serve-favicon": "^2.4.3",
-    "thumbnail": "^0.1.9"
+    "thumbnail": "^0.1.9",
+    "xss": "^0.3.3"
   }
 }

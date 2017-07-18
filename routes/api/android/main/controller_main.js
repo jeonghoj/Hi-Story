@@ -4,10 +4,12 @@
 const cwd = process.cwd();
 const db=require(cwd+'/config/db');
 const fs=require('fs');
+const xss=require('xss');
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
-    db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,Story_Citation,Story_Follow,Story_View,Story_Priority ' +
+    db.query('select story.Book_No,Book_Title,Book_Public,Story_No,Story_Title,Story_DateStart,Story_DateEnd,' +
+        'Story_Citation,Story_Follow,Story_View,Story_Priority ' +
         'from story,book ' +
         'where story.Member_No=? and story.Book_No=book.Book_No ' +
         'order by Story_No asc',[req.user.Member_No], (error, results) => {
@@ -85,10 +87,10 @@ exports.update_member_profile=(req,res)=>{
     let Member_Name,Member_Profile_text,Member_Profileimg_State,profileimgdata;
     // 안드로이드 2바이트 자르기
     if(req.body.Member_Name){
-        Member_Name=(req.body.Member_Name).slice(2);
+        Member_Name=((req.body.Member_Name).slice(2));
     }
     if(req.body.Member_Profile){
-        Member_Profile_text=(req.body.Member_Profile).slice(2);
+        Member_Profile_text=((req.body.Member_Profile).slice(2));
     }
     Member_Profileimg_State=((req.body.Member_Profileimg_State).slice(2));
     // 이미지 데이터가 있을때
@@ -232,7 +234,8 @@ exports.insert_story=(req,res)=>{
     });
 };
 exports.update_story_title=(req,res)=>{
-    const {Story_No,Story_Title} = req.body;
+    const Story_No=req.body.Story_No;
+    const Story_Title=req.body.Story_Title;
     db.query('update story set Story_Title=? where Member_No=? and Story_No=?',
         [Story_Title,req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
@@ -257,84 +260,6 @@ exports.delete_story=(req,res)=>{
         }
     })
 };
-// exports.list_page=(req,res)=>{
-//     let page=null;
-//     const sql = "select Page_No,Page_Author,Page_Content,Page_Link,Page_Last " +
-//         "from page " +
-//         "where page.Member_No=? and page.Story_No=?";
-//     db.query(sql,[req.user.Member_No,req.body.Story_No],(error,results)=>{
-//         // 페이지가 없을경우
-//         if(!results)
-//         {
-//             db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
-//                 'from book,story ' +
-//                 'where story.Story_No=? and story.Book_No=book.Book_No',req.params.id,(error,results)=>{
-//                 if(error) console.log(error);
-//                 res.render('story',
-//                     {   page:results,
-//                         Story_No: req.params.id});
-//             });
-//         }else{
-//             page=results;
-//             for(let i=0;i<page.length;i++){
-//                 page[i].Page_Imgdata=[];
-//             }
-//             db.query('select image.* ' +
-//                 'from image,page ' +
-//                 'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',[req.user.Member_No,'Page_Image'],(error,results)=>{
-//                 if(error) console.log(error);
-//                 const filecount = results ? results.length : 0;
-//                 for(let i=0;i<page.length;i++){
-//                     for(let j=0; j<filecount;j++){
-//                         if(page[i].Page_No===results[j].No){
-//                             let Imgdata = {
-//                                 Image_No:results[j].Image_No,
-//                                 Image_Path:'https://45.32.48.181/imageload'+results[j].Image_Path,
-//                                 Image_Originalname:results[j].Image_Originalname
-//                             };
-//                             page[i].Page_Imgdata.push(Imgdata);
-//                         }
-//                     }
-//                     if(i===page.length-1){
-//                         db.query('select Story_Citation,Story_Follow,Story_View ' +
-//                             'from story ' +
-//                             'where Member_No=? and Story_No=?',[req.user.Member_No,req.body.Story_No],(error,results)=>{
-//                             if(error) console.log(error);
-//                             return res.json({
-//                                 Story_Citation:results[0].Story_Citation,
-//                                 Story_Follow:results[0].Story_Follow,
-//                                 Story_View:results[0].Story_View,
-//                                 Page_Data:page
-//                             });
-//                         });
-//                         // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-//
-//                     }
-//                 }
-//
-//             });
-//
-//             // for(let i=0;i<page.length;i++){
-//             //     let Page_No = page[i].Page_No;
-//             //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
-//             //         if(error) console.log(error);
-//             //         page[i].Imgdata=results;
-//             //         list_page.push(page[i]);
-//             //         if(list_page.length===page.length){
-//             //             list_page.push({Story_No : req.params.id});
-//             //             JSON.stringify(list_page);
-//             //             // console.log(list_page);
-//             //             res.render('story',{page:list_page});
-//             //         }
-//             //     })
-//             //
-//             // }
-//
-//         }
-//         // FIXME PAGE가 없을 경우 이 부분에서 문제가 발생할수 있음. if문에서 dbquery를 점프하게끔하기
-//
-//     });
-// };
 
 exports.insert_story_memo=(req,res)=>{
     const {Story_No, Story_Memo_Text} = req.body;
@@ -466,21 +391,6 @@ exports.list_page=(req,res)=>{
                         }
                     }
                 });
-                // for(let i=0;i<page.length;i++){
-                //     let Page_No = page[i].Page_No;
-                //     db.query('select * from image where Page_No=?',Page_No,(error,results)=>{
-                //         if(error) console.log(error);
-                //         page[i].Imgdata=results;
-                //         list_page.push(page[i]);
-                //         if(list_page.length===page.length){
-                //             list_page.push({Story_No : req.params.id});
-                //             JSON.stringify(list_page);
-                //             // console.log(list_page);
-                //             res.render('story',{page:list_page});
-                //         }
-                //     })
-                //
-                // }
             }
         });
     });
@@ -493,7 +403,7 @@ exports.insert_page=(req,res)=>{
     // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
     console.log('업로드된 파일',req.files);
     const Story_No=parseInt((req.body.Story_No).slice(2));
-    const Page_Content=(req.body.Page_Content).slice(2);
+    const Page_Content=xss((req.body.Page_Content).slice(2));
     let Page_Link,Page_Imgcount;
     if(req.body.Page_Link){
         Page_Link=(req.body.Page_Link).slice(2);
@@ -622,7 +532,7 @@ exports.update_page=(req,res)=>{
     //2. 이미지가 있다면 -> 원래 있던 이미지 + 삽입할 이미지 - 제거할 이미지
     // 지울 이미지의 번호를 delete_Image_No 변수에 push한다.
     const Page_No=parseInt((req.body.Page_No).slice(2));
-    const Page_Content=((req.body.Page_Content).slice(2));
+    const Page_Content=xss((req.body.Page_Content).slice(2));
     let Page_Link;
     if(req.body.Page_Link){
         Page_Link=((req.body.Page_Link).slice(2));
@@ -721,53 +631,7 @@ exports.update_page=(req,res)=>{
         })
 };
 
-//구버전
-// exports.insert_page1=(req,res)=>{
-//     //TODO 2바이트 짜른 데이터를 Story_No는 parseInt해준다. 안드로이드만 ***
-//     console.log(req.body);
-//     console.log('업로드된 파일',req.files);
-//     let Story_No=req.body.Story_No;
-//     let Page_Content=req.body.Page_Content;
-//     Story_No=parseInt(Story_No.slice(2));
-//     Page_Content=Page_Content.slice(2);
-//     console.log('storyno',Story_No);
-//     console.log('pagecon',Page_Content);
-//
-//
-//     const sql = 'insert into page set ?';
-//     const page = {
-//         Story_No:Story_No,
-//         Member_No:req.user.Member_No,
-//         Page_Author:req.user.Member_Name,
-//         Page_Content:Page_Content,
-//         Page_Link:req.body.Page_Link
-//     };
-//     db.query(sql,page,(error,results)=>{
-//         if(error) console.log(error);
-//         const page_no=results.insertId;
-//         if(req.files[0]!==undefined){
-//             for(let i =0; i<req.files.length;i++){
-//                 let imgdata = {
-//                     No:page_no,
-//                     Image_Fieldname:req.files[i].fieldname,
-//                     Image_Path:req.files[i].path,
-//                     Image_Originalname:req.files[i].originalname
-//                 };
-//                 db.query('insert into image set ?',imgdata,(error)=>{
-//                     if(error) console.log(error);
-//                     if(i===req.files.length-1){
-//                         console.log('완료');
-//                         res.status(200).json({message:'complete'});
-//                     }
-//                 })
-//             }
-//         }else{
-//             res.status(200).json({message:'complete(noimg)'});
-//         }
-//     });
-// };
 //TODO 값이 없을때 서버, 웹에서의 처리
-
 exports.timeline=(req,res)=>{
     let tldata=[];
     const select_tl_query = 'select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
