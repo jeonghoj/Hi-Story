@@ -139,12 +139,10 @@ exports.update_story_done=(req,res)=>{
             db.beginTransaction((error)=>{
                 if(error) throw error;
                 //전에 쓴 글 page last를 0으로 바꿈
-                db.query('update page set Page_Last=0 ' +
-                    'where Story_No=? and Member_No=? order by Page_No desc limit 1'
-                    ,[Story_No,req.user.Member_No],(error,results)=>{
+                db.query('update page set Page_Last=0 where Story_No=? and Member_No=? order by Page_No desc limit 1',
+                    [Story_No,req.user.Member_No],(error,results)=>{
                     if(error) console.log(error);
-                    // results가 null이어도 문제없을것같다
-
+                    // results가 null이어도 문제없음
                     // 페이지 삽입
                     db.query('insert into page set ?',[pagedata],(error,results)=>{
                         if(error) return db.rollback(()=>{throw error;});
@@ -211,6 +209,7 @@ exports.update_page=(req,res)=>{
         if(results[0].Page_Last===0){
             res.json({result:false,message:'마지막 페이지만 수정할 수 있습니다.'});
         }else {
+            // 이미지가 있다면
             if (req.files) {
                 // 이미지 갯수 가져오기
                 db.query('select Page_Imgcount from page where Member_No=? and Page_No=?',
@@ -240,10 +239,9 @@ exports.update_page=(req,res)=>{
                                         console.log('삭제 안되었습니다');
                                     }
                                 });
-
                             });
-
                         }
+                        // 이미지 삽입
                         for(let i=0;i<req.files.length;i++){
                             //변수 초기화
                             let imgdata={};
@@ -268,14 +266,14 @@ exports.update_page=(req,res)=>{
                     // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
                     res.json({result:false,message:'잘못된 접근입니다.'});
                 }else if(results.changedRows===0){
-                    res.json({result:false,message:'수정되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
+                    // 같은내용
+                    res.json({result:true});
                 }else{
+                    // 수정완료
                     console.log('page수정');
-                    res.json({result:true,message:'수정되었습니다.'});
+                    res.json({result:true});
                 }
-
             })
-
         }
     })
 };
@@ -490,7 +488,8 @@ exports.delete_story_memo=(req,res)=>{
 exports.action= (req,res)=> {
     let story = null;
     //FIXME : promise로 이중쿼리 구현
-    db.query('select * from story where Member_No=?', [req.user.Member_No], (error, results) => {
+    db.query('select book.Book_Title,story.* from book,story where book.Book_No=story.Book_No and story.Member_No=?',
+        [req.user.Member_No], (error, results) => {
         if (error) console.log(error);
         // 데이터가 없다면
         if(results[0]===undefined){
