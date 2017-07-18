@@ -221,26 +221,45 @@ exports.update_page=(req,res)=>{
                     } else {
                         //이미지 지우는작업 fs.unlink사용
                         // TODO 작업중
-                        for(let i=0; i<delete_Images_count;i++) {
-                            delete_Images_No[i]=parseInt(delete_Images_No[i]);
-                            let delete_image_path='';
-                            db.query('select Image_Path from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
+                        // 지우는 이미지가 있다면
+                        if(delete_Images_No[0]){
+                            db.query('select Image_Path from image where No=? and Image_Fieldname=? and Image_No in (?)',
+                                [Page_No,'Page_Image',delete_Images_No],(error,results)=>{
                                 if(error) console.log(error);
-                                delete_image_path=results[0].Image_Path;
-                                db.query('delete from image where Image_No=?',
-                                    [delete_Images_No[i]],(error,results)=>{
+                                db.query('delete from image where Image_No in (?)',
+                                    [delete_Images_No],(error,results)=>{
                                     if(error) console.log(error);
-                                    if(results.affectedRows===1){
-                                        fs.unlink(cwd+'/'+delete_image_path,(error)=>{
-                                            if(error) console.log(error);
-                                            console.log('파일 삭제');
-                                        });
-                                    }else{
-                                        console.log('삭제 안되었습니다');
-                                    }
+                                    console.log('이미지 삭제');
                                 });
-                            });
+                                for(let i=0; i<results.length;i++){
+                                    fs.unlink(cwd+'/'+results[i].Image_Path,(error)=>{
+                                        if(error) console.log(error);
+                                        console.log('파일 삭제');
+                                    });
+                                }
+                                });
                         }
+                        // for(let i=0; i<delete_Images_count;i++) {
+                        //     delete_Images_No[i]=parseInt(delete_Images_No[i]);
+                        //     let delete_image_path='';
+                        //     db.query('select Image_Path from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
+                        //         if(error) console.log(error);
+                        //         delete_image_path=results[0].Image_Path;
+                        //         db.query('delete from image where Image_No=?',
+                        //             [delete_Images_No[i]],(error,results)=>{
+                        //             if(error) console.log(error);
+                        //             if(results.affectedRows===1){
+                        //                 fs.unlink(cwd+'/'+delete_image_path,(error)=>{
+                        //                     if(error) console.log(error);
+                        //                     console.log('파일 삭제');
+                        //                 });
+                        //             }else{
+                        //                 console.log('삭제 안되었습니다');
+                        //             }
+                        //         });
+                        //     });
+                        // }
+
                         // 이미지 삽입
                         for(let i=0;i<req.files.length;i++){
                             //변수 초기화
@@ -296,16 +315,46 @@ exports.delete_book=(req,res)=>{
 // 스토리 삭제
 exports.delete_story=(req,res)=>{
     const Story_No = req.body.Story_No;
-    // 스토리 삭제
-    db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
+    // 스토리안의 페이지 넘버를 불러옴
+    db.query('select Page_No from page where Member_No=? and Story_No=?',
+        [req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
-        console.log(results);
-        if(results.affectedRows===0){
-            res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
-        }else{
-            res.json({message:'성공적으로 삭제되었습니다.',result:true});
+        let pageno=[];
+        for(let i=0;i<results.length;i++){
+            pageno.push(results[i].Page_No);
         }
+        db.query('delete from page where Page_No in (?)',[pageno],(error,results)=>{
+            if(error) console.log(error);
+            console.log('페이지 삭제');
+        });
+        db.query('select Image_No,Image_Path from image where Image_Fieldname=? and No in (?)',
+            ['Page_Image',pageno],(error,results)=>{
+            if(error) console.log(error);
+            let delimgno=[];
+            for(let i=0;i<results.length;i++){
+                delimgno.push(results[i].Image_No);
+                fs.unlink(cwd+'/'+results[i].Image_Path,(error)=>{
+                    if(error) console.log(error);
+                    console.log('파일 삭제');
+                });
+            }
+            db.query('delete from image where Image_No in (?)',
+                [delimgno],(error,results)=>{
+                if(error) console.log(error);
+                console.log('이미지 삭제');
+            });
+        });
+        db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
+            if(error) console.log(error);
+            if(results.affectedRows===0){
+                res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
+            }else{
+                res.json({message:'성공적으로 삭제되었습니다.',result:true});
+            }
+        });
     });
+    // 스토리 삭제
+
 };
 // 페이지 삭제는 기본적으로 안됨
 exports.delete_page=(req,res)=>{};
@@ -349,9 +398,7 @@ exports.insert_page=(req,res)=>{
     // 2.내용을 넣음과 동시에 pagelast를 1로 해서 같이 입력
     // 3.page를 수정할때는 pagelast가 1인지 확인
     // 4.story가 done이라면 새 page 작성이 되지 말아야한다.
-
     console.log('업로드된 파일',req.files);
-
     const Story_No=req.body.Story_No;
     const Page_Content=xss(req.body.Page_Content);
     const Page_Link=req.body.Page_Link;
