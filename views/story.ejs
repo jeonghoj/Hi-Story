@@ -171,7 +171,38 @@
             event.preventDefault();
             for ( instance in CKEDITOR.instances )
                 CKEDITOR.instances[instance].updateElement();
+            var str = CKEDITOR.instances.editor1.getData();
+            var str_where=[str.indexOf('.'), str.indexOf('!'), str.indexOf('?')].sort(function
+                compNumber(a, b) {
+                return a - b;
+            });
+            var end = -1;
+            var str_ = [];
+            var str_hil;
             var formData = new FormData(this);
+
+            // 멈출 곳 찾기
+            for(var i=0; i<str_where.length; i++) {
+                if(str_where[i] >= 0) {
+                    end = str_where[i];
+                    break;
+                }
+            }
+            // 멈출 곳을 이용해서 첫 문장 추출
+            if(end > 0){
+                str_[0] = str.substring(0, 3);
+                str_[1] = str.substring(3, end+1);
+                str_[2] = str.substring(end+1);
+                str_hil = str_[0] + "<mark>" + str_[1] + "</mark>" +str_[2];
+            } else {
+                str_[0] = str.substring(0, 3);
+                str_[1] = str.substring(3, str.length -4);
+                str_[2] = str.substring(str.length -4);
+                str_hil = str_[0] + "<mark>" + str_[1] + "</mark>" +str_[2];
+            }
+
+//            console.log(str_hil);
+
             $.ajax({
                 url:"/insert_page",
                 type:"post",
@@ -189,7 +220,7 @@
                 processData: false
             });
             return false;
-        })
+        });
 //        CK업데이트 혹시 필요할 지도 몰라 주석
 //        function CKupdate(){
 //            for ( instance in CKEDITOR.instances )

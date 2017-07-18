@@ -16,7 +16,7 @@ $(document).ready(function () {
     $("#new-memo-btn").click(function () {
         var no = $(event.target).parent().parent().find('.story-no-infor').text();
 
-        for (var i=0; i<$('.story').length-1; i++) {
+        for (var i=0; i<$('.story').length; i++) {
             var no_ = $('.story:eq('+i+')').find('.story-no').text();
             if(no == no_) {
                 $('.story:eq('+i+')').append("<div class='memo'> <a class='edit f-sub'>Edit</a> <div class='story-memo-no' style='display: none'> </div> <textarea class='story-memo' rows='1' cols='72' style='height: 28px;' placeholder='빈 MEMO는 삭제 됩니다.'></textarea> </div>" ).find('.story-memo').focus();
