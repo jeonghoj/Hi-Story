@@ -63,7 +63,7 @@
                 <!--자바코드-->
                 <%if(!data){%>
                 <!--TODO: 데이터 없을때의 메세지, 문구, 동작 디자인해주세요 ^^-->
-                <div>데이터 없음</div>
+                <div id="no-data"> </div>
                 <%}else{%>
                 <% for(var i=0; i<data.length; i++) {%>
                 <div class="story">
@@ -228,6 +228,7 @@
             var newbook = {
                 Book_Title : $('#new-book-title').val(),
             }
+
             $.ajax({
                 url:"/insert_book",
                 type:"post",
@@ -251,25 +252,31 @@
             };
             //true 는 공개 false는 비공개
 
+            if(newstory.Story_Title === "") {
+                $("#new-story-title").fadeToggle('fast').fadeToggle('fast');
+            }else if(newstory.Book_No === undefined) {
+                $('.new-story-book').fadeToggle('fast').fadeToggle('fast');
+            }else {
 //            ajax함수
-            $.ajax(
-                {
-                url:"/insert_story",
-                type:"post",
-                data:newstory,
-                success:function (data) {
-                    if(data.result === true){
-                        alert('success');
-//                        서버에서 보내준 url로 이동 새로고침을 이런식으로 해주도록
-//                        만약에 form submit을 하게되면 url이 insert_story로 가버려서 이렇게해줌
-                        location.replace(data.url);
-                    }else{
-                        alert('일시적으로 문제가 발생했습니다. 다시 요청해주세요');
-//                        서버에서 보내준 url로 이동
-                        location.replace(data.url);
+                $.ajax(
+                    {
+                    url:"/insert_story",
+                    type:"post",
+                    data:newstory,
+                    success:function (data) {
+                        if(data.result === true){
+                            alert('success');
+    //                        서버에서 보내준 url로 이동 새로고침을 이런식으로 해주도록
+    //                        만약에 form submit을 하게되면 url이 insert_story로 가버려서 이렇게해줌
+                            location.replace(data.url);
+                        }else{
+                            alert('일시적으로 문제가 발생했습니다. 다시 요청해주세요');
+    //                        서버에서 보내준 url로 이동
+                            location.replace(data.url);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         // 공개 비공개 체크
@@ -290,6 +297,12 @@
                         'font-weight': '400'
                     });
                 }
+            }
+        });
+
+        $(document).ready(function () {
+            if($('#no-data').length > 0) {
+                $('.aside-btn').toggleClass('click-me');
             }
         });
 

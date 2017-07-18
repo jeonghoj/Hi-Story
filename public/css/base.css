@@ -123,6 +123,15 @@ input, textarea {
     width: 232px;
     padding-top: 14px;
 }
+.right .aside .click-me {
+    animation: colorchange 3s;
+    animation-iteration-count: infinite;
+}
+@keyframes colorchange {
+    0% {background-color: rgba(255, 245, 212, 0);}
+    50% {background-color: rgba(255, 245, 212, 1);}
+    100% {background-color: rgba(255, 245, 212, 0);}
+}
 .right .footer {
     padding-top: 28px;
     font-weight: 200;
@@ -308,7 +317,7 @@ input, textarea {
 }
 .left .story-list .story .memo .edit {
     position: relative;
-    top: 3px;
+    top: 2px;
     opacity: .3;
     vertical-align: top;
 }
@@ -342,7 +351,7 @@ input, textarea {
 }
 mark {
     color: rgba(0, 0, 0, 1);
-    background: rgba(127, 255, 0, .1);
+    background: rgba(255, 245, 212, 1);
 }
 
 /* pages ================================================== :) */
@@ -755,3 +764,4 @@ label .inactive {
     opacity: .7;
     padding: 3px;
 }
+
