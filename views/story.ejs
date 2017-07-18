@@ -203,7 +203,8 @@
                 str_hil = str_[0] + "<mark>" + str_[1] + "</mark>" +str_[2];
             }
 
-//            console.log(str_hil);
+            formData.delete('Page_Content');
+            formData.append('Page_Content', str_hil);
 
             $.ajax({
                 url:"/insert_page",

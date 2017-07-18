@@ -359,6 +359,9 @@ mark {
     text-align: justify;
     margin-top: 15px;
 }
+.left .page-list .page p {
+    margin: 0;
+}
 .page:hover {
     background: rgba(240, 240, 240, 1);
 }
