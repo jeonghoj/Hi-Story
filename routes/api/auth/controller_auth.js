@@ -29,7 +29,7 @@ exports.register = (req,res) => {
             Member_Name: realname,
             Member_EmailVerified:0,
         };
-        db.query('insert into member set ?',[user],(error) => {
+        db.query('insert into member set ?',[user],(error,results) => {
             if (error) {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
@@ -56,7 +56,6 @@ exports.register = (req,res) => {
                         res.status(200).json({message : "success register! please verify your email"});
                     });
                 });
-
             }
         });
     });
