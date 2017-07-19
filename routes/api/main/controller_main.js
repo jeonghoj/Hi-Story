@@ -114,7 +114,7 @@ exports.update_story_title=(req,res)=>{
         }
     });
 };
-
+//스토리 완료 & 마지막 글 쓰기
 exports.update_story_done=(req,res)=>{
     console.log('업로드된 파일',req.files);
     const {Story_No,Page_Link}=req.body;
@@ -180,7 +180,7 @@ exports.update_story_done=(req,res)=>{
         }
     });
 };
-
+//페이지 수정
 exports.update_page=(req,res)=>{
     //1. PageLast 확인
     //2. 이미지가 있다면 -> 원래 있던 이미지 + 삽입할 이미지 - 제거할 이미지
@@ -347,9 +347,9 @@ exports.delete_story=(req,res)=>{
         db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
             if(error) console.log(error);
             if(results.affectedRows===0){
-                res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
+                res.json({message:'error',result:false});
             }else{
-                res.json({message:'성공적으로 삭제되었습니다.',result:true});
+                res.json({message:'success',result:true});
             }
         });
     });
