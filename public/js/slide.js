@@ -1,9 +1,14 @@
 // history에서 각 book의 설정 화면으로 넘어가는 애니메이션 구현
-$('.go-setting').click(function () {
+$(document).on('click', '.go-setting', function () {
     $(event.target).parent().parent().parent().parent().parent().toggleClass('now-inside now-setting');
 });
-$('.go-inside').click(function () {
-    $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
+$(document).on('click', '.go-inside', function () {
+    if($('.modi-title input').val() === "") {
+        event.preventDefault();
+        $(this).parent().parent().parent().find('.modi-title').fadeToggle('fast').fadeToggle('fast');
+    }else {
+        $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
+    }
 });
 
 // History의 slide 구현
