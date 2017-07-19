@@ -569,6 +569,7 @@ exports.update_page=(req,res)=>{
     //1. PageLast 확인
     //2. 이미지가 있다면 -> 원래 있던 이미지 + 삽입할 이미지 - 제거할 이미지
     // 지울 이미지의 번호를 delete_Image_No 변수에 push한다.
+    console.log(req.body);
     const Page_No=parseInt((req.body.Page_No).slice(2));
     const Page_Content=xss((req.body.Page_Content).slice(2));
     let Page_Link;
