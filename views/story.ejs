@@ -115,10 +115,17 @@
                     <input type="hidden" name="Story_No"
                            value="<%=Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
+                    <div class="add-box">
+                        <div class="add-img" style="display: none;">
+                            <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 659px;">
+                            <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
+                        </div>
+                        <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+                    </div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
-                        <label class="f-sub"><input type="file" name="Page_Image" id="page-img" multiple style="display: none;">Image</label>
-                        <label class="f-sub"><input type="button" id="page-link" style="display: none;">Link</label>
+                        <label class="f-sub" for="page-img">Image</label>
+                        <label class="f-sub" for="page-link">Link</label>
                         <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
                     </div>
                 </form>
@@ -165,7 +172,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
-    <script src="/js/attchment.js"></script>
+    <script src="/js/attachment.js"></script>
     <script src="/js/aside.js"></script>
     <script>
 
