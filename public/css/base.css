@@ -467,7 +467,7 @@ mark {
     border: none;
     margin: 3px 3px 5px 3px;
 }
-.left .page-write .footer {
+.left .page-write .footer{
     display: flex;
     justify-content: flex-end;
     padding: 0px 3px 0px 0px;
@@ -757,19 +757,21 @@ label .inactive {
     top: 50%;
     left: 50%;
     width: 720px;
-    height: 600px;
+    height: 530px;
     padding: 20px;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 1);
     border: none;
     border-radius: 5px;
     z-index: 200;
-    text-align: center;
     visibility: hidden;
+}
+.closeup .story-done .f-menu {
+    padding: 6px 0px 6px 3px;
 }
 .closeup .story-done #editor2 {
     width: 670px;
-    height: 400px;
+    height: 500px;
 }
 .closeup .story-done #story-done-close {
     position: absolute;
@@ -778,4 +780,24 @@ label .inactive {
     opacity: .7;
     padding: 3px;
 }
-
+.closeup .story-done .footer {
+    display: flex;
+    justify-content: flex-end;
+}
+.closeup .story-done .footer * {
+    margin: 6px 0px 0px 0px;
+    padding: 3px 5px 3px 5px;
+    width: 80px;
+    text-align: center;
+    background: rgba(240, 240, 240, 1);
+    border: 1px solid rgba(200, 200, 200, 1);
+}
+.closeup .story-done .footer *:hover {
+    background: rgba(200, 200, 200, 1);
+}
+.closeup .story-done .add-box {
+    margin-top: 6px;
+}
+.closeup .story-done .add-box .add-link input {
+    width: 680px;
+}

@@ -177,14 +177,23 @@
             <a href='#' id='story-done-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--에디터-->
             <div class="textarea"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="add-box">
+                <div class="add-img" style="display: none;">
+                    <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 680px;">
+                    <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
+                </div>
+                <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+            </div>
             <div class="footer">
-                <div class="attachment">첨부</div>
-                <input type="submit" id="submit" style="display: none;">
-                <label for="submit">제출</label>
-                <span id = "status"></span>
+                <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
+                <label class="f-sub" for="page-img">Image</label>
+                <label class="f-sub" for="page-link">Link</label>
+                <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
             </div>
             <script>
-                CKEDITOR.replace('editor2');
+                CKEDITOR.replace('editor2', {
+                    height: 350
+                });
             </script>
         </div>
 
@@ -208,6 +217,7 @@
     <script src="/js/memo.js"></script>
     <script src="/js/aside.js"></script>
     <script src="/js/arg.js"></script>
+    <script src="/js/attachment.js"></script>
     <script>
         //TODO: 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
         $(".aside-btn").click(function () {
