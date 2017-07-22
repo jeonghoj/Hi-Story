@@ -122,6 +122,7 @@
                         </div>
                         <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
                     </div>
+                    <div class="sub-nav f-sub" style="display: none;">Text를 입력해야 합니다.</div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
                         <label class="f-sub" for="page-img">Image</label>
@@ -169,11 +170,48 @@
         </div>
     </div>
 
+    <div class="closeup">
+        <div class='story-done'>
+            <div class="f-menu">The Last Page</div>
+            <a href='#' id='story-done-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <div class="textarea"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="add-box">
+                <div class="add-img" style="display: none;">
+                    <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 680px;">
+                    <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
+                </div>
+                <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+            </div>
+            <div class="footer">
+                <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
+                <label class="f-sub" for="page-img">Image</label>
+                <label class="f-sub" for="page-link">Link</label>
+                <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
+            </div>
+            <div class="sub-nav f-sub" style="display: none;">Text를 입력해야 합니다.</div>
+            <script>
+                CKEDITOR.replace('editor2', {
+                    height: 350
+                });
+            </script>
+        </div>
+
+        <!--스토리를 지우는 부분-->
+        <div class='story-delete'>
+            <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
+            <p class="del-nav">"<span class="f-empha del-name">story name</span>"를 입력하세요.</p>
+            <input type="text" id="confirm" placeholder="confirm massage">
+            <input type="submit">
+        </div>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/attachment.js"></script>
     <script src="/js/aside.js"></script>
+    <script src="/js/closeup.js"></script>
     <script>
 
         $("#new-page").submit(function () {
@@ -213,23 +251,28 @@
             formData.delete('Page_Content');
             formData.append('Page_Content', str_hil);
 
-            $.ajax({
-                url:"/insert_page",
-                type:"post",
-                data:formData,
-                success:function (data) {
-                    if(data.result){
-                        alert('성공적으로 삽입되었습니다!');
-                        location.replace(data.url);
-                    }else{
-                        alert('데이터가 삽입되지 않았습니다')
-                    }
-                },
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-            return false;
+//            alert("---" + str_hil + "---");
+            if(!(str_hil === "<mark></mark>")) {
+                $.ajax({
+                    url:"/insert_page",
+                    type:"post",
+                    data:formData,
+                    success:function (data) {
+                        if(data.result){
+                            alert('성공적으로 삽입되었습니다!');
+                            location.replace(data.url);
+                        }else{
+                            alert('데이터가 삽입되지 않았습니다')
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+                return false;
+            } else {
+                $(this).find('.sub-nav').slideDown(500).delay(1500).slideUp(500);
+            }
         });
 //        CK업데이트 혹시 필요할 지도 몰라 주석
 //        function CKupdate(){

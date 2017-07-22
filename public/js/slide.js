@@ -49,6 +49,27 @@ $('.btn').click(function () {
     $(this).find('.down-btn').trigger('click');
 });
 
+// 클릭 가능할 때만 진하게
+$('.a-book').hover(
+    function () {
+    var slide = $(this).find('.book-stories .book-story-slide');
+    var top = slide.position().top;
+    var top_ = slide.parent().position().top;
+    var bottom = slide.position().top + slide.outerHeight(true);
+    var bottom_ = slide.parent().position().top + slide.parent().outerHeight(true);
+
+    if(top < top_){
+        $(this).find('.btn .up-btn img').css('opacity', '1');
+    }
+    if(bottom > bottom_){
+        $(this).find('.btn .down-btn img').css('opacity', '1');
+    }x
+}, function () {
+    $(this).find('.btn .up-btn img').css('opacity', '.3');
+    $(this).find('.btn .down-btn img').css('opacity', '.3');
+});
+
+
 // slide가 아니라 book에 관련된 기능들도 이곳에 넣기로 한다.
 // book의 공개 및 비공개 설정
 $(document).on('click', '.book-setting .modi-pub', function () {
@@ -72,7 +93,7 @@ $(document).on('click', '.go-setting', function () {
 
 // 삭제시 story check
 $(document).on('click', '.book-setting .delete', function () {
-        if($(this).parent().parent().find('.story-title').length == 0){
+        if(!($(this).parent().parent().find('.story-title').length == 0)){
             $(this).find('label .typ').slideUp().delay(1200).slideDown();
             $(this).find('label .del-nav').slideDown().delay(1200).slideUp();
             event.preventDefault();

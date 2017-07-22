@@ -1,7 +1,7 @@
 
 
 /* General ================================================== :) */
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 * {
     box-sizing: border-box;   
     font-family: 'Noto Sans KR';
@@ -491,6 +491,11 @@ mark {
 .left .page-write .add-box .add-link input {
     width: 659px;
 }
+.left .page-write .sub-nav {
+    padding-left: 3px;
+    z-index: 100;
+    position: absolute;
+}
 
 /* Books ================================================== :) */
 .book-list {
@@ -545,7 +550,7 @@ mark {
     background: rgba(250, 250, 250, 1);
 }
 .book-list .a-book .book-slide .book-inside .btn * {
-    opacity: .4;
+    opacity: .3;
 }
 
 /* book card ================================================== :) */

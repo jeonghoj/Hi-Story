@@ -109,7 +109,10 @@
                                     '<label><input type="checkbox" style="display: none;">공개</label>' +
                                 '</div>' +
                                 '<div class="delete">' +
-                                    '<label><input type="button" style="display: none;">삭제</label>' +
+                                    '<label><input type="button" style="display: none;">' +
+                                        '<span class="typ">삭제</span>' +
+                                        '<span class="del-nav" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>' +
+                                    '</label>' +
                                 '</div>' +
                             '</div>' +
                             '<div class="book-inside book-item">' +
@@ -134,11 +137,6 @@
                         '</div>' +
                     '</div>');
             });
-
-            // 삭제 순서
-            // 1. 안에 story가 있는지 확인
-            // 2. closeUp을 만들어두고 클릭 시 popover
-            // 3. 이후 기능은 action의 기능과 동일
         </script>
 
     </body>
