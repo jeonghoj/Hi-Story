@@ -47,5 +47,34 @@ $('.btn').click(function () {
     // alert("test");
     $(this).find('.up-btn').trigger('click');
     $(this).find('.down-btn').trigger('click');
-})
+});
 
+// slide가 아니라 book에 관련된 기능들도 이곳에 넣기로 한다.
+// book의 공개 및 비공개 설정
+$(document).on('click', '.book-setting .modi-pub', function () {
+    if($(this).find('input').is(':checked')){
+        // make it unchecked
+        $(this).find('label').empty().append('<input type="checkbox" style="display: none;">공개');
+        $(this).css('background', 'rgba(240, 240, 240, 1)');
+    } else{
+        // make it checked
+        $(this).find('label').empty().append('<input type="checkbox" style="display: none;" checked>비공개');
+        $(this).css('background', 'rgba(200, 200, 200, 1)');
+    }
+});
+// 기존 book의 setting 표시
+$(document).on('click', '.go-setting', function () {
+    if($('.book-setting .modi-pub').find('input').is(':checked')){
+        // TODO: load시 비공개를 append 해준다.
+        $(this).css('background', 'rgba(200, 200, 200, 1)');
+    }
+});
+
+// 삭제시 story check
+$(document).on('click', '.book-setting .delete', function () {
+        if($(this).parent().parent().find('.story-title').length == 0){
+            $(this).find('label .typ').slideUp().delay(1200).slideDown();
+            $(this).find('label .del-nav').slideDown().delay(1200).slideUp();
+            event.preventDefault();
+        }
+});

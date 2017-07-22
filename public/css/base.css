@@ -603,6 +603,25 @@ mark {
     opacity: .9;
     transition: all .35s ease;
 }
+/* Book setting ================================================== :) */
+.book-list .a-book .book-setting .modi-title input {
+    width: 200px;
+}
+.book-list .a-book .book-setting .modi-pub,
+.book-list .a-book .book-setting .delete {
+    border: 1px solid rgba(200, 200, 200, 1);
+    width: 200px;
+    margin: auto;
+    margin-top: 10px;
+    background: rgba(240, 240, 240, 1);
+}
+.book-list .a-book .book-setting .modi-pub:hover,
+.book-list .a-book .book-setting .delete:hover {
+    background: rgba(200, 200, 200, 1);
+}
+.book-list .a-book .book-setting .delete span {
+    display: block;
+}
 
 /* Explore ================================================== :) */
 .left .page-list .page .explore-header .card-name div {
