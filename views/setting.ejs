@@ -29,7 +29,7 @@
     
     <div class="setting">
         <!--비밀번호 변경-->
-        <div class="change-pw">
+        <div class="change-pw" id="set0">
             <div class="title f-empha">비밀번호 변경
                 <div class="small-nav f-basic" style="display: none;">현재 비밀번호가 올바르지 않습니다.</div>
             </div>
@@ -38,7 +38,7 @@
             <input type="text" placeholder="비밀번호 확인">
         </div>
         <!--계정 삭제-->
-        <div class="delete-id">
+        <div class="delete-id" id="set1">
             <div class="title f-empha">계정 삭제
                 <div class="small-nav f-basic"></div>
             </div>
@@ -48,18 +48,22 @@
 
         </div>
         <!--구독 관리-->
-        <div class="followers">
+        <div class="followers" id="set2">
             <div class="title f-empha">구독 관리
                 <div class="small-nav f-basic"></div>
             </div>
-
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script>
-
+        <!--view 이동-->
+        $(document).on('click', '#setting-nav span', function () {
+            var offset = $('#set' + $(this).index()).offset();
+//            console.log(offset);
+            $('html, body').animate({scrollTop: offset.top-25   }, 350);
+        });
     </script>
 </body>
 
