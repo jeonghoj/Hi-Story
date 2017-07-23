@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     // Web Road 시 memo의 높이를 고려해서 출력
     $('.story-memo').each(function () {
         $(this).css({
@@ -35,6 +34,7 @@ $(document).ready(function () {
     // memo 수정
     $(document).ready(function () {
         $(document).on('click', '.edit', function () {
+
             if ($(this).next().next().is('[readonly]')) {
                 $(this).css({
                     "opacity": "1"
@@ -50,10 +50,7 @@ $(document).ready(function () {
                 $(this).next().next().attr('readonly', 'readonly').css({
                     "opacity": "1"
                 });
-                // TODO: box가 작아졌을 때 크기를 줄인다.
-                $(this).next().next().css({
-                    'height': $(this).next().next().prop('scrollHeight')
-                });
+                $(this).next().next().height( $(this).prop('scrollHeight')+12 );
                 var Story_No=$(this).parent().parent().find('.story-no').html();
                 var Story_Memo_Text=$(this).next().next().val();
                 var Story_Memo_No=$(this).next();

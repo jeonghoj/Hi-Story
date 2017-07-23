@@ -7,29 +7,23 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <link rel='stylesheet' href='/css/base.css'>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.css'>
 </head>
 
-<body oncontextmenu='return false' ondragstart='return false' onselectstart='return false'>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
-    <div class='nav'>
-        <div class='logo'><a href='action.html' class='f-logo'>HiStory</a></div>
-        <ul class='menu'>
-            <li><a href='action.html' class='f-menu '>Action</a></li>
-            <li><a href='history.ejs' class='f-menu'>History</a></li>
-            <li><a href='explore.ejs' class='f-menu'>Explore</a></li>
-            <li><a href='setting.ejs' class='f-menu active'>Setting</a></li>
-        </ul>
-    </div>
+<!--TODO: anchor 정리, ejs 파일로 확실히 갈 수 있도록 정리한다.-->
+<div class="nav">
+    <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
+    <ul class="menu">
+        <li><a href="/action" class="f-menu">Action</a></li>
+        <li><a href="/history" class="f-menu">History</a></li>
+        <li><a href="/explore" class="f-menu">Explore</a></li>
+        <li><a href="/setting" class="f-menu active">Setting</a></li>
+    </ul>
+</div>
     
     <div class="container">
-        <!--
-        기본적으로 setting에 들어갈 기능들
-        1.      계정 관리
-        1.1.    비밀번호 변경
-        1.1.    회원 탈퇴
-        2.      계정 정보 관리`
-        -->
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

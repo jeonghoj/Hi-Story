@@ -115,10 +115,18 @@
                     <input type="hidden" name="Story_No"
                            value="<%=Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
+                    <div class="add-box">
+                        <div class="add-img" style="display: none;">
+                            <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 659px;">
+                            <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
+                        </div>
+                        <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+                    </div>
+                    <div class="sub-nav f-sub" style="display: none;">Text를 입력해야 합니다.</div>
                     <div class="footer">
                         <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
-                        <label class="f-sub"><input type="file" name="Page_Image" id="page-img" multiple style="display: none;">Image</label>
-                        <label class="f-sub"><input type="button" id="page-link" style="display: none;">Link</label>
+                        <label class="f-sub" for="page-img">Image</label>
+                        <label class="f-sub" for="page-link">Link</label>
                         <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
                     </div>
                 </form>
@@ -162,36 +170,110 @@
         </div>
     </div>
 
+    <div class="closeup">
+        <div class='story-done'>
+            <div class="f-menu">The Last Page</div>
+            <a href='#' id='story-done-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <div class="textarea"><textarea name="" id="editor2" style="resize: none;"></textarea></div>
+            <div class="add-box">
+                <div class="add-img" style="display: none;">
+                    <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 680px;">
+                    <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
+                </div>
+                <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+            </div>
+            <div class="footer">
+                <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
+                <label class="f-sub" for="page-img">Image</label>
+                <label class="f-sub" for="page-link">Link</label>
+                <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
+            </div>
+            <div class="sub-nav f-sub" style="display: none;">Text를 입력해야 합니다.</div>
+            <script>
+                CKEDITOR.replace('editor2', {
+                    height: 350
+                });
+            </script>
+        </div>
+
+        <!--스토리를 지우는 부분-->
+        <div class='story-delete'>
+            <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
+            <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
+            <p class="del-nav">"<span class="f-empha del-name">story name</span>"를 입력하세요.</p>
+            <input type="text" id="confirm" placeholder="confirm massage">
+            <input type="submit">
+        </div>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
-    <script src="/js/attchment.js"></script>
+    <script src="/js/attachment.js"></script>
     <script src="/js/aside.js"></script>
+    <script src="/js/closeup.js"></script>
     <script>
 
         $("#new-page").submit(function () {
             event.preventDefault();
             for ( instance in CKEDITOR.instances )
                 CKEDITOR.instances[instance].updateElement();
-            var formData = new FormData(this);
-            $.ajax({
-                url:"/insert_page",
-                type:"post",
-                data:formData,
-                success:function (data) {
-                    if(data.result){
-                        alert('성공적으로 삽입되었습니다!');
-                        location.replace(data.url);
-                    }else{
-                        alert('데이터가 삽입되지 않았습니다')
-                    }
-                },
-                cache: false,
-                contentType: false,
-                processData: false
+            var str = CKEDITOR.instances.editor1.getData();
+            var str_where=[str.indexOf('.'), str.indexOf('!'), str.indexOf('?')].sort(function
+                compNumber(a, b) {
+                return a - b;
             });
-            return false;
-        })
+            var end = -1;
+            var str_ = [];
+            var str_hil;
+            var formData = new FormData(this);
+
+            // 멈출 곳 찾기
+            for(var i=0; i<str_where.length; i++) {
+                if(str_where[i] >= 0) {
+                    end = str_where[i];
+                    break;
+                }
+            }
+            // 멈출 곳을 이용해서 첫 문장 추출
+            if(end > 0){
+                str_[0] = str.substring(0, 3);
+                str_[1] = str.substring(3, end+1);
+                str_[2] = str.substring(end+1);
+                str_hil = str_[0] + "<mark>" + str_[1] + "</mark>" +str_[2];
+            } else {
+                str_[0] = str.substring(0, 3);
+                str_[1] = str.substring(3, str.length -4);
+                str_[2] = str.substring(str.length -4);
+                str_hil = str_[0] + "<mark>" + str_[1] + "</mark>" +str_[2];
+            }
+
+            formData.delete('Page_Content');
+            formData.append('Page_Content', str_hil);
+
+//            alert("---" + str_hil + "---");
+            if(!(str_hil === "<mark></mark>")) {
+                $.ajax({
+                    url:"/insert_page",
+                    type:"post",
+                    data:formData,
+                    success:function (data) {
+                        if(data.result){
+                            alert('성공적으로 삽입되었습니다!');
+                            location.replace(data.url);
+                        }else{
+                            alert('데이터가 삽입되지 않았습니다')
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+                return false;
+            } else {
+                $(this).find('.sub-nav').slideDown(500).delay(1500).slideUp(500);
+            }
+        });
 //        CK업데이트 혹시 필요할 지도 몰라 주석
 //        function CKupdate(){
 //            for ( instance in CKEDITOR.instances )
@@ -205,10 +287,6 @@
                     $('.page').eq(i).css( 'padding-top', '28px' );
                 }
             }
-        });
-
-        $(document).on('click', '.to-right', function () {
-           $(this).find('img').trigger('click');
         });
 
     </script>
