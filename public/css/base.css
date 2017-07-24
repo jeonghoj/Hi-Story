@@ -825,3 +825,47 @@ label .inactive {
 .closeup .story-done .add-box .add-link input {
     width: 680px;
 }
+
+/* Setting ================================================== :) */
+#setting-nav {
+    width: 970px;
+    margin: auto;
+    padding: 7px 28px 7px 28px;
+}
+#setting-nav * {
+    margin-right: 14px;
+    opacity: .4;
+}
+#setting-nav *:hover {
+    opacity: 1;
+    transition: all .35s ease;
+}
+.setting>div {
+    width: 938px;
+    margin: auto;
+    margin-top: 28px;
+    padding: 7px 14px 7px 14px;
+    border: 1px solid rgba(51, 51, 51, .3);
+    box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+}
+.setting .title {
+    display: flex;
+}
+.setting .small-nav {
+    width: 600px;
+    margin-left: 36px;
+}
+.setting input {
+    display: block;
+    margin: auto;
+    margin-bottom: 7px;
+    padding: 2px;
+    width: 450px;
+}
+.setting input[type='button'] {
+    border: 1px solid rgba(51, 51, 51, .3);
+    background: rgba(240, 240, 240, 1);
+}
+.setting input[type='button']:hover {
+    background: rgba(200, 200, 200, 1);
+}

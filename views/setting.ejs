@@ -12,22 +12,59 @@
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
 <!--TODO: anchor 정리, ejs 파일로 확실히 갈 수 있도록 정리한다.-->
-<div class="nav">
-    <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
-    <ul class="menu">
-        <li><a href="/action" class="f-menu">Action</a></li>
-        <li><a href="/history" class="f-menu">History</a></li>
-        <li><a href="/explore" class="f-menu">Explore</a></li>
-        <li><a href="/setting" class="f-menu active">Setting</a></li>
-    </ul>
-</div>
+    <div class="nav">
+        <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
+        <ul class="menu">
+            <li><a href="/action" class="f-menu">Action</a></li>
+            <li><a href="/history" class="f-menu">History</a></li>
+            <li><a href="/explore" class="f-menu">Explore</a></li>
+            <li><a href="/setting" class="f-menu active">Setting</a></li>
+        </ul>
+    </div>
+    <div id="setting-nav">
+        <span class="f-empha">비밀번호 변경</span>
+        <span class="f-empha">계정 삭제</span>
+        <span class="f-empha">구독 관리</span>
+    </div>
     
-    <div class="container">
+    <div class="setting">
+        <!--비밀번호 변경-->
+        <div class="change-pw" id="set0">
+            <div class="title f-empha">비밀번호 변경
+                <div class="small-nav f-basic" style="display: none;">현재 비밀번호가 올바르지 않습니다.</div>
+            </div>
+            <input type="text" placeholder="현재 비밀번호">
+            <input type="text" placeholder="새로운 비밀번호">
+            <input type="text" placeholder="비밀번호 확인">
+        </div>
+        <!--계정 삭제-->
+        <div class="delete-id" id="set1">
+            <div class="title f-empha">계정 삭제
+                <div class="small-nav f-basic"></div>
+            </div>
+            <input type="text" placeholder="E mail">
+            <input type="text" placeholder="비밀번호">
+            <input type="button" value="삭제">
 
+        </div>
+        <!--구독 관리-->
+        <div class="followers" id="set2">
+            <div class="title f-empha">구독 관리
+                <div class="small-nav f-basic"></div>
+            </div>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <script>
+        <!--view 이동-->
+        $(document).on('click', '#setting-nav span', function () {
+            var offset = $('#set' + $(this).index()).offset();
+//            console.log(offset);
+            $('html, body').animate({scrollTop: offset.top-25   }, 350);
+        });
+    </script>
 </body>
 
 </html>
