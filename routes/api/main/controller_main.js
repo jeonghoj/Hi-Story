@@ -607,7 +607,7 @@ exports.history=(req,res)=>{
 exports.timeline=(req,res)=>{
     let tldata=[];
     // 타임라인 데이터 쿼리 추후
-    db.query('select book.Book_Title,story.Story_No,Story_Title,Page_No,Page_Content,Page_UpdateDate ' +
+    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate ' +
         'from story,page,book ' +
         'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
         'Order By page.Page_UpdateDate DESC',[req.user.Member_No],(error,results)=>{
