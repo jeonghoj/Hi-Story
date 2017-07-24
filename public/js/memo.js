@@ -2,9 +2,11 @@ $(document).ready(function () {
 
     // Web Road 시 memo의 높이를 고려해서 출력
     $('.story-memo').each(function () {
-        $(this).css({
-            'height': $(this).prop('scrollHeight')
-        });
+        if( $(this).prop('scrollHeight') < 60) {
+            $(this).height( 32 );
+        }else {
+            $(this).height($(this).prop('scrollHeight') - 4);
+        }
     });
 
     // 기본 값 설정
@@ -34,7 +36,6 @@ $(document).ready(function () {
     // memo 수정
     $(document).ready(function () {
         $(document).on('click', '.edit', function () {
-
             if ($(this).next().next().is('[readonly]')) {
                 $(this).css({
                     "opacity": "1"
@@ -50,7 +51,7 @@ $(document).ready(function () {
                 $(this).next().next().attr('readonly', 'readonly').css({
                     "opacity": "1"
                 });
-                $(this).next().next().height( $(this).prop('scrollHeight')+24);
+                $(this).next().next().height( $(this).next().next().prop('scrollHeight') - 4);
                 var Story_No=$(this).parent().parent().find('.story-no').html();
                 var Story_Memo_Text=$(this).next().next().val();
                 var Story_Memo_No=$(this).next();
@@ -102,9 +103,6 @@ $(document).ready(function () {
                         });
                     }
                 }
-
-
-
             }
         });
     });
