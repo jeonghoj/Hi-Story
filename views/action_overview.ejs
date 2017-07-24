@@ -93,7 +93,7 @@
                 <!--TODO: data 변경을 animation 사이에 끼워넣는다.-->
                 <div class="infor">
                     <!--TODO: 첫화면에는 가장 나중에 작성한 스토리를 표시?-->
-                    <div class="story-no-infor" style='display:none'></div>
+                    <div class="story-no-infor" style='display:none'><%=(!data) ? null : data[0].Story_No%></div>
                     <div class="book-name f-subSmall"><%=(data === false) ? null : data[0].Book_Title%></div>
                     <div class="story-name f-empha"><%=(data === false) ? null : data[0].Story_Title%></div>
                     <div class="date f-subSmall"><%=(data === false) ? null : data[0].Story_DateStart.toISOString().slice(0, 10)%></div>
@@ -203,9 +203,12 @@
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
-            <p class="del-nav">"<span class="f-empha del-name">story name</span>"를 입력하세요.</p>
+            <form id="story-delete">
+            <div id="del-story-no" style="display: none"><%=(data) ? data[0].Story_No : ''%></div>
+            <p class="del-nav">"<span class="f-empha del-name"><%=(data) ? data[0].Story_Title : 'story없음'%></span>"를 입력하세요.</p>
             <input type="text" id="confirm" placeholder="confirm massage">
             <input type="submit">
+            </form>
         </div>
     </div>
     
@@ -220,7 +223,7 @@
     <script src="/js/arg.js"></script>
     <script src="/js/attachment.js"></script>
     <script>
-        //TODO: 템플릿 이쁘게 짜기, insert 구현하고, 폼으로 만들어서 radio로 구현
+//        뉴 스토리 버튼 클릭
         $(".aside-btn").click(function () {
             $(".new-story-book").empty();
             $.ajax({
@@ -234,7 +237,7 @@
                 }
             });
         });
-
+//        새로운 북 삽입
         $("#insert-new-book").click(function () {
             var newbook = {
                 Book_Title : $('#new-book-title').val(),
@@ -250,9 +253,7 @@
                 }
             });
         });
-
-//      TODO: submit 버튼으로 안하고 작업함으로써 reload를 강제로 해줄것, 그리고 null값 처리도 해줄것
-
+//        새로운 스토리 삽입
 //        ajax 예시
         $("#insert-new-story").click(function () {
 //            보낼 데이터 변수 작성
@@ -289,6 +290,28 @@
                 });
             }
         });
+
+        $("#story-delete").submit(function () {
+            event.preventDefault();
+            var del_story_no={
+                Story_No:$('#del-story-no').html()
+            }
+            $.ajax({
+                url:"/delete_story",
+                type:"post",
+                data:del_story_no,
+                success:function (result) {
+                    if(result){
+                        alert('성공적으로 삭제되었습니다');
+                        location.replace('/action');
+                    }else{
+                        alert('일시적으로 오류가 발생했습니다');
+                        location.replace('/action');
+                    }
+                }
+            })
+            return false;
+        })
 
         // 공개 비공개 체크
         $('.pub-label').click(function () {

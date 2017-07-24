@@ -320,36 +320,42 @@ exports.delete_story=(req,res)=>{
         [req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
         let pageno=[];
-        for(let i=0;i<results.length;i++){
-            pageno.push(results[i].Page_No);
-        }
-        db.query('delete from page where Page_No in (?)',[pageno],(error,results)=>{
-            if(error) console.log(error);
-            console.log('페이지 삭제');
-        });
-        db.query('select Image_No,Image_Path from image where Image_Fieldname=? and No in (?)',
-            ['Page_Image',pageno],(error,results)=>{
-            if(error) console.log(error);
-            let delimgno=[];
+        // 지울 페이지가 있으면
+        if(results[0]){
             for(let i=0;i<results.length;i++){
-                delimgno.push(results[i].Image_No);
-                fs.unlink(cwd+'/'+results[i].Image_Path,(error)=>{
-                    if(error) console.log(error);
-                    console.log('파일 삭제');
-                });
+                pageno.push(results[i].Page_No);
             }
-            db.query('delete from image where Image_No in (?)',
-                [delimgno],(error,results)=>{
+            db.query('delete from page where Page_No in (?)',[pageno],(error,results)=>{
                 if(error) console.log(error);
-                console.log('이미지 삭제');
+                console.log('페이지 삭제');
             });
-        });
+            db.query('select Image_No,Image_Path from image where Image_Fieldname=? and No in (?)',
+                ['Page_Image',pageno],(error,results)=>{
+                if(error) console.log(error);
+                if(results.length){
+                    let delimgno=[];
+                    for(let i=0;i<results.length;i++){
+                        delimgno.push(results[i].Image_No);
+                        fs.unlink(cwd+'/'+results[i].Image_Path,(error)=>{
+                            if(error) console.log(error);
+                            console.log('파일 삭제');
+                        });
+                    }
+                    db.query('delete from image where Image_No in (?)',
+                        [delimgno],(error,results)=>{
+                            if(error) console.log(error);
+                            console.log('이미지 삭제');
+                    });
+                }
+            });
+        }
+
         db.query('delete from story where Member_No=? and Story_No=?',[req.user.Member_No,Story_No],(error,results)=>{
             if(error) console.log(error);
             if(results.affectedRows===0){
-                res.json({message:'error',result:false});
+                res.json(false);
             }else{
-                res.json({message:'success',result:true});
+                res.json(true);
             }
         });
     });

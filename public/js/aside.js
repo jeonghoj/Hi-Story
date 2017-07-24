@@ -76,6 +76,17 @@ $(document).ready(function () {
 
     // page의 정보 변경
     $(document).on('click', '#change-story-infor', function () {
+        $('#chng-book').empty();
+        $.ajax({
+            url:'/list_book',
+            type:'post',
+            success:function (data) {
+                for(var i =0; i<data.length;i++){
+                    $('#chng-book').append("<option value="+ data[i].Book_No +">"+data[i].Book_Title+"</option>");
+                }
+            }
+        });
+
         // console.log();
         $(this).css({
             'opacity': '.9'
