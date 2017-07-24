@@ -151,13 +151,20 @@
                         </div>
                     </div>
                     <hr class="hr-infor">
-                    <div class="insert-changing">
+                    <div id="insert-changing" style="display: none;">
                         <!--
                         1. slide Down with Save and cancel
                         2. Edit... ===> disable
                         3. book, title, pub
                         4. slide Up
                         -->
+                        <select name="chng-book" id="chng-book"></select>
+                        <input type="text" placeholder="title">
+                        <input type="button" class="f-subSmall" value="공개">
+                        <div class="insert-btn">
+                            <input type="button" class="f-subSmall" value="save">
+                            <input type="button" class="f-subSmall" value="cancel">
+                        </div>
                     </div>
                     <div class="story-setting">
                         <!--story name과 public을 변경-->

@@ -73,5 +73,30 @@ $(document).ready(function () {
             $('.right .aside .infor').slideDown('slow');
         }
     });
+
+    // page의 정보 변경
+    $(document).on('click', '#change-story-infor', function () {
+        // console.log();
+        $(this).css({
+            'opacity': '.9'
+        });
+        $(this).parent().parent().find('#insert-changing').slideDown(300, function () {
+
+        });
+    });
+    $(document).on('click', '#insert-changing .insert-btn input:eq(0)', function () {
+        console.log('???');
+    });
+    $(document).on('click', '#insert-changing .insert-btn input:eq(1)', function () {
+        // console.log();
+        $(this).parent().parent().slideUp();
+        $(this).parent().parent().parent().find('#change-story-infor').css({
+            'opacity': '.3',
+            'transition': 'all .35s ease'
+        });
+    });
+
 });
+
+
 
