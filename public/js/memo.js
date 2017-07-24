@@ -110,7 +110,7 @@ $(document).ready(function () {
     });
 
     // MEMO에서 short cut
-    $(document).on('keydown', '.story-memo', function () {
+    $(document).on('keydown', '.story-memo', function (e) {
         // enter: 메모 저장
         if(event.keyCode === 13) {
             event.preventDefault();

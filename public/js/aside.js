@@ -55,7 +55,7 @@ $(document).ready(function () {
         if(!$(event.target).is('img, button')){
             if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp(300, function () {
                 $('.story-setting').empty();
-                $('.story-setting').append('<button id="change-story-infor" class="f-basic">Edit history information</button>');
+                $('.story-setting').append('<button id="change-story-infor" class="f-basic">Edit information</button>');
                 if(!$('.left-top .view-mode .timeline a').is('.active')){
                     if( (temp.is($('.page:last')) && (!($('.last-page').length))) || (temp.is($('.last-page'))))
                     {

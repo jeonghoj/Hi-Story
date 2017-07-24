@@ -168,7 +168,7 @@
                     </div>
                     <div class="story-setting">
                         <!--story name과 public을 변경-->
-                        <button id="change-story-infor" class="f-basic">Edit history information</button>
+                        <button id="change-story-infor" class="f-basic">Edit information</button>
                         <hr class="hr-infor">
                         <button id="done-btn" class="f-basic">Done this story</button>
                         <button id="delete-btn" class="f-basic">Delete this story</button>
@@ -304,9 +304,9 @@
             }
         });
 
-//      Edit this page
+//      Edit page
         $(document).on('click', '.story-setting #page-edit', function () {
-            var text = $('.page:last').text();
+            var text = $('.page:last').html();
             CKEDITOR.instances.editor1.setData(text);
 //            console.log(text);
         });
