@@ -51,9 +51,17 @@ $(document).ready(function () {
 
     $( '.page, .last-page' ).click(function(event) {
         var temp = $(this);
-
         if(!$(event.target).is('img, button')){
             if(!$('.right .aside .infor').is(':animated')) $('.right .aside .infor').slideUp(300, function () {
+                // page의 첫번째 자식이 book-title이라는 클래스를 가지고있다면
+                if(temp.children(":nth-child(1)").hasClass("book-title")){
+                    var bookname=temp.children(":nth-child(1)").html();
+                    var storyname=temp.children(":nth-child(2)").html();
+                    var storydate=temp.children(":nth-child(3)").html();
+                    $('.infor > .book-name').empty().html(bookname);
+                    $('.infor > .story-name').empty().html(storyname);
+                    $('.infor > .date').empty().html(storydate);
+                }
                 $('.story-setting').empty();
                 $('.story-setting').append('<button id="change-story-infor" class="f-basic">Edit information</button>');
                 if(!$('.left-top .view-mode .timeline a').is('.active')){
@@ -76,6 +84,17 @@ $(document).ready(function () {
 
     // page의 정보 변경
     $(document).on('click', '#change-story-infor', function () {
+        $('#chng-book').empty();
+        $.ajax({
+            url:'/list_book',
+            type:'post',
+            success:function (data) {
+                for(var i =0; i<data.length;i++){
+                    $('#chng-book').append("<option value="+ data[i].Book_No +">"+data[i].Book_Title+"</option>");
+                }
+            }
+        });
+
         // console.log();
         $(this).css({
             'opacity': '.9'

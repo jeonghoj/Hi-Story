@@ -356,12 +356,12 @@
 
 		// Adds a CSS class to fade out current string
 		initFadeOut: function(){
-			self = this;
+			var self = this;
 			this.el.className += ' ' + this.fadeOutClass;
 			this.cursor.className += ' ' + this.fadeOutClass;
 			return setTimeout(function() {
 				self.arrayPos++;
-				self.replaceText('')
+				self.replaceText('');
 				self.typewrite(self.strings[self.sequence[self.arrayPos]], 0);
 			}, self.fadeOutDelay);
 		},

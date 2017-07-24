@@ -20,7 +20,7 @@ let transporter=nodemailer.createTransport({
 });
 exports.register = (req,res) => {
     const {userid, password, realname} = req.body;
-    let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
+    let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '1440m'});
     hasher({password: password}, (error, pass, salt, hash) => {
         const user = {
             authID: 'jwt:' + randomString(),
@@ -54,8 +54,8 @@ exports.register = (req,res) => {
                         if(err) console.log(err);
                         console.log('Mail send Success -',info.response);
                         transporter.close();
-                        res.status(200).json({message : "success register! please verify your email"});
                     });
+                    res.status(200).json({message : "success register! please verify your email"});
                 });
             }
         });

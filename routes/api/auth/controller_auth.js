@@ -18,7 +18,6 @@ let transporter=nodemailer.createTransport({
     }
 });
 exports.register = (req,res) => {
-    console.log(req.body);
     const {userid, password, realname} = req.body;
     let emailtoken = jwt.sign({Member_ID:userid},config.secret,{expiresIn: '300m'});
     hasher({password: password}, (error, pass, salt, hash) => {
@@ -30,7 +29,7 @@ exports.register = (req,res) => {
             Member_Name: realname,
             Member_EmailVerified:0,
         };
-        db.query('insert into member set ?',[user],(error) => {
+        db.query('insert into member set ?',[user],(error,results) => {
             if (error) {
                 console.log(error);
                 res.status(500); //정확히 알아볼것
@@ -41,12 +40,11 @@ exports.register = (req,res) => {
                     Image_Path:'public/img/logo/logo.png',
                     Image_Originalname:'defaultimg'
                 };
-                db.query('insert into image set ?',[defaultimg],(error,results)=> {
+                db.query('insert into image set ?',[defaultimg],(error)=> {
                     if(error) console.log(error);
                     let mailoptions={
                         from:'historygdrive@gmail.com',
                         to:userid,
-                        // to:user.Member_ID,
                         subject:'Hi-Story 이메일 인증을 완료해 주세요',
                         text:'회원가입을 완료하려면 https://history-dcy.com/auth/verifyemail?emailtoken='+emailtoken,
                     };
@@ -54,42 +52,52 @@ exports.register = (req,res) => {
                         if(err) console.log(err);
                         console.log('Mail send Success -',info.response);
                         transporter.close();
-                        res.status(200).json({message : "success register! please verify your email"});
                     });
+                    res.status(200).send(
+                        '<script type="text/javascript">' +
+                        'alert("회원가입이 완료되었습니다! 이메일 인증을 해주세요.");' +
+                        'document.location.href="/";' +
+                        '</script>');
                 });
-
             }
         });
     });
 };
 exports.login = (req,res) => {
-    console.log('로그인',req.body);
     const { userid , password } = req.body; // 웹에서 널값 못보내도록 막기처리 해줘야
     db.query('select * from member where Member_ID=?',[userid],(error,results) => {
-        if(error){
-            console.log(error);
-        }
+        if(error) console.log(error);
         const user = results[0];
         if(!user){
-            return res.status(401).json({message:"no such user found"});
+            return res.status(401).send(
+                '<script type="text/javascript">' +
+                'alert("사용자를 찾을 수 없습니다.");' +
+                'document.location.href="/";' +
+                '</script>');
         }
         return hasher({password:password,salt:user.Member_salt},(error, pass, salt, hash) => {
             if(hash === user.Member_PW) {
                 if(user.Member_EmailVerified===0)
                 {
-                    console.log('아직 이메일 인증이 되지 않은 회원입니다');
+                    res.send(
+                        '<script type="text/javascript">' +
+                        'alert("이메일 인증을 하지 않았습니다");' +
+                        'document.location.href="/";' +
+                        '</script>');
                 }else {
                     // id로 사람 구분
                     const payload = {authID: user.authID};
-                    const token = jwt.sign(payload, config.secret,{expiresIn: '9000m'});
-                    console.log('login',token);
+                    const token = jwt.sign(payload, config.secret,{expiresIn: '1440m'});
                     res.cookie('jwt',token);
                     res.redirect('/action');
-                    // res.json({message: "ok", token: token});
                 }
 
             } else {
-                res.status(401).json({message:"passwords did not match"});
+                res.status(401).send(
+                    '<script type="text/javascript">' +
+                    'alert("패스워드가 일치하지 않습니다");' +
+                    'document.location.href="/";' +
+                    '</script>');
             }
         });
     });
@@ -99,20 +107,38 @@ exports.verifyemail=(req,res)=>{
     jwt.verify(emailtoken,config.secret,(error,decoded)=>{
         if(error) console.log(error);
         if(decoded===undefined){
+            // TODO:토큰이 만료되었을때 접속을 시도하면 그 사용자를 지우고, 
+            // TODO:만약 이메일 인증된 사용자가 다시 접근을 하려고했으면 지우지 않게끔 해준다
             res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
+            res.send(
+                '<script type="text/javascript">' +
+                'alert("토큰이 만료되었거나 잘못된 접근입니다.");' +
+                'document.location.href="/";' +
+                '</script>');
         }else{
             // 이메일 인증 true 값으로 설정
             db.query('update member set Member_EmailVerified=1 where Member_ID=?',
                 [decoded.Member_ID],(error,result)=>{
                 if(error) console.log(error);
                 if(result.affectedRows===0){
-                    console.log('데이터없거나 잘못된 접근');
+                    res.status(500);
+                    res.send(
+                        '<script type="text/javascript">' +
+                        'alert("잘못된 접근입니다");' +
+                        'document.location.href="/";' +
+                        '</script>');
                 }else if(result.changedRows===0){
-                    console.log('이미 이메일 인증이 되었습니다. 로그인 해주세요');
-                    res.redirect('/');
+                    res.send(
+                        '<script type="text/javascript">' +
+                        'alert("이미 이메일 인증이 되었습니다. 로그인 해주세요");' +
+                        'document.location.href="/";' +
+                        '</script>');
                 }else{
-                    console.log('이메일 인증이 완료 되었습니다. 로그인 해주세요');
-                    res.redirect('/');
+                    res.send(
+                        '<script type="text/javascript">' +
+                        'alert("이메일 인증이 완료되었습니다! 로그인 해주세요");' +
+                        'document.location.href="/";' +
+                        '</script>');
                 }
             });
         }
@@ -131,7 +157,6 @@ exports.new_PW_page=(req,res)=>{
 exports.find_PW=(req,res)=>{
     const payload = {Member_ID: req.body.userid};
     const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
-    console.log(token);
     let mailoptions={
         from:'historygdrive@gmail.com',
         to:'jjhh3079@gmail.com',
@@ -142,8 +167,8 @@ exports.find_PW=(req,res)=>{
         if(err) console.log(err);
         console.log('Mail send Success -',info.response);
         transporter.close();
-        res.status(200).json({message : '비밀번호 초기화 이메일을 발송했습니다!'});
     });
+    res.status(200).json({message : '비밀번호 초기화 이메일을 발송했습니다!'});
 };
 exports.new_PW=(req,res)=>{
     // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
@@ -165,9 +190,17 @@ exports.new_PW=(req,res)=>{
                     [new_PW, decoded.Member_ID],(error, results) => {
                     if (error) console.log(error);
                     if (results.affectedRows === 1) {
-                        res.json({message: '비밀번호가 성공적으로 변경되었습니다.', result: true});
+                        res.send(
+                            '<script type="text/javascript">' +
+                            'alert("비밀번호가 성공적으로 변경되었습니다!");' +
+                            'document.location.href="/";' +
+                            '</script>');
                     } else {
-                        res.json({message: '잘못된 정보입니다.',result:false});
+                        res.send(
+                            '<script type="text/javascript">' +
+                            'alert("잘못된 정보입니다");' +
+                            'document.location.href="/";' +
+                            '</script>');
                     }
                 });
             });
@@ -182,6 +215,5 @@ function randomString() {
         let rnum = Math.floor(Math.random() * chars.length);
         randomstring += chars.substring(rnum,rnum+1);
     }
-//document.randform.randomfield.value = randomstring;
     return randomstring;
 }

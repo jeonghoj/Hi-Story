@@ -9,8 +9,8 @@ $(document).ready(function () {
         }
     });
 
-    // 기본 값 설정
-    $('.story-no-infor').append('1');
+    // // 기본 값 설정
+    // $('.story-no-infor').append('1');
 
 
     // 새 메모 추가

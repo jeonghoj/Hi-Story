@@ -26,6 +26,9 @@ $('.closeup .new-story #new-story-close').click(function () {
 
 // Story del 열기
 $('#delete-btn').click(function () {
+    $('#del-story-no').empty();
+    var delstoryno=$('.story-no-infor').html();
+    $('#del-story-no').html(delstoryno);
     $('.closeup').css({
         "visibility": "visible"
     });
