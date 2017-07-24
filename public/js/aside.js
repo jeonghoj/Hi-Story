@@ -96,6 +96,19 @@ $(document).ready(function () {
         });
     });
 
+    // 공개 비공개
+    $(document).on('click', '#insert-changing label', function () {
+        if($(this).find('input').is(':checked')){
+            // make it unchecked
+            $(this).empty().append('<input type="checkbox" style="display: none;">공개');
+            $(this).css('background', 'rgba(240, 240, 240, 1)');
+        } else{
+            // make it checked
+            $(this).empty().append('<input type="checkbox" style="display: none;" checked>비공개');
+            $(this).css('background', 'rgba(200, 200, 200, 1)');
+        }
+    });
+
 });
 
 
