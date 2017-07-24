@@ -220,7 +220,6 @@ exports.insert_story=(req,res)=>{
         Story_Owner : req.user.Member_Name,
     };
     db.query('insert into story set ? ',[new_story], (error,results)=>{
-        console.log(results);
         db.query('select Story_No,Story_DateStart,Story_Citation,Story_Follow,Story_View ' +
             'from story where Story_No=?',[results.insertId],(error,results)=>{
             if(error){

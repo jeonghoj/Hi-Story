@@ -590,7 +590,6 @@ exports.history=(req,res)=>{
                         }
                     }
                     if(i===historydata.length-1){
-                        console.log(historydata);
                         res.render('history',{historydata:historydata});
                     }
                 }
@@ -699,6 +698,10 @@ exports.list_page=(req,res)=>{
             // }
         }
     });
+};
+
+exports.explore=(req,res)=>{
+    res.render('explore');
 };
 
 exports.setting=(req,res)=>{

@@ -53,6 +53,7 @@ router.get('/action',passport.authenticate('jwtc',{session:false}),controller.ac
 router.get('/history',passport.authenticate('jwtc',{session:false}),controller.history);
 router.get('/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
 router.get('/story/:id',passport.authenticate('jwtc',{session:false}),controller.list_page);
+router.get('/explore',passport.authenticate('jwtc',{session:false}),controller.explore);
 router.get('/setting',passport.authenticate('jwtc',{session:false}),controller.setting);
 //TODO : done url은 insert page에 done true 추가 done은 상시 edit 가능
 
