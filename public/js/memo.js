@@ -50,7 +50,7 @@ $(document).ready(function () {
                 $(this).next().next().attr('readonly', 'readonly').css({
                     "opacity": "1"
                 });
-                $(this).next().next().height( $(this).prop('scrollHeight')+12 );
+                $(this).next().next().height( $(this).prop('scrollHeight')+24);
                 var Story_No=$(this).parent().parent().find('.story-no').html();
                 var Story_Memo_Text=$(this).next().next().val();
                 var Story_Memo_No=$(this).next();
@@ -109,17 +109,17 @@ $(document).ready(function () {
         });
     });
 
-
-    // textarea에서 엔터 시 바로 저장 및 실시간 높이 조정
+    // MEMO에서 short cut
     $(document).on('keydown', '.story-memo', function () {
+        // enter: 메모 저장
         if(event.keyCode === 13) {
             event.preventDefault();
-            // 엔터를 쳤을때 에디트를 클릭한것과 동작이 같이야 하므로
             $(this).prev().prev().trigger('click');
         }
-        $(this).css({
-           'height': $(this).prop('scrollHeight')
-        });
+        // ctrl+a: 전체 선택
+        if (e.keyCode == 65 && e.ctrlKey) {
+            e.target.select();
+        }
     });
 
 
