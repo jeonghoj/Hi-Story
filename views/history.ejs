@@ -37,17 +37,23 @@
                             </div>
                         </div>
                         <div class="modi-title">
-                            <input type="text" placeholder="Book Title">
+                            <input type="text" placeholder="Book Title" value="<%=historydata[i].Book_Title%>">
                         </div>
                         <div class="modi-pub">
-                            <label><input type="checkbox" style="display: none;">공개</label>
+                            <label class="f-sub"><input  type="checkbox" style="display: none;">공개</label>
                         </div>
+                        <div class="insert-btn">
+                            <input type="button" class="f-sub" value="save">
+                            <input type="button" class="f-sub cls" value="cancel">
+                        </div>
+                        <br>
                         <div class="delete">
                             <label><input type="button" style="display: none;">
-                                <span class="typ">삭제</span>
-                                <span class="del-nav" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>
+                                <span class="typ f-sub">삭제</span>
+                                <span class="del-nav f-subSmall" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>
                             </label>
                         </div>
+
                     </div>
                     <div class="book-inside book-item">
                         <div class="book-header">

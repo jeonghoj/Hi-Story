@@ -651,7 +651,7 @@ mark {
     border: 1px solid rgba(200, 200, 200, 1);
     width: 200px;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 7px;
     background: rgba(240, 240, 240, 1);
 }
 .book-list .a-book .book-setting .modi-pub:hover,
@@ -661,6 +661,21 @@ mark {
 .book-list .a-book .book-setting .delete span {
     display: block;
 }
+.book-list .a-book .book-setting .insert-btn {
+    margin: 7px 16px 0px 16px;
+}
+.book-list .a-book .book-setting .insert-btn * {
+    width: 96px;
+    border: 1px solid rgba(200, 200, 200, 1);
+    background: rgba(240, 240, 240, 1);
+}
+.book-list .a-book .book-setting .insert-btn *:hover {
+    background: rgba(200, 200, 200, 1);
+}
+.book-list .a-book .book-setting .insert-btn *:last-child {
+    margin-left: 4px;
+}
+
 
 /* Explore ================================================== :) */
 .left .page-list .page .explore-header .card-name div {

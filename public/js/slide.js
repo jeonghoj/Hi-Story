@@ -9,7 +9,16 @@ $(document).on('click', '.go-inside', function () {
     }else {
         $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
     }
+})
+$(document).on('click', '.insert-btn .cls', function () {
+    if($('.modi-title input').val() === "") {
+        event.preventDefault();
+        $(this).parent().parent().parent().find('.modi-title').fadeToggle('fast').fadeToggle('fast');
+    }else {
+        $(event.target).parent().parent().parent().toggleClass('now-setting now-inside');
+    }
 });
+
 
 // History의 slide 구현
 $('.up-btn').click(function () {
