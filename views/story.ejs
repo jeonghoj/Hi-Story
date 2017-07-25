@@ -159,10 +159,11 @@
                         4. slide Up
                         -->
                         <select name="chng-book" id="chng-book"></select>
-                        <input type="text" value="<%=page[0].Story_Title%>">
+                        <div id="edit-story-no" style="display: none"><%=page[0].Story_No%></div>
+                        <input name="edit-story-title" type="text" value="<%=page[0].Story_Title%>">
                         <label class="f-subSmall"><input type="checkbox" style="display: none;">공개</label>
                         <div class="insert-btn">
-                            <input type="button" class="f-subSmall" value="save">
+                            <input id="edit-story-btn" type="button" class="f-subSmall" value="save">
                             <input type="button" class="f-subSmall" value="cancel">
                         </div>
                     </div>
@@ -289,12 +290,6 @@
                 $(this).find('.sub-nav').slideDown(500).delay(1500).slideUp(500);
             }
         });
-//        CK업데이트 혹시 필요할 지도 몰라 주석
-//        function CKupdate(){
-//            for ( instance in CKEDITOR.instances )
-//                CKEDITOR.instances[instance].updateElement();
-//        }
-
 //      img의 경우 padding 주기
         $(document).ready(function () {
             for(var i=0; i<$('.page').length; i++) {
@@ -303,13 +298,37 @@
                 }
             }
         });
-
 //      Edit page
         $(document).on('click', '.story-setting #page-edit', function () {
             var text = $('.page:last').html();
             CKEDITOR.instances.editor1.setData(text);
 //            console.log(text);
         });
+//      Edit Story
+        $("#edit-story-btn").click(function () {
+            var storydata={
+                Book_No:$('#chng-book').find('option:selected').val(),
+                Story_No:$('#edit-story-no').html(),
+//                체크가 되어있으면 비공개, 체크가 안되어있으면 공개
+                Story_Title:$('input:text[name="edit-story-title"]').val(),
+                Story_Public:$('input:checkbox[name="story-public"]').is(":checked") ? 0:1,
+            }
+            var url = document.location.href;
+            console.log(storydata);
+            $.ajax({
+                url:"/update_story_info",
+                type:"post",
+                data:storydata,
+                success:function (data) {
+                    if(data) {
+                        location.replace(url);
+                    }else{
+                        alert('오류발생');
+                        location.replace(url);
+                    }
+                }
+            })
+        })
     </script>
 
 </body>

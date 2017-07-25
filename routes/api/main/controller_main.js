@@ -99,18 +99,24 @@ exports.update_book_public=(req,res)=>{
     });
 };
 // 스토리 타이틀 수정
-exports.update_story_title=(req,res)=>{
-    const {Story_No,Story_Title}=req.body;
-    db.query('update story set Story_Title=? where Member_No=? and Story_No=?',
-        [Story_Title,req.user.Member_No,Story_No],(error,results)=>{
+exports.update_story_info=(req,res)=>{
+    const {Book_No,Story_No,Story_Title,Story_Public}=req.body;
+    const updatestoryinfo={
+        Book_No:Book_No,
+        Story_No:Story_No,
+        Story_Title:Story_Title,
+        Story_Public:Story_Public,
+    };
+    db.query('update story set ? where Member_No=? and Story_No=?',
+        [updatestoryinfo,req.user.Member_No,Story_No],(error,results)=>{
         if(error) console.log(error);
         if(results.affectedRows===0){
             // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
-            res.json({result:false,message:'잘못된 접근입니다.'});
+            res.json(false);
         }else if(results.changedRows===0){
-            res.json({result:false,message:'변경되지 않았습니다. 같은 내용이거나 잘못된 접근입니다.'});
+            res.json(false);
         }else{
-            res.json({result:true,message:'변경되었습니다.'})
+            res.json(true)
         }
     });
 };
@@ -648,7 +654,7 @@ exports.timeline=(req,res)=>{
 exports.list_page=(req,res)=>{
     let page=null;
     const Story_No = req.params.id;
-    db.query("select book.Book_Title,story.Story_Title, story.Story_DateStart, page.* " +
+    db.query("select book.Book_Title,story.Story_No,story.Story_Title, story.Story_DateStart, page.* " +
         "from book,story,page where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?",
         [Story_No],(error,results)=>{
         // 페이지가 없을경우
