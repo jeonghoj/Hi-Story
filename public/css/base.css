@@ -333,9 +333,38 @@ input, textarea {
     display: flex;
     justify-content: space-between;
 }
+.left .story-list .story .story-title {
+    height: 29px;
+    width: 618px;
+    overflow: hidden;
+    position: relative;
+}
+.left .story-list .story .story-title div {
+    display: block;
+    width: 200%;
+    height: 29px;
+
+    position: absolute;
+    overflow: hidden;
+}
+.left .story-list .story .story-title .marquee{
+    animation: marquee 12s linear;
+}
+
+@keyframes marquee {
+    0% { left: 0; }
+    33% { left: 0; }
+    100% { left: -100%; }
+}
+
 .left .story-list .story .story-title a {
     text-decoration: none;    
 }
+
+
+
+
+
 .left .story-list .story .story-header a img {
     opacity: .3;
 }

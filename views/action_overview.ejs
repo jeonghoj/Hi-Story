@@ -62,7 +62,6 @@
                 <!--</div>-->
                 <!--자바코드-->
                 <%if(!data){%>
-                <!--TODO: 데이터 없을때의 메세지, 문구, 동작 디자인해주세요 ^^-->
                 <div id="no-data"> </div>
                 <%}else{%>
                 <% for(var i=0; i<data.length; i++) {%>
@@ -71,7 +70,11 @@
                         <div class="book-no" style="display: none"><%=data[i].Book_Title%></div>
                         <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toISOString().slice(0, 10)%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
-                        <div class="story-title"><a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a></div>
+                        <div class="story-title">
+                            <div>
+                                <a href="/story/<%=data[i].Story_No%>" class="f-title"><%= data[i].Story_Title%></a>
+                            </div>
+                        </div>
                         <a class="sel-story"><img src="/img/icon/ic_settings_black_24px.svg" border='0'></a>
                     </div>
                     <% for(var j=0; j<data[i].Story_Memo.length ; j++){%>
@@ -341,6 +344,25 @@
             }
         });
 
+        // marquee 붙이기
+//        $(document).ready(function () {
+////            console.log($('.story-title div a:eq(1)').width());
+//            for(var i=0; i<$('.story-title div a').length; i++) {
+//                if($('.story-title div a:eq('+ i +')').width() < 618 ) {
+//                    $('.story-title div:eq('+ i +')').toggleClass('marquee');
+//                }
+//            }
+//        });
+        $(document).on('click', '.story', function () {
+            for(var i=0; i<$('.story-title div a').length; i++) {
+                $('.story-title div:eq('+ i +')').removeClass('marquee');
+            }
+            if(!$(event.target).is('.edit, .f-title') && !(event.keyCode == 13)) {
+                if($(this).find('.story-title div a').width() > 617 ) {
+                    $(this).find('.story-title div').toggleClass('marquee');
+                }
+            }
+        });
     </script>
 
 </body>
