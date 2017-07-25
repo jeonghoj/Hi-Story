@@ -21,6 +21,18 @@
             </ul>
         </div>
 
+        <div id="history-tool">
+            <div class="title-search">
+                <input type="text">
+            </div>
+            <div class="title-search-enter">
+                <img src="/img/icon/ic_search_black_24px.svg">
+            </div>
+            <div class="add">
+                <button class="add-btn f-empha">NEW BOOK</button>
+            </div>
+        </div>
+
         <div class="book-list">
             <div class="a-book profile"></div>
             <%if(!historydata){%>
@@ -31,7 +43,7 @@
                 <div class="book-slide now-inside">
                     <div class="book-setting book-item">
                         <div class="book-header">
-                            <div class="book-title f-title">Book Setting</div>
+                            <div class="book-title f-title">Setting</div>
                             <div>
                                 <a href="#" class="go-inside"><img src="/img/icon/ic_clear_black_24px.svg" alt=""></a>
                             </div>
@@ -81,15 +93,6 @@
             <%}%>
             <%}%>
 
-            <div class="a-book last-book">
-                <div class="search">
-                    <input type="text" class="search-box" placeholder="Search">
-                </div>
-                <div class="add">
-                    <button class="add-btn"><img src="/img/icon/ic_add_box_black_24px.svg"></button>
-                </div>
-            </div>
-
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -103,7 +106,7 @@
                         '<div class="book-slide now-setting">' +
                             '<div class="book-setting book-item">' +
                                 '<div class="book-header">' +
-                                    '<div class="book-title f-title">Book Setting</div>' +
+                                    '<div class="book-title f-title">Setting</div>' +
                                         '<div>' +
                                             '<a href="#" class="go-inside"><img src="/img/icon/ic_clear_black_24px.svg" alt=""></a>' +
                                         '</div>' +
@@ -143,6 +146,30 @@
                         '</div>' +
                     '</div>');
             });
+        </script>
+
+        <script>
+            // 제목을 통한 filtering 기능
+            $('.title-search-enter').click(function () {
+                var txt = $(this).parent().parent().find('.title-search input').val();
+                for(var i=0; i<$('.book-story-slide .story-title').length; i++) {
+                    if(!$('.book-story-slide .story-title:eq('+ i +')').is(':contains('+ txt +')')) {
+                        $('.book-story-slide .story-title:eq('+ i +')').fadeOut();
+                    }else{
+                        $('.book-story-slide .story-title:eq('+ i +')').fadeIn();
+                    }
+                }
+            });
+            // Click on enter, focusOut
+            $('.title-search').keydown(function () {
+                if(event.keyCode === 13) {
+                    $(this).next().trigger('click');
+                }
+            });
+            $('.title-search').focusout(function () {
+                $(this).next().trigger('click');
+            });
+
         </script>
 
     </body>
