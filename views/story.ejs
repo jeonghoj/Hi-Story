@@ -45,7 +45,7 @@
                     <!--페이지의 마지막 값 Page_Done이 1일때 즉 Story가 Done되었을때 마지막-1 까지만 반복한다-->
                     <% for(var i=0; i< ((page[page.length-1].Page_Done===1) ? (page.length-1) : (page.length));i++){%>
                 <% if(i===0 ? true : page[i-1].Page_UpdateDate.getDate() !== page[i].Page_UpdateDate.getDate()){%>
-                <div class="date f-subSmall"><%=page[i].Page_UpdateDate.toISOString().slice(0, 10) %></div>
+                <div class="date f-subSmall"><%=page[i].Page_UpdateDate.toLocaleString().slice(0, 10) %></div>
                 <%}%>
                 <div class="page">
                         <% if(page[i].Imgdata[0] !== undefined) { %>
@@ -80,7 +80,7 @@
             <%if(page[0].Page_No){%>
                 <%if(page[page.length-1].Page_Done===1){%>
                 <div class="page-list">
-                    <div class="date f-subSmall"><%=page[page.length-1].Page_UpdateDate.toISOString().slice(0, 10) %></div>
+                    <div class="date f-subSmall"><%=page[page.length-1].Page_UpdateDate.toLocaleString().slice(0, 10) %></div>
                     <div class="last-page">
                         <% if(page[page.length-1].Imgdata[0] !== undefined) { %>
                         <div class="img-box">
@@ -143,7 +143,7 @@
                     <%if(page !== null) {%>
                     <div class="book-name f-subSmall"><%=page[0].Book_Title%></div>
                     <div class="story-name f-empha" ><%=page[0].Story_Title%></div>
-                    <div class="date f-subSmall"><%=page[0].Story_DateStart.toISOString().slice(0, 10)%></div>
+                    <div class="date f-subSmall"><%=page[0].Story_DateStart.toLocaleString().slice(0, 10)%></div>
                     <hr class="hr-infor">
                     <div class="score">
                         <div class="score-num citation f-subSmall">Page Citation
