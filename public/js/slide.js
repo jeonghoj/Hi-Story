@@ -72,7 +72,7 @@ $('.a-book').hover(
     }
     if(bottom > bottom_){
         $(this).find('.btn .down-btn img').css('opacity', '1');
-    }x
+    }
 }, function () {
     $(this).find('.btn .up-btn img').css('opacity', '.3');
     $(this).find('.btn .down-btn img').css('opacity', '.3');

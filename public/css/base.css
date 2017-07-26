@@ -1,5 +1,3 @@
-
-
 /* General ================================================== :) */
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 * {
@@ -335,9 +333,38 @@ input, textarea {
     display: flex;
     justify-content: space-between;
 }
+.left .story-list .story .story-title {
+    height: 29px;
+    width: 618px;
+    overflow: hidden;
+    position: relative;
+}
+.left .story-list .story .story-title div {
+    display: block;
+    width: 200%;
+    height: 29px;
+
+    position: absolute;
+    overflow: hidden;
+}
+.left .story-list .story .story-title .marquee{
+    animation: marquee 12s linear;
+}
+
+@keyframes marquee {
+    0% { left: 0; }
+    33% { left: 0; }
+    100% { left: -100%; }
+}
+
 .left .story-list .story .story-title a {
     text-decoration: none;    
 }
+
+
+
+
+
 .left .story-list .story .story-header a img {
     opacity: .3;
 }
@@ -531,6 +558,49 @@ mark {
     position: absolute;
 }
 
+/* History tool ================================================== :) */
+#history-tool {
+    width: 970px;
+    margin: auto;
+    padding: 7px 14px 3px 14px;
+    display: flex;
+    justify-content: flex-end;
+    opacity: .8;
+}
+#history-tool .title-search input {
+    position: relative;
+    top: 2px;
+    padding: 1px;
+    width: 180px;
+    height: 30px;
+    opacity: .8;
+}
+#history-tool .title-search-enter img {
+    position: relative;
+    top: 2px;
+    height: 30px;
+    margin-left: -1px;
+    border: 1px solid rgba(160, 160, 160, 1);
+    background: rgba(240, 240, 240, 1);
+}
+#history-tool .add {
+    margin-left: 15px;
+    border: 2px solid rgba(130, 130, 130, 1);
+    background: rgba(240, 240, 240, 1);
+    opacity: .3;
+}
+#history-tool .add:hover {
+    opacity: .8;
+    transition: all .25s ease;
+}
+#history-tool .add:active {
+    opacity: 1;
+}
+#history-tool .add button {
+    font-weight: 900;
+    padding: 3px 2px 0px 2px;
+}
+
 /* Books ================================================== :) */
 .book-list {
     width: 998px;
@@ -538,7 +608,7 @@ mark {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
-    padding: 10px 0px 0px 14px;
+    padding: 0px 0px 0px 14px;
 }
 .book-list .a-book {
     overflow: hidden;
