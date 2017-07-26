@@ -21,7 +21,7 @@ const passport = require(cwd+'/config/passport');
 //FIXME 안드로이드 인증방식은 아예 따로 둬야한다, 두개 놓으니까 먼저꼐 인식되서 인증이 되지않는다
 router.get('/',controller.intro);
 router.get('/signup',controller.signup);
-router.get('/logout',controller.logout);
+router.post('/logout',controller.logout);
 router.post('/check_idOverlap',controller.check_idOverlap);
 
 // TODO 그 사용자만 이미지 로드할수있게 수정
