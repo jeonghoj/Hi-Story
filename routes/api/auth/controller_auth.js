@@ -155,26 +155,45 @@ exports.new_PW_page=(req,res)=>{
     });
 };
 exports.find_PW=(req,res)=>{
-    const payload = {Member_ID: req.body.userid};
-    const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
-    let mailoptions={
-        from:'historygdrive@gmail.com',
-        to:'jjhh3079@gmail.com',
-        subject:'비밀번호 초기화',
-        text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. https://history-dcy.com/auth/new_PW?memberinfo='+token,
-    };
-    transporter.sendMail(mailoptions,(err,info) => {
-        if(err) console.log(err);
-        console.log('Mail send Success -',info.response);
-        transporter.close();
+    const userid=req.body.userid;
+    db.query('select count(*) as member_exist from member where Member_ID=?',[userid],(error,results)=>{
+        if(error) console.log(error);
+        if(results[0].member_exist===0){
+            res.send(
+                '<script type="text/javascript">' +
+                'alert("없는 회원입니다. ID를 제대로 입력하셨는지 확인하여주세요");' +
+                'document.location.href="/";' +
+                '</script>');
+        }else{
+            const payload = {Member_ID:userid};
+            const token = jwt.sign(payload, config.secret ,{expiresIn: '120m'});
+            let mailoptions={
+                from:'historygdrive@gmail.com',
+                to:userid,
+                subject:'비밀번호 초기화',
+                text:'비밀번호를 초기화하려면 이 링크로 접속해주세요. https://history-dcy.com/auth/new_PW?memberinfo='+token,
+            };
+            transporter.sendMail(mailoptions,(err,info) => {
+                if(err) console.log(err);
+                console.log('Mail send Success -',info.response);
+                transporter.close();
+            });
+            res.send(
+                '<script type="text/javascript">' +
+                'alert("이메일을 보냈습니다. 이메일의 링크로 접속해주세요.");' +
+                'document.location.href="/";' +
+                '</script>');
+        }
     });
-    res.status(200).json({message : '비밀번호 초기화 이메일을 발송했습니다!'});
+
 };
 exports.new_PW=(req,res)=>{
     // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
     const token=req.body.token;
-    const newpassword=req.body.Member_PW;
+    const newpassword=req.body.password;
+    console.log(req.body);
     jwt.verify(token,config.secret,(error,decoded)=>{
+        console.log(decoded);
         if(error) console.log(error);
         if(decoded===undefined){
             res.json({message:'잘못된 토큰입니다. 비밀번호 초기화를 다시 진행해주세요',result:false});
@@ -186,19 +205,20 @@ exports.new_PW=(req,res)=>{
                     Member_salt: salt,
                 };
                 // 새로운 패스워드로 설정
-                db.query('update into member set ? where Member_ID=?',
+                db.query('update member set ? where Member_ID=?',
                     [new_PW, decoded.Member_ID],(error, results) => {
-                    if (error) console.log(error);
-                    if (results.affectedRows === 1) {
-                        res.send(
-                            '<script type="text/javascript">' +
-                            'alert("비밀번호가 성공적으로 변경되었습니다!");' +
-                            'document.location.href="/";' +
-                            '</script>');
-                    } else {
+                    if (error) {
+                        console.log(error);
                         res.send(
                             '<script type="text/javascript">' +
                             'alert("잘못된 정보입니다");' +
+                            'document.location.href="/";' +
+                            '</script>');
+                    }else{
+                        console.log(results);
+                        res.send(
+                            '<script type="text/javascript">' +
+                            'alert("비밀번호가 성공적으로 변경되었습니다!");' +
                             'document.location.href="/";' +
                             '</script>');
                     }
