@@ -30,8 +30,8 @@ router.get('/imageload',controller.imageload);
 
 router.post('/list_book', passport.authenticate('jwtc',{session:false}),controller.list_book);
 
-router.post('/update_book_title',passport.authenticate('jwtc',{session:false}),controller.update_book_title);
-router.post('/update_book_public',passport.authenticate('jwtc',{session:false}),controller.update_book_public);
+router.post('/update_book_info',passport.authenticate('jwtc',{session:false}),controller.update_book_info);
+// router.post('/update_book_public',passport.authenticate('jwtc',{session:false}),controller.update_book_public);
 
 router.post('/update_story_info',passport.authenticate('jwtc',{session:false}),controller.update_story_info);
 router.post('/update_story_done',passport.authenticate('jwtc',{session:false}),upload.array('Page_Image',6),controller.update_story_done);

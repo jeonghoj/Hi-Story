@@ -64,40 +64,43 @@ exports.list_book=(req,res)=>{
 };
 
 // 북 타이틀 수정
-exports.update_book_title=(req,res)=>{
+exports.update_book_info=(req,res)=>{
     // 수정하려는 북의 넘버와 북타이틀을 불러온다
-    const {Book_No,Book_Title}=req.body;
+    const {Book_No,Book_Title,Book_Public}=req.body;
     // 북 타이틀 업데이트
-    db.query('update into book set Book_Title=? where Book_No=? and Member_No=?',
-        [Book_No,Book_Title,req.user.Member_No],(error,results)=>{
-        if(error) console.log(error);
-        if(results.affectedRows===0){
-            // 바뀐 북이 없다는건 다른 사용자가 접근을 하려고 했다는것
-            res.json({result:false,message:'잘못된 접근입니다.'});
-        }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
+    const update_book_info={
+        Book_No:Book_No,
+        Book_Title:Book_Title,
+        Book_Public:Book_Public
+    };
+    db.query('update book set ? where Book_No=? and Member_No=?',
+        [update_book_info,Book_No,req.user.Member_No],(error,results)=>{
+        if(error){
+            console.log(error);
+            res.json(false);
         }else{
-            res.json({result:true,message:'변경되었습니다.'})
+            res.json(true);
         }
+
     });
 };
-// 북 공개 여부 수정 (토글식)
-exports.update_book_public=(req,res)=>{
-    const Book_No=req.body.Book_No;
-    // 북 공개 여부를 토글로 설정 가능
-    db.query('update book set Book_Public=!Book_Public where Member_No=? and Book_No=?',
-        [req.user.Member_No,Book_No],(error,results)=>{
-        if(error) console.log(error);
-        if(results.affectedRows===0){
-            // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
-            res.json({result:false,message:'잘못된 접근입니다.'});
-        }else if(results.changedRows===0){
-            res.json({result:false,message:'같은 내용입니다'});
-        }else{
-            res.json({result:true,message:'변경되었습니다.'})
-        }
-    });
-};
+// // 북 공개 여부 수정 (토글식)
+// exports.update_book_public=(req,res)=>{
+//     const Book_No=req.body.Book_No;
+//     // 북 공개 여부를 토글로 설정 가능
+//     db.query('update book set Book_Public=!Book_Public where Member_No=? and Book_No=?',
+//         [req.user.Member_No,Book_No],(error,results)=>{
+//         if(error) console.log(error);
+//         if(results.affectedRows===0){
+//             // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
+//             res.json({result:false,message:'잘못된 접근입니다.'});
+//         }else if(results.changedRows===0){
+//             res.json({result:false,message:'같은 내용입니다'});
+//         }else{
+//             res.json({result:true,message:'변경되었습니다.'})
+//         }
+//     });
+// };
 // 스토리 타이틀 수정
 exports.update_story_info=(req,res)=>{
     const {Book_No,Story_No,Story_Title,Story_Public}=req.body;

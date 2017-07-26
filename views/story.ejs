@@ -313,7 +313,7 @@
                 Story_Title:$('input:text[name="edit-story-title"]').val(),
                 Story_Public:$('input:checkbox[name="story-public"]').is(":checked") ? 0:1,
             }
-            var url = document.location.href;
+            var currenturl = window.location.href;
             console.log(storydata);
             $.ajax({
                 url:"/update_story_info",
@@ -321,10 +321,10 @@
                 data:storydata,
                 success:function (data) {
                     if(data) {
-                        location.replace(url);
+                        location.replace(currenturl);
                     }else{
                         alert('오류발생');
-                        location.replace(url);
+                        location.replace(currenturl);
                     }
                 }
             })
