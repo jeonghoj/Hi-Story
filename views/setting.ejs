@@ -50,7 +50,9 @@
             <div class="title f-empha">로그아웃
                 <div class="small-nav f-basic"></div>
             </div>
-            <input class="f-subSmall" type="button" value="Logout">
+            <form method="post" action="/logout">
+            <input id="logout" class="f-subSmall" type="submit" value="Logout">
+            </form>
         </div>
         <!--계정 삭제-->
         <div class="delete-id" id="set3">
@@ -72,6 +74,7 @@
 //            console.log(offset);
             $('html, body').animate({scrollTop: offset.top-25   }, 350);
         });
+
     </script>
 </body>
 

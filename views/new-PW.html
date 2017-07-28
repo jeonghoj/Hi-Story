@@ -11,8 +11,8 @@
 
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
-    <form action="/auth/register" method="post">
-        <div class="sign-up">
+    <form action="/auth/new_PW" method="post">
+        <div id="new-pw" class="sign-up">
             <div>변경하실 비밀번호를 입력해주세요.</div>
             <input id="make-user-password" type="password" placeholder="Password" name="password">
             <br>
@@ -21,10 +21,17 @@
             <input type="submit" style="width: 100px;">
         </div>
     </form>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="/js/intro.js"></script>
     <script src="/js/typed.js"></script>
+    <script>
+        $(document).ready(function(){
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var token = url.searchParams.get("memberinfo");
+            $('#new-pw').append('<input name="token" style="display: none" value='+ token +'>');
+        });
+    </script>
 
 </body>
 

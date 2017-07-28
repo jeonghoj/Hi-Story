@@ -48,14 +48,17 @@
                                 <a href="#" class="go-inside"><img src="/img/icon/ic_clear_black_24px.svg" alt=""></a>
                             </div>
                         </div>
+                        <div class="modi-no" style="display: none">
+                            <input class="edit-book-no" value="<%=historydata[i].Book_No%>" disabled>
+                        </div>
                         <div class="modi-title">
-                            <input type="text" placeholder="Book Title" value="<%=historydata[i].Book_Title%>">
+                            <input class="edit-book-title" type="text" placeholder="Book Title" value="<%=historydata[i].Book_Title%>">
                         </div>
                         <div class="modi-pub">
-                            <label class="f-sub"><input  type="checkbox" style="display: none;">공개</label>
+                            <label class="f-sub"><input type="checkbox" style="display: none;">공개</label>
                         </div>
                         <div class="insert-btn">
-                            <input type="button" class="f-sub" value="save">
+                            <input type="button" class="edit-book-btn f-sub" value="save">
                             <input type="button" class="f-sub cls" value="cancel">
                         </div>
                         <br>
@@ -169,6 +172,33 @@
             $('.title-search').focusout(function () {
                 $(this).next().trigger('click');
             });
+
+            $('.edit-book-btn').click(function () {
+                var book_setting=$(this).parent().parent()
+                var Book_No=book_setting.find('.edit-book-no').val();
+                var Book_Title=book_setting.find('.edit-book-title').val();
+                var Book_Public=book_setting.find('.edit-book-public').is(":checked") ? 0:1;
+                var editbook={
+                    Book_No:Book_No,
+                    Book_Title:Book_Title,
+                    Book_Public:Book_Public
+                };
+                $.ajax({
+                    url:"/update_book_info",
+                    type:"post",
+                    data: editbook,
+                    success:function (data) {
+                        console.log(data);
+                        if(data){
+                            location.replace('/history');
+                        }else{
+                            alert('오류 발생');
+                            location.replace('/history');
+                        }
+
+                    }
+                })
+            })
 
         </script>
 

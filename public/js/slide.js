@@ -9,7 +9,7 @@ $(document).on('click', '.go-inside', function () {
     }else {
         $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
     }
-})
+});
 $(document).on('click', '.insert-btn .cls', function () {
     if($('.modi-title input').val() === "") {
         event.preventDefault();
@@ -84,11 +84,11 @@ $('.a-book').hover(
 $(document).on('click', '.book-setting .modi-pub', function () {
     if($(this).find('input').is(':checked')){
         // make it unchecked
-        $(this).find('label').empty().append('<input type="checkbox" style="display: none;">공개');
+        $(this).find('label').empty().append('<input class="edit-book-public" type="checkbox" style="display: none;">공개');
         $(this).css('background', 'rgba(240, 240, 240, 1)');
     } else{
         // make it checked
-        $(this).find('label').empty().append('<input type="checkbox" style="display: none;" checked>비공개');
+        $(this).find('label').empty().append('<input class="edit-book-public" type="checkbox" style="display: none;" checked>비공개');
         $(this).css('background', 'rgba(200, 200, 200, 1)');
     }
 });
@@ -102,7 +102,7 @@ $(document).on('click', '.go-setting', function () {
 
 // 삭제시 story check
 $(document).on('click', '.book-setting .delete', function () {
-        if(!($(this).parent().parent().find('.story-title').length == 0)){
+        if(!($(this).parent().parent().find('.story-title').length === 0)){
             $(this).find('label .typ').slideUp().delay(1200).slideDown();
             $(this).find('label .del-nav').slideDown().delay(1200).slideUp();
             event.preventDefault();
