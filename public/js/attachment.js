@@ -14,22 +14,57 @@ $(document).on('click', '.to-left', function () {
     }
 });
 
-// link name 넘겨주기
-$(document).ready(function () {
-    var target = $('#page-img');
-
-    target.on('change', function () {
-        var filename = $(this)[0].files[0].name;
-        $(this).siblings('.upload-name').val(filename);
-    });
-});
-
 // attachment의 slide down 구현
-$(".footer label[for='page-img']").click(function () {
-    $('.add-box .add-link').slideUp();
-    $('.add-box .add-img').slideDown();
+$(".page-write .footer label[for='page-img']").click(function () {
+
+    // img 미리보기
+    $('.page-write .add-box .add-img').slideDown(250, function () {
+        var upload = $('.page-write .add-img #page-img')[0];
+
+
+        upload.onchange = function () {
+            $('.page-write .add-box .add-img .upload-img-box').empty();
+
+            for(var i = 0; i < upload.files.length; i++){
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    if($('.page-write .upload-img-box img').length == 0) {
+                        $('.page-write .upload-img-box').append('' +
+                            '<img class="upload-img" src=' + e.target.result + '>' +
+                            ''
+                        );
+                    }else{
+                        $('.page-write .upload-img-box').append('' +
+                            '<div class="img-space"> </div>' +
+                            '<img class="upload-img" src=' + e.target.result + '>' +
+                            ''
+                        );
+                    }
+                };
+                reader.readAsDataURL(upload.files[i]);
+            }
+
+            if(upload.files.length == 0) {
+                $('.page-write .add-box .add-img').slideUp();
+            }
+        };
+
+
+
+    });
+
+    FileReader.onabort = function () {
+        alert();
+    };
+
+
+
+    if($('.add-box .add-img .upload-img-box').html === ''){
+        $('.add-box .add-img').slideUp();
+    }
+
 });
 $(".footer label[for='page-link']").click(function () {
-    $('.add-box .add-img').slideUp();
+    // $('.add-box .add-img').slideUp();
     $('.add-box .add-link').slideDown();
 });
