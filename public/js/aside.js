@@ -48,7 +48,6 @@ $(document).ready(function () {
         }
     });
 
-
     $( '.page, .last-page' ).click(function(event) {
         var temp = $(this);
         if(!$(event.target).is('img, button')){
@@ -74,6 +73,9 @@ $(document).ready(function () {
                 $('.story-setting').append('<button id="done-btn" class="f-basic">Done this story</button>');
                 $('.story-setting').append('<button id="delete-btn" class="f-basic">Delete this story</button>');
 
+                // 왜 이렇게 해야 하는지는 모르겠는데 이렇게 해야 작동함
+
+
                 var index = temp.index();
                 var booktitle =$('.book-title:eq('+ index +')');
             });
@@ -81,6 +83,9 @@ $(document).ready(function () {
             $('.right .aside .infor').slideDown('slow');
         }
     });
+
+    // var storyname_ =  $('.right .aside .infor').find('.story-name').html();
+    // $('.story-delete .del-name').empty().html(storyname_);
 
     // page의 정보 변경
     $(document).on('click', '#change-story-infor', function () {

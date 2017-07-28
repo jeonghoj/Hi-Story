@@ -1,5 +1,5 @@
 // New story 열기
-$('.right .aside .aside-btn #new-story-btn').click(function () {
+$(document).on('click', '.right .aside .aside-btn #new-story-btn', function () {
     $('.closeup').css({
         "visibility": "visible"
     });
@@ -12,7 +12,7 @@ $('.right .aside .aside-btn #new-story-btn').click(function () {
 });
 
 // New story 닫기
-$('.closeup .new-story #new-story-close').click(function () {
+    $(document).on('click', '.closeup .new-story #new-story-close', function () {
     $('.closeup').css({
         "visibility": "hidden"
     });
@@ -25,7 +25,7 @@ $('.closeup .new-story #new-story-close').click(function () {
 });
 
 // Story del 열기
-$('#delete-btn').click(function () {
+$(document).on('click', '#delete-btn', function () {
     $('#del-story-no').empty();
     var delstoryno=$('.story-no-infor').html();
     $('#del-story-no').html(delstoryno);
@@ -42,7 +42,7 @@ $('#delete-btn').click(function () {
 });
 
 // Story del 닫기
-$('.closeup .story-delete #story-delete-close').click(function () {
+$(document).on('click', '.closeup .story-delete #story-delete-close', function () {
     $('.closeup').css({
         "visibility": "hidden"
     });
@@ -55,7 +55,7 @@ $('.closeup .story-delete #story-delete-close').click(function () {
 });
 
 // Done 열기
-$('#done-btn').click(function () {
+$(document).on('click', '#done-btn', function () {
     $('.closeup').css({
         "visibility": "visible"
     });
@@ -65,7 +65,7 @@ $('#done-btn').click(function () {
 });
 
 // Done 닫기
-$('.closeup .story-done #story-done-close').click(function () {
+$(document).on('click', '.closeup .story-done #story-done-close', function () {
     $('.closeup').css({
         "visibility": "hidden"
     });

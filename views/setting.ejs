@@ -29,15 +29,20 @@
     </div>
     
     <div class="setting">
+
         <!--비밀번호 변경-->
         <div class="change-pw" id="set0">
             <div class="title f-empha">비밀번호 변경
                 <div class="small-nav f-basic" style="display: none;">현재 비밀번호가 올바르지 않습니다.</div>
             </div>
-            <input type="text" placeholder="현재 비밀번호">
-            <input type="text" placeholder="새로운 비밀번호">
-            <input type="text" placeholder="비밀번호 확인">
+            <form method="post" action=""
+                <input type="text" placeholder="현재 비밀번호">
+                <input type="text" placeholder="새로운 비밀번호">
+                <input type="text" placeholder="비밀번호 확인">
+                <input id="change-pw-comf" class="f-subSmall" type="submit" value="확인">
+            </form>
         </div>
+
         <!--구독 관리-->
         <div class="followers" id="set1">
             <div class="title f-empha">구독 관리
@@ -54,6 +59,7 @@
                 <input id="logout" class="f-subSmall" type="submit" value="Logout">
             </form>
         </div>
+
         <!--계정 삭제-->
         <div class="delete-id" id="set3">
             <div class="title f-empha" style="color: red;">계정 삭제
