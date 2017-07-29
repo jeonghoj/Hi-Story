@@ -17,5 +17,6 @@ router.get('/new_PW',controller.new_PW_page);
 
 router.post('/find_PW',controller.find_PW);
 router.post('/new_PW',controller.new_PW);
+router.post('/member_new_PW',passport.authenticate('jwtc',{session:false}),controller.member_new_PW);
 
 module.exports = router;

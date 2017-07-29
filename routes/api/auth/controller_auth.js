@@ -77,22 +77,20 @@ exports.login = (req,res) => {
         }
         return hasher({password:password,salt:user.Member_salt},(error, pass, salt, hash) => {
             if(hash === user.Member_PW) {
-                if(user.Member_EmailVerified===0)
-                {
+                if(user.Member_EmailVerified===0){
                     res.send(
                         '<script type="text/javascript">' +
                         'alert("이메일 인증을 하지 않았습니다");' +
                         'document.location.href="/";' +
                         '</script>');
-                }else {
+                }else{
                     // id로 사람 구분
                     const payload = {authID: user.authID};
                     const token = jwt.sign(payload, config.secret,{expiresIn: '1440m'});
                     res.cookie('jwt',token);
                     res.redirect('/action');
                 }
-
-            } else {
+            }else{
                 res.status(401).send(
                     '<script type="text/javascript">' +
                     'alert("패스워드가 일치하지 않습니다");' +
@@ -224,6 +222,46 @@ exports.new_PW=(req,res)=>{
                     }
                 });
             });
+        }
+    });
+};
+
+// setting에서 비밀번호를 바꿧을때의 url
+exports.member_new_PW=(req,res)=>{
+    const old_pw=req.body.old_pw;
+    const new_pw=req.body.new_PW;
+    db.query('select * from member where Memeber_ID=?',[req.user.Member_ID],(error,results)=>{
+        if(error) console.log(error);
+        const user = results[0];
+        if(!user){
+            hasher({password:old_pw,salt:user.Member_salt},(error,pass,salt,hash)=>{
+                if(error) console.log(error);
+                // 예전의 비밀번호와 쓴 비밀번호가 같을 때 수행
+                if(hash===user.Member_PW){
+                    hasher({password:new_pw},(error,pass,salt,hash)=>{
+                       if(error) console.log(error);
+                       const new_PW={
+                           Member_PW:hash,
+                           Member_salt:salt
+                       };
+                       db.query('update member set ? where Member_ID=?',
+                           [new_PW,req.user.Member_ID],(error,results)=>{
+                           if(error) console.log(error);
+                           return res.send(
+                               '<script type="text/javascript">' +
+                               'alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요");' +
+                               'document.location.href="/";' +
+                               '</script>');
+                       })
+                    });
+                }
+            })
+        }else{
+            return res.send(
+                '<script type="text/javascript">' +
+                'alert("비밀번호가 맞지 않습니다.");' +
+                'document.location.href="/";' +
+                '</script>');
         }
     });
 };
