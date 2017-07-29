@@ -215,9 +215,12 @@
         <div class='story-delete'>
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
-            <p class="del-nav">"<span class="f-empha del-name">story name</span>"를 입력하세요.</p>
-            <input type="text" id="confirm" placeholder="confirm massage">
-            <input type="submit">
+            <form id="story-delete">
+                <div id="page-del-story-no" style="display: none"><%=Story_No%></div>
+                <p class="del-nav">"<span class="f-empha del-name"><%=page[0].Story_Title%></span>"를 입력하세요.</p>
+                <input type="text" id="confirm" placeholder="confirm massage">
+                <input type="submit">
+            </form>
         </div>
     </div>
 
@@ -228,7 +231,6 @@
     <script src="/js/aside.js"></script>
     <script src="/js/closeup.js"></script>
     <script>
-
 //      Editor submit
         $("#new-page").submit(function () {
             event.preventDefault();
@@ -328,6 +330,28 @@
                     }
                 }
             })
+        })
+
+        $("#story-delete").submit(function () {
+            event.preventDefault();
+            var del_story_no={
+                Story_No:$('#page-del-story-no').html()
+            };
+            $.ajax({
+                url:"/delete_story",
+                type:"post",
+                data:del_story_no,
+                success:function (result) {
+                    if(result){
+                        alert('성공적으로 삭제되었습니다');
+                        location.replace('/action');
+                    }else{
+                        alert('일시적으로 오류가 발생했습니다');
+                        location.replace('/action');
+                    }
+                }
+            })
+            return false;
         })
     </script>
 

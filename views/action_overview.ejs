@@ -207,10 +207,10 @@
             <a href='#' id='story-delete-close'><img src='/img/icon/ic_clear_black_24px.svg'></a>
             <!--TODO: 삭제하는 story의 story name을 받아와야 한다.-->
             <form id="story-delete">
-            <div id="del-story-no" style="display: none"><%=(data) ? data[0].Story_No : ''%></div>
-            <p class="del-nav">"<span class="f-empha del-name"><%=(data) ? data[0].Story_Title : 'story없음'%></span>"를 입력하세요.</p>
-            <input type="text" id="confirm" placeholder="confirm massage">
-            <input type="submit">
+                <div id="del-story-no" style="display: none"><%=(data) ? data[0].Story_No : ''%></div>
+                <p class="del-nav">"<span class="f-empha del-name"><%=(data) ? data[0].Story_Title : 'story없음'%></span>"를 입력하세요.</p>
+                <input type="text" id="confirm" placeholder="confirm massage">
+                <input type="submit">
             </form>
         </div>
     </div>
