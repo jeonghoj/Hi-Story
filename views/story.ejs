@@ -12,7 +12,7 @@
 
 </head>
 
-<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+<body>
 
     <div class="nav">
         <div class="logo"><a href="/action" class="f-logo"><img src="/img/logo/logo.png">Story</a></div>
@@ -60,6 +60,7 @@
                                 <%}%>
                             <%}%>
                         <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
+                        <!--<div class="img-num"></div>-->
                     </div>
                         <%}%>
                         <%- page[i].Page_Content%>
@@ -115,7 +116,7 @@
                     <input type="hidden" name="Story_No"
                            value="<%=Story_No%>">
                     <div class="textarea"><textarea name="Page_Content" id="editor1"></textarea></div>
-                    <div class="add-box">
+                    <div class="add-box" class="story-list" oncontextmenu="return true" ondragstart="return true" onselectstart="return true">
                         <div class="add-img" style="display: none;">
                             <!--<input class="upload-name" value="Image 저장" disabled="disabled" style="width: 659px;">-->
                             <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
@@ -153,12 +154,6 @@
                     </div>
                     <hr class="hr-infor">
                     <div id="insert-changing" style="display: none;">
-                        <!--
-                        1. slide Down with Save and cancel
-                        2. Edit... ===> disable
-                        3. book, title, pub
-                        4. slide Up
-                        -->
                         <select name="chng-book" id="chng-book"></select>
                         <div id="edit-story-no" style="display: none"><%=page[0].Story_No%></div>
                         <input name="edit-story-title" type="text" value="<%=page[0].Story_Title%>">
@@ -301,10 +296,46 @@
         });
 //      Edit page
         $(document).on('click', '.story-setting #page-edit', function () {
+
+            // 최근 page의 text를 받아온다.
             var text = $('.page:last').html();
             CKEDITOR.instances.editor1.setData(text);
-//            console.log(text);
+
+            // Cancel Editing과 자리를 바꾼다.
+            $('.story-setting #page-edit').slideUp('fast', function () {
+                $('.story-setting #cancel-edit').delay(150).slideDown();
+            });
+
+            // img를 받아온다.
+            if($('.page:last-child .img-box>img').length != 0) {
+                $('.page-write .add-box .add-img').slideDown(250, function () {
+                    $('.page-write .upload-img-box').empty();
+                    for(var i=0; i<$('.page:last-child .img-box>img').length; i++) {
+                        if($('.page-write .upload-img-box img').length == 0) {
+                            $('.page-write .upload-img-box').append('' +
+                                '<img class="upload-img" src=' + $(".page:last-child .img-box>img:eq(" + i + ")").attr("src") + '>' +
+                                ''
+                            );
+                        }else {
+                            $('.page-write .upload-img-box').append('' +
+                                '<div class="img-space"> </div>' +
+                                '<img class="upload-img" src=' + $(".page:last-child .img-box>img:eq(" + i + ")").attr("src") + '>' +
+                                ''
+                            );
+                        }
+                    }
+                });
+            }
+
+            // link를 받아온다.
+
         });
+
+//      Cancel Editing
+        $(document).on('click', '.story-setting #cancel-edit', function () {
+            location.reload();
+        })
+
 //      Edit Story
         $("#edit-story-btn").click(function () {
             var storydata={

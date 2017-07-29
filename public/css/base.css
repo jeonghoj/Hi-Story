@@ -166,6 +166,7 @@ input, textarea {
     display: block;
 }
 .right .aside .infor .story-setting button {
+    display: block;
     width: 220px;
     text-align: left;
     padding-left: 10px;
@@ -538,6 +539,9 @@ mark {
     background: rgba(240, 240, 240, 1);
     border: 1px solid rgba(200, 200, 200, 1);
 }
+.left .page-write .footer *:last-child {
+    width: 160px;
+}
 .left .page-write .footer *:hover {
     background: rgba(200, 200, 200, 1);
 }
@@ -550,8 +554,9 @@ mark {
     height: 100px;
 }
 .left .page-write .add-box .add-img .upload-img-box img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 100px;
+    max-height: 100px;
+    border: 1px solid rgba(240, 240, 240, 1);
 }
 .left .page-write .add-box .add-img .upload-img-box .img-space{
     display: inline-block;
@@ -561,7 +566,7 @@ mark {
     padding: 0;
 }
 .left .page-write .add-box .add-link input {
-    width: 659px;
+    width: 660px;
 }
 .left .page-write .sub-nav {
     padding-left: 3px;

@@ -16,6 +16,19 @@ $("document").ready(function () {
             })
         }
     });
+    $(document).ready(function () {
+        var leftBot = left.offset().top+left.height();
+        var rightBot = right.offset().top+right.height();
+
+        if (leftBot >= $(window).scrollTop()+600) {
+            right.animate({
+                top: $(window).scrollTop() + "px"
+            }, {
+                queue: false,
+                duration: 350
+            })
+        }
+    })
 });
 $(document).ready(function () {
 
@@ -67,14 +80,13 @@ $(document).ready(function () {
                     if( (temp.is($('.page:last')) && (!($('.last-page').length))) || (temp.is($('.last-page'))))
                     {
                         $('.story-setting').append('<button id="page-edit" class="f-basic">Edit this page</button>');
+                        $('.story-setting').append('<button id="cancel-edit" class="f-basic" style="display: none;">Cancel editing</button>');
+
                     }
                 }
                 $('.story-setting').append('<hr class="hr-infor">');
                 $('.story-setting').append('<button id="done-btn" class="f-basic">Done this story</button>');
                 $('.story-setting').append('<button id="delete-btn" class="f-basic">Delete this story</button>');
-
-                // 왜 이렇게 해야 하는지는 모르겠는데 이렇게 해야 작동함
-
 
                 var index = temp.index();
                 var booktitle =$('.book-title:eq('+ index +')');
