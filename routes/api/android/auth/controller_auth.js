@@ -63,7 +63,6 @@ exports.register = (req,res) => {
 };
 
 exports.login = (req,res) => {
-    // TODO 웹에서 널값 못보내도록 막기처리 해줘야
     const { userid , password } = req.body;
     db.query('select * from member where Member_ID=?',[userid],(error,results) => {
         if(error) console.log(error);

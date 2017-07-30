@@ -18,13 +18,10 @@ const upload = multer({
 });
 const passport = require(cwd+'/config/passport');
 //TODO 다른 사용자가 url로 다른 사용자의 글에 접근시 401 unauthorized 작업
-//FIXME 안드로이드 인증방식은 아예 따로 둬야한다, 두개 놓으니까 먼저꼐 인식되서 인증이 되지않는다
 router.get('/',controller.intro);
 router.get('/signup',controller.signup);
 router.post('/logout',controller.logout);
 router.post('/check_idOverlap',controller.check_idOverlap);
-
-// TODO 그 사용자만 이미지 로드할수있게 수정
 
 router.get('/imageload',controller.imageload);
 
