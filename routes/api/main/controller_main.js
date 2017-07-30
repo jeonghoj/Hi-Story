@@ -126,7 +126,8 @@ exports.update_story_info=(req,res)=>{
 //스토리 완료 & 마지막 글 쓰기
 exports.update_story_done=(req,res)=>{
     console.log('업로드된 파일',req.files);
-    const {Story_No,Page_Link}=req.body;
+    const Story_No=req.body.Story_No;
+    const Page_Link=xss(req.body.Page_Link);
     const Page_Content=xss(req.body.Page_Content);
     // Page_Done을 1으로 하는 페이지를 삽입
     const pagedata = {
@@ -209,7 +210,7 @@ exports.update_page=(req,res)=>{
     const updatepagedata={
         Page_Content:xss(req.body.Page_Content),
         Page_UpdateDate:new Date(),
-        Page_Link:req.body.Page_Link,
+        Page_Link:xss(req.body.Page_Link),
     };
     // Page_Last가 1인지 확인
     db.query('select Page_Last from page where Member_No=? and Page_No=?',
@@ -416,7 +417,7 @@ exports.insert_page=(req,res)=>{
     console.log('업로드된 파일',req.files);
     const Story_No=req.body.Story_No;
     const Page_Content=xss(req.body.Page_Content);
-    const Page_Link=req.body.Page_Link;
+    const Page_Link=xss(req.body.Page_Link);
     let Page_Imgcount;
     if(req.files){
         Page_Imgcount=req.files.length;
@@ -582,7 +583,6 @@ exports.action= (req,res)=> {
 };
 // 히스토리
 exports.history=(req,res)=>{
-    // TODO 널값처리 해줘야
     let historydata = null;
     db.query('select book.Book_No,Book_Title,Book_Public from book where Member_No=?',
         [req.user.Member_No],(error,results)=>{

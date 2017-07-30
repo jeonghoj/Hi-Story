@@ -163,12 +163,11 @@ exports.update_member_profile=(req,res)=>{
 };
 
 exports.insert_book=(req,res)=>{
-    // TODO: Book_Public들어가야함!
     const new_book={
         Member_No:req.user.Member_No,
         Book_Title:req.body.Book_Title,
         Book_Author:req.user.Member_Name,
-        // Book_Public : req.body.Book_Public ? 1 : 0,
+        Book_Public : req.body.Book_Public ? 1 : 0,
     };
     db.query('insert into book set ? ',[new_book],(error,results)=>{
         if(error) console.log(error);
@@ -443,7 +442,7 @@ exports.insert_page=(req,res)=>{
     const Page_Content=xss((req.body.Page_Content).slice(2));
     let Page_Link,Page_Imgcount;
     if(req.body.Page_Link){
-        Page_Link=(req.body.Page_Link).slice(2);
+        Page_Link=xss((req.body.Page_Link).slice(2));
     }
     if(req.files){
         Page_Imgcount=req.files.length;
@@ -678,7 +677,7 @@ exports.update_page=(req,res)=>{
     const Page_Content=xss((req.body.Page_Content).slice(2));
     let Page_Link=null;
     if(req.body.Page_Link){
-        Page_Link=((req.body.Page_Link).slice(2));
+        Page_Link=xss((req.body.Page_Link).slice(2));
     }
     // 지울 이미지의 번호를 delete_Image_No 변수에 push한다.
     // 지울 이미지는 array로 받는다. 만약 단일값이라면 array로 만들어서 담아준다

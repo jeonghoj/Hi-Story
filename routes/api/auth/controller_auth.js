@@ -105,8 +105,8 @@ exports.verifyemail=(req,res)=>{
     jwt.verify(emailtoken,config.secret,(error,decoded)=>{
         if(error) console.log(error);
         if(decoded===undefined){
-            // TODO:토큰이 만료되었을때 접속을 시도하면 그 사용자를 지우고, 
-            // TODO:만약 이메일 인증된 사용자가 다시 접근을 하려고했으면 지우지 않게끔 해준다
+            // 토큰이 만료되었을때 접속을 시도하면 그 사용자를 지우고,
+            // 만약 이메일 인증된 사용자가 다시 접근을 하려고했으면 지우지 않게끔 해준다
             res.json({message:'토큰이 만료되었거나 잘못된 접근입니다.',result:false});
             res.send(
                 '<script type="text/javascript">' +
@@ -186,7 +186,7 @@ exports.find_PW=(req,res)=>{
 
 };
 exports.new_PW=(req,res)=>{
-    // TODO 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
+    // 웹에서 Get으로 전달된 토큰을 받아서 같이 보내준다.
     const token=req.body.token;
     const newpassword=req.body.password;
     console.log(req.body);

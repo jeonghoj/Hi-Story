@@ -62,6 +62,13 @@
                         <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
                     </div>
                         <%}%>
+                    <!--FIXME 링크 조건 null undefined "" 안해서 문제 발생소지?-->
+                        <%if(page[i].Page_Link !== null){%>
+                    <div class="link-box">
+                        <span class="f-empha">link title</span><span>short imformation</span>
+                        <span class="f-subSmall"><%=page[i].Page_Link%></span>
+                    </div>
+                        <%}%>
                         <%- page[i].Page_Content%>
                 </div>
                         <% if(page[i].Page_Last==1 || page[page.length-2].Page_Done===1){%>
@@ -120,7 +127,7 @@
                             <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 659px;">
                             <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
                         </div>
-                        <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+                        <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" name="Page_Link" id="page-link"></div>
                     </div>
                     <div class="sub-nav f-sub" style="display: none;">Text를 입력해야 합니다.</div>
                     <div class="footer">
@@ -195,7 +202,9 @@
                     <input class="upload-name" value="Image 저장" disabled="disabled" style="width: 680px;">
                     <input type="file" name="Page_Image" id="page-img" multiple style="display: none;">
                 </div>
-                <div class="add-link" style="display: none;"><input type="text" placeholder="URL/Link 저장" id="page-link"></div>
+                <div class="add-link" style="display:none;">
+                    <input type="text" placeholder="URL/Link 저장" name="Page_Link" id="page-link">
+                </div>
             </div>
             <div class="footer">
                 <!--TODO 첨부 누르면 파일 첨부창 보이도록하기-->
