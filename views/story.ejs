@@ -66,7 +66,8 @@
                     <!--FIXME 링크 조건 null undefined "" 안해서 문제 발생소지?-->
                         <%if(page[i].Page_Link !== null){%>
                     <div class="link-box">
-                        <span class="f-empha">link title</span><span>short imformation</span>
+                        <span class="f-empha">link title</span>
+                        <span>short imformation</span>
                         <span class="f-subSmall"><%=page[i].Page_Link%></span>
                     </div>
                         <%}%>
@@ -305,11 +306,20 @@
                 }
             }
         });
+//      link style 조정
+        $(document).ready(function () {
+            for(var i=0; i<$('.page').length; i++) {
+                if($('.page').eq(i).has('.link-box').length > 0) {
+                    $('.page').eq(i).find('.link-box').css( 'margin-bottom', '7px' );
+                }
+            }
+        });
+
 //      Edit page
         $(document).on('click', '.story-setting #page-edit', function () {
 
             // 최근 page의 text를 받아온다.
-            var text = $('.page:last').html();
+            var text = $('.page:last>*:not(.link-box)').html();
             CKEDITOR.instances.editor1.setData(text);
 
             // Cancel Editing과 자리를 바꾼다.
@@ -339,6 +349,12 @@
             }
 
             // link를 받아온다.
+
+            if($('.page:last-child .link-box').length != 0) {
+                var linkUrl = $('.page:last-child .link-box span:last-child').text();
+                $('.add-box .add-link').slideDown();
+                $('.add-box .add-link #page-link').val(linkUrl);
+            }
 
         });
 
@@ -395,6 +411,16 @@
             return false;
         })
     </script>
+
+    <script>
+//      link crawling
+    $(document).ready(function () {
+//        var cheerio = require('cheerio');
+//        var rest = require("restler");
+
+    });
+    </script>
+
 </body>
 
 </html>

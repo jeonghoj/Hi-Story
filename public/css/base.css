@@ -154,13 +154,24 @@ input, textarea {
 .right .aside .infor .date {
     text-align: right;
 }
-.right .aside .infor .score {
-    display: flex;
-    justify-content: center;
-}
 .right .aside .infor .score div {
-    width: 78px;
-    text-align: center;
+    padding: 0px 0px 0px 10px;
+    font-weight: 700;
+}
+.right .aside .infor .score span {
+    color: rgba(100, 100, 100, 1);
+    font-weight: 500;
+}
+.right .aside .infor .score .cnt-name {
+    display: inline-block;
+    width: 80px;
+}
+.right .aside .infor .score .cnt {
+    display: inline-block;
+    width: 50px;
+}
+.right .aside .infor .score .cite-btn {
+
 }
 .right .aside .infor .story-setting {
     display: block;
@@ -205,9 +216,13 @@ input, textarea {
 .right .aside #insert-changing {
     margin-top: 5px;
 }
-.right .aside #insert-changing * {
+.right .aside #insert-changing>* {
     width: 200px;
     margin: 2px 13px 1px 13px;
+}
+.right .aside #insert-changing option {
+    display: block;
+    width: 200px !important;
 }
 .right .aside #insert-changing input[type="button"],
 .right .aside #insert-changing label {
@@ -240,6 +255,9 @@ input, textarea {
 .hr-infor {
     border: 1px dotted rgba(50, 50, 50, .2);
     margin-bottom: 0px;
+}
+.infor .hr-infor {
+    margin-top: 0px;
 }
 
 /* left ================================================== :) */
@@ -567,6 +585,7 @@ mark {
 }
 .left .page-write .add-box .add-link input {
     width: 660px;
+    padding: 0px 0px 0px 14px;
 }
 .left .page-write .sub-nav {
     padding-left: 3px;

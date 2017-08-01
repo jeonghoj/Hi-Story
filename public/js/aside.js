@@ -106,13 +106,35 @@ $(document).ready(function () {
             url:'/list_book',
             type:'post',
             success:function (data) {
-                for(var i =0; i<data.length;i++){
-                    $('#chng-book').append("<option value="+ data[i].Book_No +">"+data[i].Book_Title+"</option>");
+                for(var i =0; i<data.length; i++){
+                    var temp = data[i].Book_Title;
+
+                    // temp 길이 알아내기
+                    $('body').append("<sapn>" + temp + "</sapn>");
+                    var width = $('body sapn').width();
+                    var len = $('body sapn').text().length;
+                    $('body sapn').remove();
+
+                    // temp 절단
+                    while(true) {
+                        if(width > 240){
+                            temp = temp.substr(0, len-1);
+                            // 값 새로고침
+                            $('body').append("<sapn>" + temp + "</sapn>");
+                            width = $('body sapn').width();
+                            len = $('body sapn').text().length;
+                            $('body sapn').remove();
+                        }else {
+                            break;
+                        }
+                    }
+
+                    $('#chng-book').append("<option value="+ data[i].Book_No +">"+temp+"</option>");
                 }
             }
         });
+        // option 길이 조절
 
-        // console.log();
         $(this).css({
             'opacity': '.9'
         });
