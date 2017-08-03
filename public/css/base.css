@@ -133,6 +133,7 @@ input, textarea {
 .right .footer {
     padding-top: 28px;
     font-weight: 200;
+    opacity: .3;
 }
 .right .aside div {
     padding: 2px;
