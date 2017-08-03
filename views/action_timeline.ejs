@@ -43,7 +43,11 @@
                 <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toLocaleString().slice(0, 10)%></div><%}%>
                 <div class="page">
                     <div class="book-title" style="display: none"><%=tldata[i].Book_Title%></div>
-                    <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
+                    <div class="story-title-container">
+                        <div class="marquee">
+                            <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
+                        </div>
+                    </div>
                     <div class="story-date" style="display: none"><%=tldata[i].Story_DateStart.toLocaleString().slice(0, 10)%></div>
                     <div class='story-no' style='display: none'><%=tldata[i].Story_No%></div>
                     <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
@@ -77,14 +81,16 @@
                     <div class="date f-subSmall">2017.00.00</div>
                     <hr class="hr-infor">
                     <div class="score">
-                        <div class="score-num citation f-subSmall">Citation
-                            <div class="citation-num f-empha">0</div>
+                        <div class="f-subSmall">인용 (Citation) </div>
+                        <div class="history-cite f-subSmall">
+                            <span class="cnt-name">history</span>
+                            <span class="cnt">14</span>
+                            <span class="cite-btn"></span>
                         </div>
-                        <div class="score-num follow f-subSmall">Follow
-                            <div class="follow-num f-empha">0</div>
-                        </div>
-                        <div class="score-num view f-subSmall">View
-                            <div class="view-num f-empha">0</div>
+                        <div class="page-cite f-subSmall">
+                            <span class="cnt-name">page</span>
+                            <span class="cnt">14</span>
+                            <span class="cite-btn">citation</span>
                         </div>
                     </div>
                     <hr class="hr-infor">
@@ -108,6 +114,20 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/aside.js"></script>
+
+    <script>
+        // marquee 붙이기
+        $(document).on('click', '.page', function () {
+            for(var i=0; i<$('.story-title-container div a').length; i++) {
+                $('.story-title-container div:eq('+ i +')').removeClass('marquee');
+            }
+            if(!$(event.target).is('img, button')) {
+                if($(this).find('.story-title-container div a').width() > 660 ) {
+                    $(this).find('.story-title-container div').toggleClass('marquee');
+                }
+            }
+        });
+    </script>
 
 </body>
 

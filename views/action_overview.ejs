@@ -343,14 +343,6 @@
         });
 
         // marquee 붙이기
-//        $(document).ready(function () {
-////            console.log($('.story-title div a:eq(1)').width());
-//            for(var i=0; i<$('.story-title div a').length; i++) {
-//                if($('.story-title div a:eq('+ i +')').width() < 618 ) {
-//                    $('.story-title div:eq('+ i +')').toggleClass('marquee');
-//                }
-//            }
-//        });
         $(document).on('click', '.story', function () {
             for(var i=0; i<$('.story-title div a').length; i++) {
                 $('.story-title div:eq('+ i +')').removeClass('marquee');

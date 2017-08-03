@@ -72,7 +72,11 @@
                     </div>
                     <div class="book-inside book-item">
                         <div class="book-header">
-                            <div class="book-title f-title"><%=historydata[i].Book_Title%></div>
+                            <div class="book-title-container">
+                                <div>
+                                    <span class="book-title f-title"><%=historydata[i].Book_Title%></span>
+                                </div>
+                            </div>
                             <div class="active">
                                 <a href="#" class="go-setting"><img src="/img/icon/ic_settings_black_24px.svg" alt=""></a>
                             </div>
@@ -83,7 +87,9 @@
                         <div class="book-stories">
                             <div class="book-story-slide">
                                 <% for(var j=0;j<historydata[i].Story.length;j++){%>
-                                <a href="/story/<%=historydata[i].Story[j].Story_No%>" class="story-title f-empha"><%=historydata[i].Story[j].Story_Title%></a>
+                                <div>
+                                    <a href="/story/<%=historydata[i].Story[j].Story_No%>" class="story-title f-empha"><%=historydata[i].Story[j].Story_Title%></a>
+                                </div>
                                 <%}%>
                             </div>
                         </div>
@@ -214,6 +220,51 @@
                     });
                 }
             })
+
+        </script>
+
+        <script>
+            // marquee 붙이기 - book title
+            $('.book-header').hover(function () {
+                for(var i=0; i<$('.book-header').length; i++) {
+                    $('.book-header .book-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+                if($(this).find('.book-title-container div span').width() > 170 ) {
+                    $(this).find('.book-title-container div').toggleClass('marquee');
+                }
+            }, function () {
+                for(var i=0; i<$('.book-header').length; i++) {
+                    $('.book-header .book-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+            });
+
+            $(document).ready(function () {
+                for(var i=0; i<$('.book-story-slide .story-title').length; i++) {
+                    if($('.book-story-slide .story-title').eq(i).height() > 25) {
+                        var temp = $('.book-story-slide .story-title').eq(i);
+                        $('.book-story-slide .story-title').eq(i).after('' +
+                            '<div class="story-title-container">' +
+                            '   <div>' +
+                                '</div>' +
+                            '</div>')
+                        $('.book-story-slide .story-title').eq(i).next().find('div').append(temp);
+                    }
+                }
+            });
+            // marquee 붙이기 - book의 story title
+            $(document).on('mouseover', '.story-title-container', function () {
+                for(var i=0; i<$('.story-title-container a').length; i++) {
+                    $('.book-story-slide .story-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+                if($(this).find('div a').width() > 230 ) {
+                    $(this).find('div').toggleClass('marquee');
+                }
+            });
+            $(document).on('mouseout', '.story-title-container a', function () {
+                for(var i=0; i<$('.story-title-container a').length; i++) {
+                    $('.book-story-slide .story-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+            });
 
         </script>
 

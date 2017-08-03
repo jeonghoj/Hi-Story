@@ -370,12 +370,6 @@ input, textarea {
     animation: marquee 12s linear;
 }
 
-@keyframes marquee {
-    0% { left: 0; }
-    33% { left: 0; }
-    100% { left: -100%; }
-}
-
 .left .story-list .story .story-title a {
     text-decoration: none;    
 }
@@ -441,8 +435,21 @@ mark {
 .page:hover {
     background: rgba(240, 240, 240, 1);
 }
-.left .page-list .page .story-title {
-    display: inline;
+.left .page-list .page .story-title-container {
+    height: 24px;
+    width: 662px;
+    overflow: hidden;
+    position: relative;
+}
+.left .page-list .page .story-title-container div {
+    display: block;
+    width: 200%;
+    height: 24px;
+    position: absolute;
+    overflow: hidden;
+}
+.left .page-list .page .story-title-container .marquee {
+    animation: marquee 12s linear;
 }
 .hr-page {
     border: 1px dotted rgba(51, 51, 51, .1);
@@ -663,8 +670,26 @@ mark {
     height: 50px;
     display: flex;
     padding: 14px;
-    align-items: center;
+    text-align: start;
+    /*align-items: center;*/
     justify-content: space-between;
+}
+.book-list .a-book .book-slide .book-item .book-title-container {
+    height: 28px;
+    width: 180px;
+    overflow: hidden;
+    position: relative;
+}
+.book-list .a-book .book-slide .book-item .book-title-container div {
+    display: block;
+    width: 200%;
+    height: 28px;
+
+    position: absolute;
+    overflow: hidden;
+}
+.book-list .a-book .book-slide .book-item .book-title-container .marquee {
+    animation: marquee-history 5s linear;
 }
 .book-list .a-book .book-slide .book-inside .book-header .go-setting {
     visibility: hidden;
@@ -679,7 +704,7 @@ mark {
 
 .book-list .a-book .book-slide .book-inside .story-title {
     height: 28px;
-    display: flex;
+    /*display: flex;*/
     justify-content: center;
     align-items: center;
 }
@@ -715,8 +740,25 @@ mark {
 .book-list .a-book .book-inside .book-stories .book-story-slide {
     position: relative;
 }
-.book-list .a-book .book-inside .book-stories .book-story-slide a:hover{
+.book-list .a-book .book-inside .book-stories .book-story-slide div:hover{
     background: rgba(245, 245, 245, 1);
+}
+.book-list .a-book .book-inside .book-stories .book-story-slide .story-title-container {
+    height: 28px;
+    width: 232px;
+    overflow: hidden;
+    position: relative;
+}
+.book-list .a-book .book-inside .book-stories .book-story-slide .story-title-container div {
+    display: block;
+    width: 200%;
+    height: 28px;
+
+    position: absolute;
+    overflow: hidden;
+}
+.book-list .a-book .book-inside .book-stories .book-story-slide .marquee {
+    animation: marquee-history 10s linear;
 }
 .book-list .last-book .search .search-box {
     border: none;
@@ -1025,4 +1067,16 @@ label .inactive {
 .setting input[type='button']:hover,
 .setting input[type='submit']:hover {
     background: rgba(200, 200, 200, 1);
+}
+
+/* Animation ================================================== :) */
+@keyframes marquee {
+    0% { left: 0; }
+    33% { left: 0; }
+    100% { left: -100%; }
+}
+@keyframes marquee-history {
+    0% { left: 0; }
+    5% { left: 0; }
+    100% { left: -100%; }
 }
