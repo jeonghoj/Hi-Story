@@ -3,20 +3,10 @@ $(document).on('click', '.go-setting', function () {
     $(event.target).parent().parent().parent().parent().parent().toggleClass('now-inside now-setting');
 });
 $(document).on('click', '.go-inside', function () {
-    if($('.modi-title input').val() === "") {
-        event.preventDefault();
-        $(this).parent().parent().parent().find('.modi-title').fadeToggle('fast').fadeToggle('fast');
-    }else {
-        $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
-    }
+    $(event.target).parent().parent().parent().parent().parent().toggleClass('now-setting now-inside');
 });
-$(document).on('click', '.insert-btn .cls', function () {
-    if($('.modi-title input').val() === "") {
-        event.preventDefault();
-        $(this).parent().parent().parent().find('.modi-title').fadeToggle('fast').fadeToggle('fast');
-    }else {
-        $(event.target).parent().parent().parent().toggleClass('now-setting now-inside');
-    }
+$(document).on('click', '.insert-btn .can', function () {
+    $(event.target).parent().parent().parent().toggleClass('now-setting now-inside');
 });
 
 

@@ -615,6 +615,7 @@ mark {
     top: 2px;
     height: 30px;
     margin-left: -1px;
+    opacity: .7;
     border: 1px solid rgba(160, 160, 160, 1);
     background: rgba(240, 240, 240, 1);
 }
