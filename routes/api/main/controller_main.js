@@ -591,9 +591,7 @@ exports.timeline=(req,res)=>{
 };
 
 exports.timeline_update=(req,res)=>{
-    console.log(req.body);
     const page= req.body.page;
-    console.log('페이지값',page);
     let tldata=[];
     // 타임라인 데이터 쿼리 추후
     db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate,Page_Link ' +
@@ -601,7 +599,6 @@ exports.timeline_update=(req,res)=>{
         'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
         'Order By page.Page_UpdateDate DESC limit ?,5',[req.user.Member_No,15+page*5],(error,results)=>{
         if(error) console.log(error);
-        console.log('뽑을값',results);
         if(results.length===0){
             res.json(null);
         }else{
