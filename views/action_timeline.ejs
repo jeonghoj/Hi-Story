@@ -127,7 +127,6 @@
                     type:"post",
                     data:current_page,
                     success:function (results) {
-                        console.log(results);
                         if(results!==null) {
                             for (var i = 0; i < results.length; i++) {
                                 var append_page='';
@@ -170,7 +169,6 @@
                                 }else{
                                     var time= new Date(results[i].Page_UpdateDate).toLocaleDateString().split('.');
                                     var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
-                                    console.log(date);
                                     append_page+="<div class=\"page-list\">"
                                     append_page+="<div class=\"date f-subSmall\">"+ date +"</div>"
                                     append_page+="<div class=\"page\">"
