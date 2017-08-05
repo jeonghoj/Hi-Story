@@ -131,7 +131,7 @@
                     '                            <label class="f-sub"><input type="checkbox" style="display: none;">공개</label>' +
                     '                        </div>' +
                     '                        <div class="insert-btn">' +
-                    '                            <input type="button" class="edit-book-btn f-sub" value="save">' +
+                    '                            <input type="button" class="new-book-btn f-sub" value="save">' +
                     '                            <input type="button" class="f-sub cls" value="cancel">' +
                     '                        </div>' +
                     '                        <br>' +
@@ -144,7 +144,7 @@
                     '                    </div>' +
                     '                    <div class="book-inside book-item">' +
                     '                        <div class="book-header">' +
-                    <!--'                            <div class="book-title f-title"> </div>' +-->
+//                    <!--'                            <div class="book-title f-title"> </div>' +-->
                     '                            <div class="active">' +
                     '                                <a href="#" class="go-setting"><img src="/img/icon/ic_settings_black_24px.svg" alt=""></a>' +
                     '                            </div>' +
@@ -208,7 +208,6 @@
                         type:"post",
                         data: editbook,
                         success:function (data) {
-                            console.log(data);
                             if(data){
                                 location.replace('/history');
                             }else{
@@ -219,6 +218,26 @@
                         }
                     });
                 }
+            })
+
+            $(document).on('click', '.new-book-btn', function () {
+                var Book_Title=$(this).parent().parent().find('.edit-book-title').val();
+                var Book_Public=$(this).parent().parent().find('.edit-book-public').is(":checked") ? 0:1;
+                var newbook = {Book_Title:Book_Title,Book_Public:Book_Public};
+                $.ajax({
+                    url:"insert_book",
+                    type:"post",
+                    data:newbook,
+                    success:function (result) {
+                        if(result!==null && result!==""){
+                            location.replace('/history');
+                        }else{
+                            alert("오류 발생");
+                            location.replace('/history');
+                        }
+
+                    }
+                })
             })
 
         </script>
