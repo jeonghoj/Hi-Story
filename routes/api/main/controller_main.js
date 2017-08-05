@@ -624,7 +624,6 @@ exports.timeline_update=(req,res)=>{
                         }
                         if(i===tldata.length-1){
                             // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                            console.log(tldata.length);
                             return res.json(tldata);
                         }
                     }
