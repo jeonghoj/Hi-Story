@@ -59,12 +59,12 @@
                         </div>
                         <div class="insert-btn">
                             <input type="button" class="edit-book-btn f-sub" value="save">
-                            <input type="button" class="f-sub cls" value="cancel">
+                            <input type="button" class="f-sub can" value="cancel">
                         </div>
                         <br>
                         <div class="delete">
                             <label><input type="button" style="display: none;">
-                                <span class="typ f-sub">삭제</span>
+                                <span class="typ f-sub" style="color: rgba(200, 140, 140, 1)">삭제</span>
                                 <span class="del-nav f-subSmall" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>
                             </label>
                         </div>
@@ -72,7 +72,11 @@
                     </div>
                     <div class="book-inside book-item">
                         <div class="book-header">
-                            <div class="book-title f-title"><%=historydata[i].Book_Title%></div>
+                            <div class="book-title-container">
+                                <div>
+                                    <span class="book-title f-title"><%=historydata[i].Book_Title%></span>
+                                </div>
+                            </div>
                             <div class="active">
                                 <a href="#" class="go-setting"><img src="/img/icon/ic_settings_black_24px.svg" alt=""></a>
                             </div>
@@ -83,7 +87,9 @@
                         <div class="book-stories">
                             <div class="book-story-slide">
                                 <% for(var j=0;j<historydata[i].Story.length;j++){%>
-                                <a href="/story/<%=historydata[i].Story[j].Story_No%>" class="story-title f-empha"><%=historydata[i].Story[j].Story_Title%></a>
+                                <div>
+                                    <a href="/story/<%=historydata[i].Story[j].Story_No%>" class="story-title f-empha"><%=historydata[i].Story[j].Story_Title%></a>
+                                </div>
                                 <%}%>
                             </div>
                         </div>
@@ -96,6 +102,8 @@
             <%}%>
             <%}%>
 
+            <div class="last-book"></div>
+
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -104,51 +112,59 @@
 
         <script>
             $('.add').click(function () {
-                $('.last-book').before('' +
-                    '<div class="a-book">' +
-                        '<div class="book-slide now-setting">' +
-                            '<div class="book-setting book-item">' +
-                                '<div class="book-header">' +
-                                    '<div class="book-title f-title">Setting</div>' +
-                                        '<div>' +
-                                            '<a href="#" class="go-inside"><img src="/img/icon/ic_clear_black_24px.svg" alt=""></a>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '<div class="modi-title">' +
-                                    '<input type="text" placeholder="Book Title">' +
-                                '</div>' +
-                                '<div class="modi-pub">' +
-                                    '<label><input type="checkbox" style="display: none;">공개</label>' +
-                                '</div>' +
-                                '<div class="delete">' +
-                                    '<label><input type="button" style="display: none;">' +
-                                        '<span class="typ">삭제</span>' +
-                                        '<span class="del-nav" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>' +
-                                    '</label>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="book-inside book-item">' +
-                                '<div class="book-header">' +
-                                    '<div class="book-title f-title"> </div>' +
-                                        '<div class="active">' +
-                                            '<a href="#" class="go-setting"><img src="/img/icon/ic_settings_black_24px.svg" alt=""></a>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '<div class="btn">' +
-                                    '<a href="#" class="up-btn"><img src="/img/icon/ic_keyboard_arrow_up_black_24px.svg" alt=""></a>' +
-                                '</div>' +
-                                '<div class="book-stories">' +
-                                    '<div class="book-story-slide">' +
-                                        '<a href="/story/" class="story-title f-empha"></a>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="btn">' +
-                                    '<a href="#" class="down-btn"><img src="/img/icon/ic_keyboard_arrow_down_black_24px.svg" alt=""></a>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>');
+                $('.last-book').before('<div class="a-book" style="display: none;">' +
+                    '                <div class="book-slide now-setting">' +
+                    '                    <div class="book-setting book-item">' +
+                    '                        <div class="book-header">' +
+                    '                            <div class="book-title f-title">Setting</div>' +
+                    '                            <div>' +
+                    '                                <a href="#" class="go-inside"><img src="/img/icon/ic_clear_black_24px.svg" alt=""></a>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                        <div class="modi-no" style="display: none">' +
+                    <!--'                            <input class="edit-book-no" value=" ????? " disabled>' +-->
+                    '                        </div>' +
+                    '                        <div class="modi-title">' +
+                    '                            <input class="edit-book-title" type="text" placeholder="Book Title">' +
+                    '                        </div>' +
+                    '                        <div class="modi-pub">' +
+                    '                            <label class="f-sub"><input type="checkbox" style="display: none;">공개</label>' +
+                    '                        </div>' +
+                    '                        <div class="insert-btn">' +
+                    '                            <input type="button" class="edit-book-btn f-sub" value="save">' +
+                    '                            <input type="button" class="f-sub cls" value="cancel">' +
+                    '                        </div>' +
+                    '                        <br>' +
+                    '                        <div class="delete">' +
+                    '                            <label><input type="button" style="display: none;">' +
+                    '                                <span class="typ f-sub">삭제</span>' +
+                    '                                <span class="del-nav f-subSmall" style="font-size: .9rem; display: none;">history를 모두 삭제해야 합니다.</span>' +
+                    '                            </label>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '                    <div class="book-inside book-item">' +
+                    '                        <div class="book-header">' +
+                    <!--'                            <div class="book-title f-title"> </div>' +-->
+                    '                            <div class="active">' +
+                    '                                <a href="#" class="go-setting"><img src="/img/icon/ic_settings_black_24px.svg" alt=""></a>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                        <div class="btn">' +
+                    '                            <a href="#" class="up-btn"><img src="/img/icon/ic_keyboard_arrow_up_black_24px.svg" alt=""></a>' +
+                    '                        </div>' +
+                    '                        <div class="book-stories">' +
+                    '                            <div class="book-story-slide">' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                        <div class="btn">' +
+                    '                            <a href="#" class="down-btn"><img src="/img/icon/ic_keyboard_arrow_down_black_24px.svg" alt=""></a>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '            </div>');
+                $('.a-book:last').slideDown();
             });
+
         </script>
 
         <script>
@@ -183,22 +199,72 @@
                     Book_Title:Book_Title,
                     Book_Public:Book_Public
                 };
-                $.ajax({
-                    url:"/update_book_info",
-                    type:"post",
-                    data: editbook,
-                    success:function (data) {
-                        console.log(data);
-                        if(data){
-                            location.replace('/history');
-                        }else{
-                            alert('오류 발생');
-                            location.replace('/history');
-                        }
+                if($('.modi-title input').val() === "") {
+                    event.preventDefault();
+                    $(this).parent().parent().parent().find('.modi-title').fadeToggle('fast').fadeToggle('fast');
+                }else{
+                    $.ajax({
+                        url:"/update_book_info",
+                        type:"post",
+                        data: editbook,
+                        success:function (data) {
+                            console.log(data);
+                            if(data){
+                                location.replace('/history');
+                            }else{
+                                alert('오류 발생');
+                                location.replace('/history');
+                            }
 
-                    }
-                })
+                        }
+                    });
+                }
             })
+
+        </script>
+
+        <script>
+            // marquee 붙이기 - book title
+            $('.book-header').hover(function () {
+                for(var i=0; i<$('.book-header').length; i++) {
+                    $('.book-header .book-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+                if($(this).find('.book-title-container div span').width() > 170 ) {
+                    $(this).find('.book-title-container div').toggleClass('marquee');
+                }
+            }, function () {
+                for(var i=0; i<$('.book-header').length; i++) {
+                    $('.book-header .book-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+            });
+
+            $(document).ready(function () {
+                for(var i=0; i<$('.book-story-slide .story-title').length; i++) {
+                    if($('.book-story-slide .story-title').eq(i).height() > 25) {
+                        var temp = $('.book-story-slide .story-title').eq(i);
+                        $('.book-story-slide .story-title').eq(i).after('' +
+                            '<div class="story-title-container">' +
+                            '   <div>' +
+                                '</div>' +
+                            '</div>')
+                        $('.book-story-slide .story-title').eq(i).next().find('div').append(temp);
+                    }
+                }
+            });
+            // marquee 붙이기 - book의 story title
+            $(document).on('mouseover', '.story-title-container', function () {
+                for(var i=0; i<$('.story-title-container a').length; i++) {
+                    $('.book-story-slide .story-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+                if($(this).find('div a').width() > 230 ) {
+                    $(this).find('div').toggleClass('marquee');
+                }
+            });
+            $(document).on('mouseout', '.story-title-container a', function () {
+                for(var i=0; i<$('.story-title-container a').length; i++) {
+                    $('.book-story-slide .story-title-container div:eq('+ i +')').removeClass('marquee');
+                }
+            });
 
         </script>
 

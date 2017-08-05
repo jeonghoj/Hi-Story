@@ -62,11 +62,11 @@ http.createServer(app).listen(port1, (req,res)=>{
     console.log("Http server listening on port " + port1);
 });
 
-const ssloptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/chain.pem')
-};
-https.createServer(ssloptions, app).listen(port2, function(){
-    console.log("Https server listening on port " + port2);
-});
+// const ssloptions = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),
+//     ca: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/chain.pem')
+// };
+// https.createServer(ssloptions, app).listen(port2, function(){
+//     console.log("Https server listening on port " + port2);
+// });
