@@ -314,7 +314,6 @@ exports.delete_book=(req,res)=>{
     db.query('delete from book where Member_No=? and Book_No=?',
         [req.user.Member_No,Book_No],(error,results)=>{
         if(error) console.log(error);
-        console.log(results);
         if(results.affectedRows===0){
             res.json({message:'데이터가 잘못됬거나, 없습니다',result:false});
         }else{
@@ -581,7 +580,6 @@ exports.timeline=(req,res)=>{
                         }
                         if(i===tldata.length-1){
                             // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                            console.log(tldata.length);
                             return res.render('action_timeline',{tldata:tldata});
                         }
                     }

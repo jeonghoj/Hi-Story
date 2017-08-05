@@ -71,7 +71,7 @@ $('.a-book').hover(
 
 // slide가 아니라 book에 관련된 기능들도 이곳에 넣기로 한다.
 // book의 공개 및 비공개 설정
-$(document).on('click', '.book-setting .modi-pub', function () {
+$(document).on('click', '.book-setting > .modi-pub', function () {
     if($(this).find('input').is(':checked')){
         // make it unchecked
         $(this).find('label').empty().append('<input class="edit-book-public" type="checkbox" style="display: none;">공개');
@@ -91,10 +91,26 @@ $(document).on('click', '.go-setting', function () {
 });
 
 // 삭제시 story check
-$(document).on('click', '.book-setting .delete', function () {
-        if(!($(this).parent().parent().find('.story-title').length === 0)){
-            $(this).find('label .typ').slideUp().delay(1200).slideDown();
-            $(this).find('label .del-nav').slideDown().delay(1200).slideUp();
-            event.preventDefault();
-        }
+$(document).on('click', '.book-setting > .delete', function () {
+    var delbookno=$(this).parent().find(".edit-book-no").val();
+    if(!($(this).parent().parent().find('.story-title').length === 0)){
+        $(this).find('label .typ').slideUp().delay(1200).slideDown();
+        $(this).find('label .del-nav').slideDown().delay(1200).slideUp();
+        event.preventDefault();
+    }else{
+        $.ajax({
+            url:"/delete_book",
+            type:"post",
+            data:{Book_No:delbookno},
+            success:function (result) {
+                if(result.result){
+                    return location.replace("/history");
+                }else{
+                    alert("오류 발생");
+                    return location.replace("/history");
+                }
+            }
+        });
+        event.preventDefault();
+    }
 });
