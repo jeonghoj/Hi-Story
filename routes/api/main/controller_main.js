@@ -547,6 +547,91 @@ exports.delete_story_memo=(req,res)=>{
 
 };
 
+// 액션 timeline
+exports.timeline=(req,res)=>{
+    let tldata=[];
+    // 타임라인 데이터 쿼리 추후
+    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate ' +
+        'from story,page,book ' +
+        'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
+        'Order By page.Page_UpdateDate DESC limit 15',[req.user.Member_No],(error,results)=>{
+        if(error) console.log(error);
+        if(results.length===0){
+            res.render('action_timeline',{tldata:null});
+        }else{
+            tldata=results;
+            for(let i=0;i<tldata.length;i++){
+                tldata[i].Imgdata=[];
+            }
+            // 이미지 가져오기
+            db.query('select image.* from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                [req.user.Member_No,'Page_Image'],(error,results)=>{
+                    if(error) console.log(error);
+                    const filecount = results ? results.length : 0;
+                    for(let i=0;i<tldata.length;i++){
+                        for(let j=0; j<filecount;j++){
+                            if(tldata[i].Page_No===results[j].No){
+                                tldata[i].Imgdata.push({
+                                    Image_No:results[j].Image_No,
+                                    No:results[j].No,
+                                    Image_Path:'/imageload?imagepath='+results[j].Image_Path
+                                });
+                            }
+                        }
+                        if(i===tldata.length-1){
+                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                            console.log(tldata.length);
+                            return res.render('action_timeline',{tldata:tldata});
+                        }
+                    }
+                });
+        }
+    });
+};
+
+exports.timeline_update=(req,res)=>{
+    const page= req.body.page;
+    let tldata=[];
+    // 타임라인 데이터 쿼리 추후
+    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate,Page_Link ' +
+        'from story,page,book ' +
+        'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
+        'Order By page.Page_UpdateDate DESC limit ?,5',[req.user.Member_No,15+page*5],(error,results)=>{
+        if(error) console.log(error);
+        if(results.length===0){
+            res.json(null);
+        }else{
+            tldata=results;
+            for(let i=0;i<tldata.length;i++){
+                tldata[i].Imgdata=[];
+            }
+            // 이미지 가져오기
+            db.query('select image.* from image,page ' +
+                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
+                [req.user.Member_No,'Page_Image'],(error,results)=>{
+                    if(error) console.log(error);
+                    const filecount = results ? results.length : 0;
+                    for(let i=0;i<tldata.length;i++){
+                        for(let j=0; j<filecount;j++){
+                            if(tldata[i].Page_No===results[j].No){
+                                tldata[i].Imgdata.push({
+                                    Image_No:results[j].Image_No,
+                                    No:results[j].No,
+                                    Image_Path:'/imageload?imagepath='+results[j].Image_Path
+                                });
+                            }
+                        }
+                        if(i===tldata.length-1){
+                            // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                            return res.json(tldata);
+                        }
+                    }
+                });
+        }
+    });
+}
+
 // 액션 overview
 exports.action= (req,res)=> {
     let story = null;
@@ -612,47 +697,7 @@ exports.history=(req,res)=>{
         }
     });
 };
-// 액션 timeline
-exports.timeline=(req,res)=>{
-    let tldata=[];
-    // 타임라인 데이터 쿼리 추후
-    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate ' +
-        'from story,page,book ' +
-        'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
-        'Order By page.Page_UpdateDate DESC',[req.user.Member_No],(error,results)=>{
-        if(error) console.log(error);
-        if(results.length===0){
-            res.render('action_timeline',{tldata:null});
-        }else{
-            tldata=results;
-            for(let i=0;i<tldata.length;i++){
-                tldata[i].Imgdata=[];
-            }
-            // 이미지 가져오기
-            db.query('select image.* from image,page ' +
-                'where page.Member_No=? and Image_Fieldname=? and image.No=page.Page_No',
-                [req.user.Member_No,'Page_Image'],(error,results)=>{
-                if(error) console.log(error);
-                const filecount = results ? results.length : 0;
-                for(let i=0;i<tldata.length;i++){
-                    for(let j=0; j<filecount;j++){
-                        if(tldata[i].Page_No===results[j].No){
-                            tldata[i].Imgdata.push({
-                                Image_No:results[j].Image_No,
-                                No:results[j].No,
-                                Image_Path:'/imageload?imagepath='+results[j].Image_Path
-                            });
-                        }
-                    }
-                    if(i===tldata.length-1){
-                        // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
-                        return res.render('action_timeline',{tldata:tldata});
-                    }
-                }
-            });
-        }
-    });
-};
+
 // story.ejs
 exports.list_page=(req,res)=>{
     let page=null;
