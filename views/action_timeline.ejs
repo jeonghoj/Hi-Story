@@ -23,7 +23,7 @@
     </div>
 
     <div class="container">
-        <div class="left">
+        <div id="timeline" class="left">
 
             <div class="left-top">
                 <div class="view-mode">
@@ -40,11 +40,11 @@
             <div class="page-list"><%}%>
                 <!--날짜가 전 글과 같으면 출력, 아니면 출력안함-->
                 <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
-                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toLocaleString().slice(0, 10)%></div><%}%>
+                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toLocaleDateString()%></div><%}%>
                 <div class="page">
                     <div class="book-title" style="display: none"><%=tldata[i].Book_Title%></div>
                     <a href="/story/<%=tldata[i].Story_No%>" class="story-title f-empha"><%=tldata[i].Story_Title%></a>
-                    <div class="story-date" style="display: none"><%=tldata[i].Story_DateStart.toLocaleString().slice(0, 10)%></div>
+                    <div class="story-date" style="display: none"><%=tldata[i].Story_DateStart.toLocaleDateString()%></div>
                     <div class='story-no' style='display: none'><%=tldata[i].Story_No%></div>
                     <div class="page-no" style="display: none"><%=tldata[i].Page_No%></div>
                     <% if(tldata[i].Imgdata[0] !== undefined) { %>
@@ -108,6 +108,111 @@
     <script src="https://cdn.jsdelivr.net/jquery.webui-popover/2.1.15/jquery.webui-popover.min.js"></script>
     <script src="/js/popover.js"></script>
     <script src="/js/aside.js"></script>
+
+    <script>
+        var page = 0;
+        $(window).scroll(function() {
+//            console.log($(document).height());
+//            console.log($(window).height());
+//            console.log($(document).height() - $(window).height());
+//            console.log($(window).scrollTop());
+
+            if ($(window).scrollTop() > $(document).height() - $(window).height()-2) {
+                var last_page = $(".page-list:last");
+                var last_date = new Date(last_page.children(".date").html()).getDate();
+                var current_page={page:page};
+                page++;
+                $.ajax({
+                    url:"/timeline_update",
+                    type:"post",
+                    data:current_page,
+                    success:function (results) {
+                        console.log(results);
+                        if(results!==null) {
+                            for (var i = 0; i < results.length; i++) {
+                                var append_page='';
+                                var updatedate = new Date(results[i].Page_UpdateDate);
+
+                                if ( updatedate.getDate() === last_date || ( (i !== 0) && ( new Date(results[i-1].Page_UpdateDate).getDate() === new Date(results[i].Page_UpdateDate ).getDate()))) {
+                                    append_page+="<div class=\"page\">"
+                                    append_page+=
+                                        "<div class=\"book-title\" style=\"display: none\">"+ results[i].Book_Title +"</div>" +
+                                        "<a href=\"/story/"+ results[i].Story_No +"\" class=\"story-title f-empha\">"+ results[i].Story_Title +"</a>" +
+                                        "<div class=\"story-date\" style=\"display: none\">"+ results[i].Story_DateStart +"</div>" +
+                                        "<div class='story-no' style='display: none'>"+ results[i].Story_No +"</div>" +
+                                        "<div class=\"page-no\" style=\"display: none\">"+ results[i].Page_No +"</div>";
+//                                    이미지
+                                    if(results[i].Imgdata[0] !== undefined){
+                                        append_page+=
+                                            "<div class=\"img-box\">\n" +
+                                            "<button class=\"to-left\"><img src=\"/img/icon/ic_keyboard_arrow_left_black_24px.svg\"></button>\n";
+                                        for(var j =0; j<results[i].Imgdata.length ; j++){
+                                            if(j===0){
+                                                append_page+="<img class=\"active\" style=\"max-height:100%;max-width: 100%\" src=\" " + results[i].Imgdata[j].Image_Path + "\">";
+                                            }else {
+                                                append_page+="<img class=\"hidden\" style=\"max-height:100%;max-width: 100%\" src=\" " + results[i].Imgdata[j].Image_Path + "\">";
+                                            }
+                                        }
+                                        append_page+="<button class=\"to-right\"><img src=\"/img/icon/ic_keyboard_arrow_right_black_24px.svg\"></button>" +
+                                            "</div>"
+                                    }
+                                    if(results[i].Page_Link !== null){
+                                        append_page+=
+                                            "<div class=\"link-box\">\n" +
+                                            "<span class=\"f-empha\">link title</span>\n" +
+                                            "<span>short imformation</span>\n" +
+                                            "<span class=\"f-subSmall\">"+ results[i].Page_Link +"</span>\n" +
+                                            "</div>"
+                                    }
+                                    append_page+=results[i].Page_Content;
+                                    append_page+="</div>";
+                                    $(".page-list:last").append(append_page);
+                                }else{
+                                    var time= new Date(results[i].Page_UpdateDate).toLocaleDateString().split('.');
+                                    var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
+                                    console.log(date);
+                                    append_page+="<div class=\"page-list\">"
+                                    append_page+="<div class=\"date f-subSmall\">"+ date +"</div>"
+                                    append_page+="<div class=\"page\">"
+                                    append_page+=
+                                        "<div class=\"book-title\" style=\"display: none\">"+ results[i].Book_Title +"</div>" +
+                                        "<a href=\"/story/"+ results[i].Story_No +"\" class=\"story-title f-empha\">"+ results[i].Story_Title +"</a>" +
+                                        "<div class=\"story-date\" style=\"display: none\">"+ results[i].Story_DateStart +"</div>" +
+                                        "<div class='story-no' style='display: none'>"+results[i].Story_No+"</div>" +
+                                        "<div class=\"page-no\" style=\"display: none\">"+results[i].Page_No+"</div>";
+//                                    이미지
+                                    if(results[i].Imgdata[0] !== undefined){
+                                        append_page+=
+                                            "<div class=\"img-box\">\n" +
+                                            "<button class=\"to-left\"><img src=\"/img/icon/ic_keyboard_arrow_left_black_24px.svg\"></button>\n";
+                                        for(var j =0; j<results[i].Imgdata.length ; j++){
+                                            if(j===0){
+                                                append_page+="<img class=\"active\" style=\"max-height:100%;max-width: 100%\" src=\" " + results[i].Imgdata[j].Image_Path + "\">";
+                                            }else {
+                                                append_page+="<img class=\"hidden\" style=\"max-height:100%;max-width: 100%\" src=\" " + results[i].Imgdata[j].Image_Path + "\">";
+                                            }
+                                        }
+                                        append_page+="<button class=\"to-right\"><img src=\"/img/icon/ic_keyboard_arrow_right_black_24px.svg\"></button>" +
+                                            "</div>"
+                                    }
+                                    append_page+=results[i].Page_Content;
+                                    append_page+="</div>";
+                                    append_page+="</div>";
+                                    $('#timeline').append(append_page);
+                                }
+                            }
+                        }
+                        }
+                })
+            }
+        });
+//        window.onscroll = function(ev) {
+//            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+//                alert("you're at the bottom of the page");
+//            }
+//        };
+    </script>
+
 
 </body>
 

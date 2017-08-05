@@ -46,9 +46,13 @@ router.post('/insert_story_memo',passport.authenticate('jwtc',{session:false}),c
 router.post('/update_story_memo',passport.authenticate('jwtc',{session:false}),controller.update_story_memo);
 router.post('/delete_story_memo',passport.authenticate('jwtc',{session:false}),controller.delete_story_memo);
 
+router.get('/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
+// timeline_update
+router.post('/timeline_update',passport.authenticate('jwtc',{session:false}),controller.timeline_update);
+
 router.get('/action',passport.authenticate('jwtc',{session:false}),controller.action);
 router.get('/history',passport.authenticate('jwtc',{session:false}),controller.history);
-router.get('/timeline',passport.authenticate('jwtc',{session:false}),controller.timeline);
+
 router.get('/story/:id',passport.authenticate('jwtc',{session:false}),controller.list_page);
 router.get('/explore',passport.authenticate('jwtc',{session:false}),controller.explore);
 router.get('/setting',passport.authenticate('jwtc',{session:false}),controller.setting);
