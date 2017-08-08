@@ -149,8 +149,12 @@ input, textarea {
     top: 6px;
 }
 .right .aside .infor {
-    border: 1px solid rgba(0, 0, 0, .3);    
+    border: 1px solid rgba(0, 0, 0, .3);
     box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, .45);
+}
+.right .aside .infor .book-name,
+.right .aside .infor .story-name {
+    padding-left: 10px;
 }
 .right .aside .infor .date {
     text-align: right;
