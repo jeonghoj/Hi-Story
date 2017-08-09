@@ -395,6 +395,7 @@ input, textarea {
     top: 3px;
     opacity: .3;
     vertical-align: top;
+    margin-right: 3px;
 }
 .left .story-list .story .memo .edit:hover {
     transition: all .35s ease;

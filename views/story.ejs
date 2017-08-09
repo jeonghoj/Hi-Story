@@ -71,7 +71,9 @@
                         <span class="f-subSmall"><%=page[i].Page_Link%></span>
                     </div>
                         <%}%>
+                    <div class="txt-container">
                         <%- page[i].Page_Content%>
+                    </div>
                 </div>
                         <% if(page[i].Page_Last==1 || page[page.length-2].Page_Done===1){%>
                         <%}else{%>
@@ -321,8 +323,8 @@
         $(document).on('click', '.story-setting #page-edit', function () {
 
             // 최근 page의 text를 받아온다.
-            var text = $('.page:last>*:not(.link-box)').html();
-            CKEDITOR.instances.editor1.setData(text);
+            var txt = $('.page:last .txt-container').html();
+            CKEDITOR.instances.editor1.setData(txt);
 
             // Cancel Editing과 자리를 바꾼다.
             $('.story-setting #page-edit').slideUp('fast', function () {
@@ -351,7 +353,6 @@
             }
 
             // link를 받아온다.
-
             if($('.page:last-child .link-box').length != 0) {
                 var linkUrl = $('.page:last-child .link-box span:last-child').text();
                 $('.add-box .add-link').slideDown();
