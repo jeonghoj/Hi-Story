@@ -169,5 +169,11 @@ $(document).ready(function () {
 
 });
 
+$(document).on('click', '#delete-btn', function () {
+    var del = $('.closeup .story-delete');
+    del.height( del.find('.del-nav').height() + 90);
+});
+
+// $(this).next().next().height( $(this).next().next().prop('scrollHeight') - 4);
 
 

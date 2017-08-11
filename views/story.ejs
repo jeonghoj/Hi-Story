@@ -140,6 +140,7 @@
                         <label class="f-sub" for="page-img">Image</label>
                         <label class="f-sub" for="page-link">Link</label>
                         <label class="f-sub"><input type="submit" style="display: none;">Submit</label>
+                        <input type="checkbox" class="edit-check" style="display: none;">
                     </div>
                 </form>
                 <!--에디터 표시 스크립트-->
@@ -403,7 +404,7 @@
                 data:del_story_no,
                 success:function (result) {
                     if(result){
-                        alert('성공적으로 삭제되었습니다');
+//                        alert('성공적으로 삭제되었습니다');
                         location.replace('/action');
                     }else{
                         alert('일시적으로 오류가 발생했습니다');
