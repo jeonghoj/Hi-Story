@@ -125,7 +125,6 @@ exports.update_story_info=(req,res)=>{
 };
 //스토리 완료 & 마지막 글 쓰기
 exports.update_story_done=(req,res)=>{
-    console.log('업로드된 파일',req.files);
     const Story_No=req.body.Story_No;
     const Page_Link=xss(req.body.Page_Link);
     const Page_Content=xss(req.body.Page_Content);
