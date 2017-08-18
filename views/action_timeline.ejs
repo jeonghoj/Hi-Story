@@ -187,7 +187,7 @@
                                     $(".page-list:last").append(append_page);
                                 }else{
                                     var time= new Date(results[i].Page_UpdateDate).toLocaleDateString().split('.');
-                                    var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
+                                    var date= time[0].replace(" ","") + ". " + time[1].replace(" ","") + ". " + time[2].replace(" ","")+".";
                                     append_page+="<div class=\"page-list\">"
                                     append_page+="<div class=\"date f-subSmall\">"+ date +"</div>"
                                     append_page+="<div class=\"page\">"
