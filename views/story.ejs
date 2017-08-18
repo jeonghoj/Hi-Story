@@ -44,11 +44,9 @@
                 <% if(page[0].Page_No !== undefined){%>
                     <!--페이지의 마지막 값 Page_Done이 1일때 즉 Story가 Done되었을때 마지막-1 까지만 반복한다-->
                     <% for(var i=0; i< ((page[page.length-1].Page_Done===1) ? (page.length-1) : (page.length));i++){%>
-                <% if(i===0 ? true : page[i-1].Page_UpdateDate.getDate() !== page[i].Page_UpdateDate.getDate()){
-                    var time= new Date(page[i].Page_UpdateDate).toLocaleDateString().split('-');
-                    var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
-                %>
-                <div class="date f-subSmall"><%=date%></div>
+                <% if(i===0 ? true : page[i-1].Page_UpdateDate.getDate() !== page[i].Page_UpdateDate.getDate()){%>
+
+                <div class="date f-subSmall"><%=page[i].Page_UpdateDate.toLocaleDateString() %></div>
                 <%}%>
                 <div class="page">
                         <% if(page[i].Imgdata[0] !== undefined) { %>
