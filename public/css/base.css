@@ -360,6 +360,7 @@ input, textarea {
 .left .story-list .story .story-title {
     height: 29px;
     width: 618px;
+    margin-bottom: 4px;
     overflow: hidden;
     position: relative;
 }
@@ -406,11 +407,9 @@ input, textarea {
     display: inline;
 }
 .left .story-list .story .memo .story-memo {
-/*    display: inline-block;*/
     border: none;
     font-size: 1rem;
     overflow: hidden;
-/*    width: 600px;*/
     vertical-align: middle;
     text-align: justify;
     resize: none;

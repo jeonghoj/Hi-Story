@@ -3,7 +3,7 @@ $(document).ready(function () {
     // Web Road 시 memo의 높이를 고려해서 출력
     $('.story-memo').each(function () {
         if( $(this).prop('scrollHeight') < 60) {
-            $(this).height( 32 );
+            $(this).height( 26 );
         }else {
             $(this).height($(this).prop('scrollHeight') - 4);
         }
