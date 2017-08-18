@@ -64,11 +64,14 @@
                 <%if(!data){%>
                 <div id="no-data"> </div>
                 <%}else{%>
-                <% for(var i=0; i<data.length; i++) {%>
+                <% for(var i=0; i<data.length; i++) {
+                    var time= new Date(data[i].Story_DateStart).toLocaleDateString().split('-');
+                    var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
+                %>
                 <div class="story">
                     <div class="story-header">
                         <div class="book-no" style="display: none"><%=data[i].Book_Title%></div>
-                        <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toLocaleString().slice(0, 10)%></div>
+                        <div class="story-start-date" style="display: none;"><%=date%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title">
                             <div>

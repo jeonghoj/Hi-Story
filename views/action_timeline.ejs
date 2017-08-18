@@ -39,8 +39,11 @@
             <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
             <div class="page-list"><%}%>
                 <!--날짜가 전 글과 같으면 출력, 아니면 출력안함-->
-                <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
-                <div class="date f-subSmall"><%=tldata[i].Page_UpdateDate.toLocaleDateString()%></div><%}%>
+                <% if(i===0 ? true : tldata[i-1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){
+                    var time= new Date(tldata[i].Page_UpdateDate).toLocaleDateString().split('-');
+                    var date= time[0].replace(" ","") + "-" + time[1].replace(" ","") + "-" + time[2].replace(" ","");
+                %>
+                <div class="date f-subSmall"><%=date%></div><%}%>
                 <div class="page">
                     <div class="book-title" style="display: none"><%=tldata[i].Book_Title%></div>
                     <div class="story-title-container">
