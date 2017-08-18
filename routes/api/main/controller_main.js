@@ -700,14 +700,14 @@ exports.list_page=(req,res)=>{
     let page=null;
     const Story_No = req.params.id;
     db.query("select book.Book_Title,story.Story_No,story.Story_Title, story.Story_DateStart, page.* " +
-        "from book,story,page where book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?",
-        [Story_No],(error,results)=>{
+        "from book,story,page where story.Member_No=? and book.Book_No=story.Book_No and story.Story_No = page.Story_No and page.Story_No=?",
+        [req.user.Member_No,Story_No],(error,results)=>{
         // 페이지가 없을경우
         if(results.length===0)
         {
             db.query('select book.Book_Title,story.Story_Title,story.Story_DateStart ' +
-                'from book,story where story.Story_No=? and story.Book_No=book.Book_No',
-                [req.params.id],(error,results)=>{
+                'from book,story where story.Member_No=? and story.Story_No=? and story.Book_No=book.Book_No',
+                [req.user.Member_No,req.params.id],(error,results)=>{
                 if(error) console.log(error);
                 res.render('story',{page:results,Story_No: Story_No});
             });
