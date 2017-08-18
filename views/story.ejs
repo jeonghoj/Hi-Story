@@ -154,7 +154,7 @@
         <div class="right">
             <div class="aside">
                 <div class="infor">
-                    <%if(page !== null) {%>
+                    <%if(page !== null) { %>
                     <div class="book-name f-subSmall"><%=page[0].Book_Title%></div>
                     <div class="story-name f-empha" ><%=page[0].Story_Title%></div>
                     <div class="date f-subSmall"><%=page[0].Story_DateStart.toLocaleDateString()%></div>
@@ -167,7 +167,7 @@
                     <hr class="hr-infor">
                     <div id="insert-changing" style="display: none;">
                         <select name="chng-book" id="chng-book"></select>
-                        <div id="edit-story-no" style="display: none"><%=page[0].Story_No%></div>
+                        <div id="edit-story-no" style="display: none"><%=Story_No%></div>
                         <input name="edit-story-title" type="text" value="<%=page[0].Story_Title%>">
                         <label class="f-subSmall"><input type="checkbox" style="display: none;">공개</label>
                         <div class="insert-btn">
