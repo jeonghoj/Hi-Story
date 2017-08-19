@@ -218,94 +218,83 @@ exports.update_page=(req,res)=>{
         if(results[0].Page_Last===0){
             res.json({result:false,message:'마지막 페이지만 수정할 수 있습니다.'});
         }else {
-            // 이미지가 있다면
-            if (req.files) {
-                // 이미지 갯수 가져오기
-                db.query('select Page_Imgcount from page where Member_No=? and Page_No=?',
-                    [req.user.Member_No, Page_No], (error, results) => {
+            let updateimgcount=0;
+            db.query('select Page_Imgcount from page where Member_No=? and Page_No=?',
+                [req.user.Member_No, Page_No], (error, results) => {
                     if (error) console.log(error);
-                    let updateimgcount = results[0].Page_Imgcount + req.files.length - delete_Images_count;
-                    if (updateimgcount > 6) {
-                        res.json({result: false, message: '이미지 삽입 갯수 초과'});
-                    } else {
-                        //이미지 카운트 수정
-                        db.query('update page set ? where Member_No=? and Page_No=?',
-                            [{Page_Imgcount:updateimgcount},req.user.Member_No,Page_No],(error)=>{
-                            if(error) console.log(error);
-                            });
-                        //이미지 지우는작업 fs.unlink사용
-                        // 지우는 이미지가 있다면
-                        if(delete_Images_No[0]){
-                            db.query('select Image_Path from image where No=? and Image_Fieldname=? and Image_No in (?)',
-                                [Page_No,'Page_Image',delete_Images_No],(error,results)=>{
-                                if(error) console.log(error);
-                                db.query('delete from image where Image_No in (?)',
-                                    [delete_Images_No],(error,results)=>{
-                                    if(error) console.log(error);
-                                    console.log('이미지 삭제');
-                                });
-                                for(let i=0; i<results.length;i++){
-                                    fs.unlink(cwd+'/'+results[i].Image_Path,(error)=>{
-                                        if(error) console.log(error);
-                                        console.log('파일 삭제');
-                                    });
-                                }
-                                });
-                        }
-                        // for(let i=0; i<delete_Images_count;i++) {
-                        //     delete_Images_No[i]=parseInt(delete_Images_No[i]);
-                        //     let delete_image_path='';
-                        //     db.query('select Image_Path from image where Image_No=?',[delete_Images_No[i]],(error,results)=>{
-                        //         if(error) console.log(error);
-                        //         delete_image_path=results[0].Image_Path;
-                        //         db.query('delete from image where Image_No=?',
-                        //             [delete_Images_No[i]],(error,results)=>{
-                        //             if(error) console.log(error);
-                        //             if(results.affectedRows===1){
-                        //                 fs.unlink(cwd+'/'+delete_image_path,(error)=>{
-                        //                     if(error) console.log(error);
-                        //                     console.log('파일 삭제');
-                        //                 });
-                        //             }else{
-                        //                 console.log('삭제 안되었습니다');
-                        //             }
-                        //         });
-                        //     });
-                        // }
 
-                        // 이미지 삽입
-                        for(let i=0;i<req.files.length;i++){
-                            //변수 초기화
-                            let imgdata={};
-                            imgdata={
-                                No:Page_No,
-                                Image_Fieldname:req.files[i].fieldname,
-                                Image_Path:req.files[i].path,
-                                Image_Originalname:req.files[i].originalname
-                            };
-                            db.query('insert into image set ?',[imgdata],(error)=>{
-                                console.log('이미지 넣었습니다');
-                            });
-                        }
+                    // 먼저 갯수 검사
+                    if (req.files) {
+                        updateimgcount = results[0].Page_Imgcount + req.files.length - delete_Images_count;
+                    } else {
+                        updateimgcount = results[0].Page_Imgcount - delete_Images_count;
+                    }
+                    // 애초에 넘으면 막기
+                    if(updateimgcount>6){
+                        res.json({result: false, message: '이미지 삽입 갯수 초과'});
+                    }else{
+                        // 파일이 있으면
+                        if (req.files) {
+                            //이미지 카운트 수정
+                            db.query('update page set ? where Member_No=? and Page_No=?',
+                                [{Page_Imgcount: updateimgcount}, req.user.Member_No, Page_No], (error) => {
+                                    if (error) console.log(error);
+                                });
+                            //이미지 지우는작업 fs.unlink사용
+                            // 지우는 이미지가 있다면
+                            if (delete_Images_No[0]) {
+                                db.query('select Image_Path from image where No=? and Image_Fieldname=? and Image_No in (?)',
+                                    [Page_No, 'Page_Image', delete_Images_No], (error, results) => {
+                                        if (error) console.log(error);
+                                        db.query('delete from image where Image_No in (?)',
+                                            [delete_Images_No], (error, results) => {
+                                                if (error) console.log(error);
+                                                console.log('이미지 삭제');
+                                            });
+                                        for (let i = 0; i < results.length; i++) {
+                                            fs.unlink(cwd + '/' + results[i].Image_Path, (error) => {
+                                                if (error) console.log(error);
+                                                console.log('파일 삭제');
+                                            });
+                                        }
+                                    });
+                            }
+                            // 이미지 삽입
+                            for (let i = 0; i < req.files.length; i++) {
+                                //변수 초기화
+                                let imgdata = {};
+                                imgdata = {
+                                    No: Page_No,
+                                    Image_Fieldname: req.files[i].fieldname,
+                                    Image_Path: req.files[i].path,
+                                    Image_Originalname: req.files[i].originalname
+                                };
+                                db.query('insert into image set ?', [imgdata], (error) => {
+                                    console.log('이미지 넣었습니다');
+                                });
+                            }
+                        }//여기까지 이미지 삽입 코드
+
+                        // 페이지 수정 쿼리
+                        db.query('update page set ? where Member_No=? and Page_No=?',
+                            [updatepagedata,req.user.Member_No,Page_No],(error,results)=>{
+                                if(error) console.log(error);
+                                if(results.affectedRows===0){
+                                    // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
+                                    res.json({result:false,message:'잘못된 접근입니다.'});
+                                }else if(results.changedRows===0){
+                                    // 같은내용
+                                    res.json({result:true,url:'/story/'+req.body.Story_No});
+                                }else{
+                                    // 수정완료
+                                    console.log('page수정');
+                                    res.json({result:true,url:'/story/'+req.body.Story_No});
+                                }
+                            })
                     }
                 });
-            }
-            // 페이지 수정 쿼리
-            db.query('update page set ? where Member_No=? and Page_No=?',
-                [updatepagedata,req.user.Member_No,Page_No],(error,results)=>{
-                if(error) console.log(error);
-                if(results.affectedRows===0){
-                    // 바뀐 데이터가 없다는건 다른 사용자가 접근을 하려고 했다는것
-                    res.json({result:false,message:'잘못된 접근입니다.'});
-                }else if(results.changedRows===0){
-                    // 같은내용
-                    res.json({result:true,url:'/story/'+req.body.Story_No});
-                }else{
-                    // 수정완료
-                    console.log('page수정');
-                    res.json({result:true,url:'/story/'+req.body.Story_No});
-                }
-            })
+
+
         }
     })
 };
