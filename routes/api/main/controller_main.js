@@ -228,8 +228,12 @@ exports.update_page=(req,res)=>{
                     if (updateimgcount > 6) {
                         res.json({result: false, message: '이미지 삽입 갯수 초과'});
                     } else {
+                        //이미지 카운트 수정
+                        db.query('update page set ? where Member_No=? and Page_No=?',
+                            [{Page_Imgcount:updateimgcount},req.user.Member_No,Page_No],(error)=>{
+                            if(error) console.log(error);
+                            });
                         //이미지 지우는작업 fs.unlink사용
-                        // TODO 작업중
                         // 지우는 이미지가 있다면
                         if(delete_Images_No[0]){
                             db.query('select Image_Path from image where No=? and Image_Fieldname=? and Image_No in (?)',
@@ -295,11 +299,11 @@ exports.update_page=(req,res)=>{
                     res.json({result:false,message:'잘못된 접근입니다.'});
                 }else if(results.changedRows===0){
                     // 같은내용
-                    res.json({result:true});
+                    res.json({result:true,url:'/story/'+req.body.Story_No});
                 }else{
                     // 수정완료
                     console.log('page수정');
-                    res.json({result:true});
+                    res.json({result:true,url:'/story/'+req.body.Story_No});
                 }
             })
         }

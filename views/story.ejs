@@ -49,6 +49,7 @@
                 <div class="date f-subSmall"><%=page[i].Page_UpdateDate.toLocaleDateString() %></div>
                 <%}%>
                 <div class="page">
+                    <div class="page-no" style="display: none"><%=page[i].Page_No%></div>
                         <% if(page[i].Imgdata[0] !== undefined) { %>
                     <div class="img-box">
                         <button class="to-left"><img src="/img/icon/ic_keyboard_arrow_left_black_24px.svg"></button>
@@ -283,22 +284,43 @@
 
 //            alert("---" + str_hil + "---");
             if(!(str_hil === "<mark></mark>")) {
-                $.ajax({
-                    url:"/insert_page",
-                    type:"post",
-                    data:formData,
-                    success:function (data) {
-                        if(data.result){
+                if($("#new-page").find("div.edit-page-no").length === 1){
+                    var edit_last_no= $("#new-page").find("div.edit-page-no").html();
+                    formData.append('Page_No',edit_last_no);
+                    $.ajax({
+                        url:"/update_page",
+                        type:"post",
+                        data:formData,
+                        success:function (data) {
+                            if (data.result) {
 //                            alert('성공적으로 삽입되었습니다!');
-                            location.replace(data.url);
-                        }else{
-                            alert('데이터가 삽입되지 않았습니다')
-                        }
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
+                                location.replace(data.url);
+                            } else {
+                                alert('데이터가 삽입되지 않았습니다')
+                            }
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    });
+                }else{
+                    $.ajax({
+                        url:"/insert_page",
+                        type:"post",
+                        data:formData,
+                        success:function (data) {
+                            if(data.result){
+//                            alert('성공적으로 삽입되었습니다!');
+                                location.replace(data.url);
+                            }else{
+                                alert('데이터가 삽입되지 않았습니다')
+                            }
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    });
+                }
                 return false;
             } else {
                 $(this).find('.sub-nav').slideDown(500).delay(1500).slideUp(500);
@@ -323,6 +345,9 @@
 
 //      Edit page
         $(document).on('click', '.story-setting #page-edit', function () {
+            // 에디트할 page의 no를 append 한다
+            var edit_page_no= $('.page:last .page-no').html();
+            $('#new-page').append('<div class="edit-page-no" style="display: none">'+ edit_page_no +'</div>');
 
             // 최근 page의 text를 받아온다.
             var txt = $('.page:last .txt-container').html();
@@ -378,7 +403,6 @@
                 Story_Public:$('input:checkbox[name="story-public"]').is(":checked") ? 0:1,
             }
             var currenturl = window.location.href;
-            console.log(storydata);
             $.ajax({
                 url:"/update_story_info",
                 type:"post",

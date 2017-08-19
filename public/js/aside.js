@@ -81,7 +81,6 @@ $(document).ready(function () {
                     {
                         $('.story-setting').append('<button id="page-edit" class="f-basic">Edit this page</button>');
                         $('.story-setting').append('<button id="cancel-edit" class="f-basic" style="display: none;">Cancel editing</button>');
-
                     }
                 }
                 $('.story-setting').append('<hr class="hr-infor">');
