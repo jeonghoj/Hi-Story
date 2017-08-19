@@ -65,7 +65,7 @@
                     </div>
                         <%}%>
                     <!--FIXME 링크 조건 null undefined "" 안해서 문제 발생소지?-->
-                        <%if(page[i].Page_Link !== null && page[i].Page_Link !== ""){%>
+                        <%if(page[i].Page_Link !== null && page[i].Page_Link !== "" && page[i].Page_Link !==undefined){%>
                     <div class="link-box">
                         <span class="f-empha">link title</span>
                         <span>short imformation</span>

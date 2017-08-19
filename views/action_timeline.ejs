@@ -65,6 +65,14 @@
                         <button class="to-right"><img src="/img/icon/ic_keyboard_arrow_right_black_24px.svg"></button>
                     </div>
                     <%}%>
+                    <%if(tldata[i].Page_Link !== null && tldata[i].Page_Link !== "" && tldata[i].Page_Link !==undefined){ %>
+
+                    <div class="link-box">
+                        <span class="f-empha">link title</span>
+                        <span>short imformation</span>
+                        <span class="f-subSmall"><%=tldata[i].Page_Link%></span>
+                    </div>
+                    <%}%>
                     <%-tldata[i].Page_Content%>
                 </div>
             <% if(tldata[i+1]==null ? true : tldata[i+1].Page_UpdateDate.getDate() !== tldata[i].Page_UpdateDate.getDate()){%>
@@ -174,7 +182,9 @@
                                         append_page+="<button class=\"to-right\"><img src=\"/img/icon/ic_keyboard_arrow_right_black_24px.svg\"></button>" +
                                             "</div>"
                                     }
-                                    if(results[i].Page_Link !== null){
+
+
+                                    if(results[i].Page_Link !== undefined){
                                         append_page+=
                                             "<div class=\"link-box\">\n" +
                                             "<span class=\"f-empha\">link title</span>\n" +

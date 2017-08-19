@@ -549,7 +549,7 @@ exports.delete_story_memo=(req,res)=>{
 exports.timeline=(req,res)=>{
     let tldata=[];
     // 타임라인 데이터 쿼리 추후
-    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate ' +
+    db.query('select book.Book_Title,story.Story_No,Story_Title,Story_DateStart,Page_No,Page_Content,Page_UpdateDate,Page_Link ' +
         'from story,page,book ' +
         'where story.Member_No=? and book.Book_No=story.Book_No and page.Story_No=story.Story_No ' +
         'Order By page.Page_UpdateDate DESC limit 15',[req.user.Member_No],(error,results)=>{
@@ -579,6 +579,7 @@ exports.timeline=(req,res)=>{
                         }
                         if(i===tldata.length-1){
                             // 함수의 종료를 선언하지 않으면 무한루프가 돌아버린다
+                            console.log(tldata);
                             return res.render('action_timeline',{tldata:tldata});
                         }
                     }
