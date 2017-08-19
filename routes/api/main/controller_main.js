@@ -197,7 +197,7 @@ exports.update_page=(req,res)=>{
     const Page_No=req.body.Page_No;
     // 지울 이미지는 array로 받는다. 만약 단일값이라면 array로 만들어서 담아준다
     let delete_Images_No=[];
-    let delete_Images_count;
+    let delete_Images_count=0;
     if(req.body.delete_Images_No){
         if(Array.isArray(req.body.delete_Images_No)){
             delete_Images_No=req.body.delete_Images_No;
@@ -219,10 +219,10 @@ exports.update_page=(req,res)=>{
             res.json({result:false,message:'마지막 페이지만 수정할 수 있습니다.'});
         }else {
             let updateimgcount=0;
+            console.log(updateimgcount);
             db.query('select Page_Imgcount from page where Member_No=? and Page_No=?',
                 [req.user.Member_No, Page_No], (error, results) => {
                     if (error) console.log(error);
-
                     // 먼저 갯수 검사
                     if (req.files) {
                         updateimgcount = results[0].Page_Imgcount + req.files.length - delete_Images_count;
