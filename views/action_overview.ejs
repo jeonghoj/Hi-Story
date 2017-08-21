@@ -68,7 +68,7 @@
                 <div class="story">
                     <div class="story-header">
                         <div class="book-no" style="display: none"><%=data[i].Book_Title%></div>
-                        <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toLocaleString().slice(0, 10)%></div>
+                        <div class="story-start-date" style="display: none;"><%=data[i].Story_DateStart.toLocaleDateString()%></div>
                         <div class='story-no' style='display:none'><%= data[i].Story_No %></div>
                         <div class="story-title">
                             <div>
