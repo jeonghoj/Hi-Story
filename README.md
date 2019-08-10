@@ -1,29 +1,29 @@
-# README #
+# Hi-Story
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## 소개
 
-### What is this repository for? ###
+사람은 기록을 통해 과거를 보고, 미래를 계획한 뒤 지금 행동한다.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+또한 타인의 이야기에 동기 부여한다.
+  
 
-### How do I get set up? ###
+이 2가지 관점을 가지고 Hi-Story를 개발하게 되었다.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Hi-Story는 기록을 통해서 자신을 발견하게 도와주는 도구이다.
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+2017년 5월 ~ 2017년 8월 프로젝트 진행.
 
-### Who do I talk to? ###
+## 기술 스택
 
-* Repo owner or admin
-* Other community or team contact
+Server
+- node.js
+    - express.js
+
+Database
+- MySQL
+
+Client
+- Android
+- HTML, jQuery, CSS
+
