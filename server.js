@@ -2,7 +2,7 @@
  * Created by Jeongho on 2017-05-10.
  */
 const http=require('http');
-const https=require('https');
+// const https=require('https');
 const path = require('path');
 //웹페이지 아이콘 설정
 const favicon = require('serve-favicon');
@@ -16,8 +16,8 @@ const app= express();
 const morgan = require('morgan');
 
 
-const port1 = 80;
-const port2 = 443;
+const port1 = 8081;
+// const port2 = 443;
 
 // 웹페이지 아이콘 설정
 app.use(favicon(path.join(__dirname, 'public/img/logo', 'favicon.ico')));
@@ -61,12 +61,12 @@ app.use(function(err, req, res, next) {
 http.createServer(app).listen(port1, (req,res)=>{
     console.log("Http server listening on port " + port1);
 });
-
-const ssloptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/chain.pem')
-};
-https.createServer(ssloptions, app).listen(port2, function(){
-    console.log("Https server listening on port " + port2);
-});
+//
+// const ssloptions = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/cert.pem'),
+//     ca: fs.readFileSync('/etc/letsencrypt/live/history-dcy.com/chain.pem')
+// };
+// https.createServer(ssloptions, app).listen(port2, function(){
+//     console.log("Https server listening on port " + port2);
+// });
